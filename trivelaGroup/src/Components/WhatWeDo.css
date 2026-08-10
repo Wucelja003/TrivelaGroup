@@ -1,0 +1,106 @@
+/* Ikonice u "inova" duhu: crtez se blago klati u petlji, a talasi/zraci
+   pulsiraju ka spolja sa stagger-om. Sve krece tek na hover — u mirovanju
+   je sekcija mirna, isto kao kod njih (oni to rade crossfade-om na drugi
+   .svg fajl; nama je dovoljan jedan inline SVG). */
+
+@keyframes wwd-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(1.5px, 2px);
+  }
+}
+
+@keyframes wwd-pulse {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.wwd-icon .wwd-core {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Talasi su sakriveni dok se ne predje misem */
+.wwd-icon .wwd-wave {
+  opacity: 0;
+}
+
+.wwd-card:hover .wwd-icon .wwd-core {
+  animation: wwd-drift 2s ease-in-out infinite;
+}
+
+.wwd-card:hover .wwd-icon .wwd-wave {
+  animation: wwd-pulse 1.8s ease-out infinite;
+  /* --i po talasu daje "radiating" efekat ka spolja */
+  animation-delay: calc(var(--i) * 0.25s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wwd-card:hover .wwd-icon .wwd-core,
+  .wwd-card:hover .wwd-icon .wwd-wave {
+    animation: none;
+  }
+  .wwd-card:hover .wwd-icon .wwd-wave {
+    opacity: 1;
+  }
+}
+
+/* ===== Ulazak kartica na skrol — iz dubine, jedna za drugom =====
+   Animacija stoji na omotacu (.wwd-card-wrap), a NE na .wwd-card, jer
+   kartica ima svoj hover transform pa bi se dva transform-a tukla. */
+.wwd-grid {
+  perspective: 1400px;
+  perspective-origin: 50% 25%;
+}
+
+.wwd-card-wrap {
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity, filter;
+  /* Pocetno stanje — sakriveno dok reveal ne okine */
+  opacity: 0;
+  transform: translateY(90px) rotateX(-42deg) scale(0.9);
+  filter: blur(12px);
+}
+
+.wwd-grid.in .wwd-card-wrap {
+  animation: wwd-card-in 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i) * 0.15s);
+}
+
+@keyframes wwd-card-in {
+  0% {
+    opacity: 0;
+    transform: translateY(90px) rotateX(-42deg) scale(0.9);
+    filter: blur(12px);
+  }
+  55% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Ko je iskljucio animacije — kartice su odmah tu, bez pokreta */
+@media (prefers-reduced-motion: reduce) {
+  .wwd-card-wrap {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
+  }
+}

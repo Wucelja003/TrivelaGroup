@@ -1,0 +1,131 @@
+/* ===== Zmijolika vremenska linija =====
+   Boje idu kroz promenljive, pa ista komponenta radi i na tamnoj (Clients)
+   i na beloj podlozi (Trivela Drop). */
+
+.tl-scope {
+  --tl-accent: #96ff00;
+  --tl-accent-soft: rgba(150, 255, 0, 0.4);
+  --tl-glow: rgba(150, 255, 0, 0.85);
+  --tl-glow-soft: rgba(150, 255, 0, 0.75);
+  --tl-base: rgba(255, 255, 255, 0.15);
+  --tl-dot-bg: #0b2f6e;
+  --tl-name: #ffffff;
+  --tl-role: rgba(255, 255, 255, 0.5);
+  --tl-card-border: rgba(255, 255, 255, 0.1);
+  --tl-card-hover: rgba(150, 255, 0, 0.4);
+  --tl-card-shadow: rgba(150, 255, 0, 0.18);
+}
+
+/* Trivela Drop: bela podloga, tamno plava kao druga boja.
+   Ledena je presvetla za liniju na beloj, pa nosi samo sjaj. */
+.tl-scope--blue {
+  --tl-accent: #06294d;
+  --tl-accent-soft: rgba(6, 41, 77, 0.35);
+  --tl-glow: rgba(124, 196, 255, 0.9);
+  --tl-glow-soft: rgba(124, 196, 255, 0.7);
+  --tl-base: rgba(6, 41, 77, 0.18);
+  --tl-dot-bg: #ffffff;
+  --tl-name: #06294d;
+  --tl-role: rgba(6, 41, 77, 0.7);
+  --tl-card-border: rgba(6, 41, 77, 0.12);
+  --tl-card-hover: rgba(6, 41, 77, 0.45);
+  --tl-card-shadow: rgba(124, 196, 255, 0.35);
+}
+
+/* --- Linija --- */
+.tl-base {
+  stroke: var(--tl-base);
+}
+.tl-fill {
+  stroke: var(--tl-accent);
+  filter: drop-shadow(0 0 6px var(--tl-glow-soft));
+}
+
+/* --- Cvor --- */
+.tl-dot {
+  background-color: var(--tl-dot-bg);
+  border-color: var(--tl-accent-soft);
+  transition:
+    background-color 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease,
+    transform 0.4s ease;
+}
+.tl-node.is-active .tl-dot {
+  background-color: var(--tl-accent);
+  border-color: var(--tl-accent);
+  box-shadow: 0 0 18px var(--tl-glow);
+  transform: scale(1.15);
+}
+
+.tl-pulse {
+  background-color: var(--tl-accent-soft);
+  opacity: 0;
+}
+.tl-node.is-active .tl-pulse {
+  opacity: 1;
+  animation: tl-pulse 1.9s ease-out infinite;
+}
+@keyframes tl-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* --- Tekst --- */
+.tl-name {
+  color: var(--tl-name);
+  transition: color 0.4s ease;
+}
+.tl-role {
+  color: var(--tl-role);
+}
+.tl-row.is-active .tl-name {
+  color: var(--tl-accent);
+}
+
+/* --- Slika --- */
+.tl-thumb {
+  border-color: var(--tl-card-border);
+}
+.tl-card:hover .tl-thumb {
+  border-color: var(--tl-card-hover);
+  box-shadow: 0 0 40px var(--tl-card-shadow);
+}
+
+/* --- Ulazak kartica --- */
+.tl-card {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.tl-card.from-left {
+  transform: translateX(-42px);
+}
+.tl-card.from-right {
+  transform: translateX(42px);
+}
+.tl-card.in {
+  animation: tl-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes tl-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-card {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .tl-node.is-active .tl-pulse {
+    animation: none;
+  }
+}

@@ -1,0 +1,196 @@
+/* ===== Trivela Drop — hero sa prstenovima slika =====
+   Svetla tema: bela podloga, tamno plava kao druga boja. */
+
+.dh-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  overflow: hidden;
+  padding: 8rem 1.25rem 4rem;
+}
+
+/* Omotac nosi skrol pomak (GSAP), prsten nosi svoju petlju — razdvojeno,
+   da se dva `transform`-a ne tuku. */
+.dh-field-wrap,
+.dh-field {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.dh-field {
+  /* Sredina se prazni da naslov ostane citljiv, a dno se gubi u belo.
+     Dva sloja maske se seku — bez `intersect` bi se sabrali i ponistili. */
+  -webkit-mask-image: radial-gradient(
+      ellipse 62% 80% at 50% 46%,
+      transparent 0%,
+      transparent 52%,
+      #000 92%
+    ),
+    linear-gradient(to bottom, #000 62%, transparent 96%);
+  mask-image: radial-gradient(
+      ellipse 62% 80% at 50% 46%,
+      transparent 0%,
+      transparent 52%,
+      #000 92%
+    ),
+    linear-gradient(to bottom, #000 62%, transparent 96%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+.dh-ring {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  height: 0;
+  width: 0;
+  animation: dh-spin var(--dur) linear infinite;
+  will-change: transform;
+}
+.dh-ring--rev {
+  animation-direction: reverse;
+}
+
+.dh-tile {
+  position: absolute;
+  transform: rotate(var(--a)) translate(var(--r));
+}
+
+/* Ponisti staticki ugao postavljanja */
+.dh-tile-fix {
+  transform: rotate(calc(-1 * var(--a)));
+}
+
+/* Ponisti rotaciju prstena — ISTO trajanje, suprotan smer.
+   Ako se trajanja raziđu, slike pocnu polako da se prevrcu. */
+.dh-tile-spin {
+  animation: dh-spin var(--dur) linear infinite reverse;
+  will-change: transform;
+}
+.dh-tile-spin--rev {
+  animation-direction: normal;
+}
+
+.dh-tile img {
+  display: block;
+  /* Tailwind preflight postavlja img { max-width: 100% }, a prsten je
+     namerno 0px sirok (plocice se odmicu transformacijom) — pa bi se slika
+     stisla na sirinu ivice. */
+  max-width: none;
+  height: clamp(76px, 9vw, 132px);
+  width: clamp(57px, 6.75vw, 99px);
+  object-fit: cover;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(6, 41, 77, 0.1);
+  box-shadow: 0 10px 30px rgba(6, 41, 77, 0.12);
+}
+
+@keyframes dh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Sadrzaj --- */
+.dh-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  max-width: 46rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dh-eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(6, 41, 77, 0.65);
+}
+
+.dh-title {
+  margin: 1.1rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.9rem, 8.5vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  color: #06294d;
+  /* Prostor za repove slova (y u "colors" nema, ali naslov se menja) */
+  padding-bottom: 0.06em;
+}
+
+.dh-title-accent {
+  /* Ledena je presvetla za tekst na beloj (1.9:1) — zato gradijent koji
+     zavrsava u tamnoplavoj, pa ostaje citljiv. */
+  background: linear-gradient(100deg, #14589b 0%, #06294d 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dh-lead {
+  margin: 1.6rem 0 0;
+  max-width: 30rem;
+  font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+  line-height: 1.7;
+  color: rgba(6, 41, 77, 0.7);
+}
+
+.dh-actions {
+  margin-top: 2.4rem;
+}
+
+.dh-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 1.05rem 2.4rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #06294d;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(6, 41, 77, 0.28);
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+.dh-cta:hover {
+  transform: translateY(-3px);
+  background: #0d3f70;
+  box-shadow: 0 18px 42px rgba(6, 41, 77, 0.4);
+}
+.dh-cta span {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dh-cta:hover span {
+  transform: translateY(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dh-ring,
+  .dh-tile-spin {
+    animation: none;
+  }
+  .dh-cta:hover {
+    transform: none;
+  }
+  .dh-cta:hover span {
+    transform: none;
+  }
+}

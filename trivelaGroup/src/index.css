@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-teget: #000b38;
+  --color-zelena: #96ff00;
+  /* Trivela Drop — ledeno plava iz istoimenog dugmeta na landingu.
+     Drop strana njome zamenjuje zelenu, da se prodavnica vizuelno odvoji. */
+  --color-ledena: #7cc4ff;
+  --color-ledena-ink: #06294d;
+  /* Mastilo = tamno plava, glavna boja teksta na beloj Drop strani.
+     Ledena je za ispune i ivice, NE za sitan tekst: #7cc4ff na beloj daje
+     kontrast 1.9:1. */
+  --color-mastilo: #06294d;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  /* Display font — za istaknuta dugmad/oznake, npr. landing nav */
+  --font-display: "Space Grotesk", "Poppins", ui-sans-serif, system-ui,
+    sans-serif;
+}
+
+/* Trivela Drop je svetla tema: bela podloga, tamno plava kao druga boja.
+   Ide na <html> (a ne na sekciju) da i overscroll iznad/ispod bude beo. */
+:root[data-page="drop"] body {
+  background-color: #ffffff;
+}
+
+body {
+  background-color: #000b38;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}

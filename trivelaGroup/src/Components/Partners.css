@@ -1,0 +1,210 @@
+/* ===== Who we work with — traka logotipa =====
+   Dva reda klize u suprotnim smerovima, a na skrol se dodatno razmicu. */
+
+.pt-section {
+  position: relative;
+  padding: 7rem 0 8rem;
+  overflow: hidden;
+}
+
+/* --- Zaglavlje --- */
+.pt-head {
+  margin: 0 auto;
+  max-width: 90rem;
+  padding: 0 1.25rem 3.5rem;
+}
+@media (min-width: 640px) {
+  .pt-head {
+    padding: 0 2rem 4.5rem;
+  }
+}
+
+.pt-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #96ff00;
+}
+.pt-eyebrow::before {
+  content: "";
+  width: 3rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.pt-title {
+  margin: 1rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 10vw, 8.5rem);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* Maska kroz koju red naslova ulazi odozdo */
+.pt-line {
+  display: block;
+  overflow: hidden;
+  /* Prostor za repove slova — bez ovoga ih maska odseca */
+  padding-bottom: 0.08em;
+}
+.pt-line > span {
+  display: block;
+  will-change: transform;
+}
+
+.pt-green {
+  color: #96ff00;
+}
+
+.pt-lead {
+  margin: 1.75rem 0 0;
+  max-width: 34rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* --- Trake --- */
+.pt-marquee {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  /* Krajevi se gube u pozadinu, da traka nema tvrd rez */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+}
+
+.pt-row {
+  will-change: transform;
+}
+
+.pt-track {
+  display: flex;
+  width: max-content;
+  animation: pt-scroll 42s linear infinite;
+}
+.pt-row--b .pt-track {
+  animation-duration: 52s;
+  animation-direction: reverse;
+}
+
+/* Stani dok neko gleda — inace se logo ne moze ni procitati ni kliknuti */
+.pt-marquee:hover .pt-track {
+  animation-play-state: paused;
+}
+
+@keyframes pt-scroll {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* --- Plocica --- */
+.pt-item {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 1rem;
+  /* Razmak ide kroz margin, a NE kroz `gap` na traci: pomak od -50% je
+     tacan samo ako su dve kopije bez dodatnog razmaka izmedju njih. */
+  margin-right: 1.1rem;
+  padding: 1.3rem 2.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.55);
+  transition:
+    color 0.35s ease,
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.pt-item:hover {
+  color: #96ff00;
+  border-color: rgba(150, 255, 0, 0.5);
+  background: rgba(150, 255, 0, 0.06);
+  box-shadow: 0 0 36px rgba(150, 255, 0, 0.14);
+}
+
+.pt-item svg {
+  height: 2.1rem;
+  width: 2.1rem;
+  flex-shrink: 0;
+}
+
+.pt-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.5vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* --- Podnozje --- */
+.pt-foot {
+  margin: 0 auto;
+  max-width: 90rem;
+  padding: 3.5rem 1.25rem 0;
+}
+@media (min-width: 640px) {
+  .pt-foot {
+    padding: 4rem 2rem 0;
+  }
+}
+
+.pt-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(150, 255, 0, 0.35);
+  padding-bottom: 0.45rem;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    gap 0.3s ease;
+}
+.pt-link:hover {
+  color: #96ff00;
+  border-color: #96ff00;
+  gap: 1.15rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-track {
+    animation: none;
+  }
+  /* Bez animacije traka se ne vrti, pa mora da se moze prevuci rukom */
+  .pt-marquee {
+    overflow-x: auto;
+  }
+  .pt-link:hover {
+    gap: 0.7rem;
+  }
+}

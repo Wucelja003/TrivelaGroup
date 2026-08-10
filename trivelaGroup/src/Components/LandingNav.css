@@ -1,0 +1,253 @@
+/* ===== Landing: Trivela Business / Trivela Drop =====
+   Isti obrazac kao btn-wind u Header.css i btn-wind-green u Introduce.css:
+   gradijent na 300% koji "duva" u petlji + ripple na klik. */
+
+/* ===== Korpa + meni u jednoj piluli =====
+   Okvir, podloga i zaobljenje nose grupa; polovine su samo segmenti.
+   Dva dugmeta ostaju dva dugmeta — imaju dve razlicite akcije. */
+.tg-cluster {
+  display: inline-flex;
+  align-items: center;
+  /* BEZ overflow:hidden — grupa je krug, pa bi odsekla bedz sa brojem
+     artikala koji sedi u gornjem desnom uglu. Umesto toga zaobljenje
+     dobijaju sami segmenti, pa hover ispuna i dalje ostaje u obliku pilule. */
+  border: 1px solid rgba(150, 255, 0, 0.3);
+  border-radius: 999px;
+  background: rgba(4, 14, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.tg-cluster:hover {
+  border-color: rgba(150, 255, 0, 0.6);
+  box-shadow: 0 0 26px rgba(150, 255, 0, 0.2);
+}
+
+/* Samo jedno dugme u grupi — pilula je krug, bez bocnog razmaka */
+.tg-cluster--solo {
+  border-radius: 999px;
+}
+.tg-cluster--solo .tg-seg {
+  width: 54px;
+  padding: 0;
+}
+
+.tg-cluster-div {
+  height: 22px;
+  width: 1px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Segment: puni se bojom na hover, umesto svog okvira */
+.tg-seg {
+  position: relative;
+  display: inline-flex;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.15rem;
+  border: 0;
+  background: none;
+  color: #96ff00;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+.tg-seg:hover {
+  background-color: rgba(150, 255, 0, 0.14);
+}
+
+/* Zaobljenje na krajevima grupe — zamena za overflow:hidden */
+.tg-cluster > :first-child {
+  border-top-left-radius: 999px;
+  border-bottom-left-radius: 999px;
+}
+.tg-cluster > :last-child {
+  border-top-right-radius: 999px;
+  border-bottom-right-radius: 999px;
+}
+
+/* Bedz sa brojem mora iznad segmenta, inace ga hover ispuna prekrije */
+.tg-cart-badge {
+  z-index: 2;
+}
+
+/* ===== Svetla tema (Trivela Drop, bela podloga) =====
+   Staklo preko bele postane mutno, a belo dugme "Trivela Drop" nestane —
+   zato ovde idu pune boje umesto providnih. */
+.tg-nav--light .tg-cluster {
+  border-color: rgba(6, 41, 77, 0.25);
+  background: #ffffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 4px 18px rgba(6, 41, 77, 0.1);
+}
+.tg-nav--light .tg-cluster:hover {
+  border-color: rgba(6, 41, 77, 0.55);
+  box-shadow: 0 8px 28px rgba(6, 41, 77, 0.2);
+}
+.tg-nav--light .tg-cluster-div {
+  background: rgba(6, 41, 77, 0.15);
+}
+.tg-nav--light .tg-seg {
+  color: #06294d;
+}
+.tg-nav--light .tg-seg:hover {
+  background-color: #06294d;
+  color: #ffffff;
+}
+.tg-nav--light .tg-cart-badge {
+  background: #06294d;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(6, 41, 77, 0.4);
+}
+
+/* Na beloj strani "Trivela Business" je tamno siv — zelen bi se stopio sa
+   zelenim "Trivela Group" pored njega. Isti "wind" gradijent kao ostala
+   dugmad, samo u sivom. */
+.tg-nav--light .tg-btn--business {
+  color: #ffffff;
+  background-image: linear-gradient(
+    270deg,
+    #23282e 0%,
+    #3b424a 25%,
+    #545d67 50%,
+    #3b424a 75%,
+    #23282e 100%
+  );
+  box-shadow: 0 10px 28px rgba(35, 40, 46, 0.3);
+}
+.tg-nav--light .tg-btn--business:hover {
+  box-shadow: 0 14px 38px rgba(35, 40, 46, 0.5);
+}
+
+.tg-cart-badge {
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  display: flex;
+  height: 20px;
+  min-width: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 5px;
+  background: #7cc4ff;
+  color: #06294d;
+  font-size: 10px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(124, 196, 255, 0.5);
+}
+
+.tg-btn {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  background-size: 300% 300%;
+  animation: tg-wind 5s linear infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tg-btn:hover {
+  transform: translateY(-2px);
+  animation-duration: 1.6s;
+}
+
+/* ===== Ripple na klik (isto kao .btn-ripple u Header.css) ===== */
+.tg-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tg-btn:active::after {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+/* --- Trivela Business: zelena --- */
+.tg-btn--business {
+  color: #00230a;
+  background-image: linear-gradient(
+    270deg,
+    #3f8f14 0%,
+    #6fd320 25%,
+    #96ff00 50%,
+    #6fd320 75%,
+    #3f8f14 100%
+  );
+  box-shadow: 0 10px 28px rgba(150, 255, 0, 0.3);
+}
+.tg-btn--business:hover {
+  box-shadow: 0 14px 38px rgba(150, 255, 0, 0.55);
+}
+
+/* --- Trivela Group: zelena marke, vodi nazad na glavni sajt --- */
+.tg-btn--group {
+  color: #00230a;
+  background-image: linear-gradient(
+    270deg,
+    #3f8f14 0%,
+    #6fd320 25%,
+    #96ff00 50%,
+    #6fd320 75%,
+    #3f8f14 100%
+  );
+  box-shadow: 0 10px 28px rgba(150, 255, 0, 0.32);
+}
+.tg-btn--group:hover {
+  box-shadow: 0 14px 38px rgba(150, 255, 0, 0.6);
+}
+
+/* --- Trivela Drop: belo + svetlo plava --- */
+.tg-btn--drop {
+  color: #06294d;
+  background-image: linear-gradient(
+    270deg,
+    #7cc4ff 0%,
+    #bfe0ff 25%,
+    #ffffff 50%,
+    #bfe0ff 75%,
+    #7cc4ff 100%
+  );
+  box-shadow: 0 10px 28px rgba(140, 200, 255, 0.32);
+}
+.tg-btn--drop:hover {
+  box-shadow: 0 14px 38px rgba(140, 200, 255, 0.58);
+}
+
+@keyframes tg-wind {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-btn {
+    animation: none;
+  }
+  .tg-btn:hover {
+    transform: none;
+  }
+}

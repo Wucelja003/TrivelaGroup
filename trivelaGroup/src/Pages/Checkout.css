@@ -1,0 +1,77 @@
+/* ===== Checkout entrance animacije ===== */
+@keyframes co-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes co-slide {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes co-success {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+    filter: blur(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes co-check-in {
+  0% {
+    transform: scale(0) rotate(-45deg);
+  }
+  60% {
+    transform: scale(1.15) rotate(0);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.co-anim {
+  opacity: 0;
+  animation: co-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.co-side {
+  opacity: 0;
+  animation: co-slide 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.co-success {
+  animation: co-success 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.co-check {
+  animation: co-check-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .co-anim,
+  .co-side,
+  .co-success,
+  .co-check {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,56 @@
+
+@keyframes shop-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shop-side-in {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.shop-anim {
+  opacity: 0;
+  animation: shop-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.shop-side {
+  opacity: 0;
+  animation: shop-side-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Glatko otvaranje/zatvaranje dropdown-a */
+.shop-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+.shop-collapse.open {
+  grid-template-rows: 1fr;
+}
+.shop-collapse > div {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-anim,
+  .shop-side {
+    opacity: 1;
+    animation: none;
+  }
+  .shop-collapse {
+    transition: none;
+  }
+}

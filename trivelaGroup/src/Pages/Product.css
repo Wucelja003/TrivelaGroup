@@ -1,0 +1,55 @@
+/* ===== Product page animacije ===== */
+@keyframes prod-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes prod-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes prod-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.prod-anim {
+  opacity: 0;
+  animation: prod-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.prod-left {
+  opacity: 0;
+  animation: prod-left 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.prod-dropdown {
+  animation: prod-drop 0.2s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prod-anim,
+  .prod-left {
+    opacity: 1;
+    animation: none;
+  }
+}

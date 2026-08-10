@@ -1,0 +1,203 @@
+/* ===== Dekorativne linije — "streak" koji proleti ===== */
+
+.intro-hline {
+  position: relative;
+  height: 2px;
+  width: 6rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(150, 255, 0, 0.15);
+}
+
+.intro-hline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, #96ff00, transparent);
+  animation: intro-sweep-x 2.6s ease-in-out infinite;
+}
+
+.intro-vline {
+  position: relative;
+  width: 2px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(150, 255, 0, 0.15);
+}
+
+.intro-vline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, transparent, #96ff00, transparent);
+  animation: intro-sweep-y 2.9s ease-in-out infinite;
+  animation-delay: 0.35s;
+}
+
+.intro-dot {
+  animation: intro-dot-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes intro-sweep-x {
+  0% {
+    transform: translateX(-120%);
+  }
+  55%,
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes intro-sweep-y {
+  0% {
+    transform: translateY(-120%);
+  }
+  55%,
+  100% {
+    transform: translateY(340%);
+  }
+}
+
+@keyframes intro-dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(150, 255, 0, 0.6);
+  }
+  50% {
+    transform: scale(1.45);
+    box-shadow: 0 0 16px rgba(150, 255, 0, 0.95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-hline::after,
+  .intro-vline::after,
+  .intro-dot {
+    animation: none;
+  }
+}
+
+/* ===== Ulazne animacije (levo/desno) ===== */
+@keyframes intro-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-44px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes intro-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(44px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.intro-left,
+.intro-right {
+  opacity: 0;
+}
+.intro-left.in {
+  animation: intro-in-left 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.intro-right.in {
+  animation: intro-in-right 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-left,
+  .intro-right {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* ===== "See our work" — zeleno wind dugme ===== */
+.btn-wind-green {
+  color: #000b38;
+  border: 1px solid rgba(150, 255, 0, 0.7);
+  background: linear-gradient(
+    270deg,
+    #5fbf00,
+    #96ff00,
+    #d6ff9e,
+    #96ff00,
+    #5fbf00
+  );
+  background-size: 300% 300%;
+  animation: wind-flow-green 5s linear infinite;
+  box-shadow: 0 10px 28px rgba(150, 255, 0, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-wind-green:hover {
+  transform: translateY(-2px);
+  animation-duration: 1.6s;
+  box-shadow: 0 14px 38px rgba(150, 255, 0, 0.55);
+}
+
+.btn-wind-green .arrow {
+  transition: transform 0.25s ease;
+}
+
+.btn-wind-green:hover .arrow {
+  transform: translateX(4px);
+}
+
+@keyframes wind-flow-green {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-wind-green {
+    animation: none;
+  }
+}
+
+/* Talas na klik. Ranije je stajao u Header.css; posto je stari header
+   obrisan, pravilo zivi ovde — jedini korisnik je "See our work" dugme.
+   Dugme vec ima `relative` i `overflow-hidden`, pa krug ostaje unutra. */
+.btn-ripple::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.45s ease,
+    height 0.45s ease,
+    opacity 0.45s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.btn-ripple:active::after {
+  width: 260px;
+  height: 260px;
+  opacity: 1;
+}

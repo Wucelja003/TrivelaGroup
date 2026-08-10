@@ -1,0 +1,22 @@
+# === Tajne — NIKAD ne idu na GitHub ===
+.env
+.env.*
+!.env.example
+
+# === Zavisnosti i build ===
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+
+# === Izvorni video (1.5 GB) ===
+# Kod koristi samo public/videoTrivela-web/ (44 MB, kompresovano).
+# Originali su preko 100 MB po fajlu — GitHub ih odbija.
+trivelaGroup/public/videoTrivela/
+trivelaGroup/public/First-video.mp4.mp4
+
+# === macOS / editor ===
+.DS_Store
+.vscode/
+.idea/
+*.log

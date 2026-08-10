@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Tamnoplava varijanta oznake — za Trivela Drop (bela podloga): spoljni oblik u originalu je PUN zeleni krug,
+     a teget disk preko njega pravi prsten. Na animiranoj pozadini se taj
+     disk vidi kao zakrpa, pa se ovde koristi cista oznaka. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="540 615 220 355">
+  <style>.cls-2 { fill: #06294d; }</style>
+  <path class="cls-2" d="M655.56,695.94c-78.94,51.6-92.47,156.56-41.21,232.83,5.44,8.1,12.06,14.85,15.81,24.89-29.46-15.53-52.51-39.32-67.33-68.04-9.52-18.44-14.53-37.3-18.08-57.68-12.84-73.77,21.63-135.28,78.32-181.49l-14.91-28.42,17.69.41,83.93,7.86-27.43,86.02c-1.21,3.8-2.29,6.89-4.98,10.19l-21.83-26.56Z"/>
+</svg>

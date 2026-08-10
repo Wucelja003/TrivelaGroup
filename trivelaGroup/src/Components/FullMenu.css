@@ -1,0 +1,416 @@
+/* ===== Hamburger + meni preko cele strane =====
+   Slojevi ulaze odozgo jedan za drugim, pa panel, pa velika slova iza maske.
+   Numeracija stavki se pali preko --fm-num koji vozi GSAP. */
+
+@property --fm-num {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.fm-root {
+  position: relative;
+}
+
+/* --- Dugme: krug sa dve linije, bez teksta --- */
+.fm-toggle {
+  position: relative;
+  z-index: 70;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  width: 54px;
+  border: 1px solid rgba(150, 255, 0, 0.3);
+  border-radius: 999px;
+  background: rgba(4, 14, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0;
+  color: #ffffff;
+  cursor: pointer;
+  transition:
+    border-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Zeleni krug naraste ispod linija */
+.fm-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at 50% 45%,
+    #b6ff4d 0%,
+    #96ff00 45%,
+    #6fd000 100%
+  );
+  transform: scale(0);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fm-toggle:hover::before,
+.fm-toggle[aria-expanded="true"]::before {
+  transform: scale(1);
+}
+.fm-toggle:hover,
+.fm-toggle[aria-expanded="true"] {
+  color: #00230a;
+  border-color: #96ff00;
+  box-shadow: 0 0 28px rgba(150, 255, 0, 0.4);
+}
+
+/* U grupi sa korpom: bez svog okvira, podloge i zaobljenja — to nosi
+   .tg-cluster. Zeleni krug bi ovde iskocio iz pilule, pa ga nema; segment
+   se puni isto kao i korpa. */
+.fm-toggle--flat {
+  height: 54px;
+  width: auto;
+  padding: 0 1.15rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  color: #96ff00;
+}
+.fm-toggle--flat::before {
+  display: none;
+}
+.fm-toggle--flat:hover,
+.fm-toggle--flat[aria-expanded="true"] {
+  background-color: rgba(150, 255, 0, 0.14);
+  border-color: transparent;
+  color: #96ff00;
+  box-shadow: none;
+}
+.tg-nav--light .fm-toggle--flat {
+  color: #06294d;
+}
+.tg-nav--light .fm-toggle--flat:hover,
+.tg-nav--light .fm-toggle--flat[aria-expanded="true"] {
+  background-color: #06294d;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+/* Svetla tema: puna bela plocica sa tamnoplavim linijama, a na hover se
+   izvrne (tamnoplav krug, bele linije). Zeleni krug ovde ne ide. */
+.tg-nav--light .fm-toggle {
+  border-color: rgba(6, 41, 77, 0.25);
+  background: #ffffff;
+  color: #06294d;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 4px 18px rgba(6, 41, 77, 0.1);
+}
+.tg-nav--light .fm-toggle::before {
+  background: #06294d;
+}
+.tg-nav--light .fm-toggle:hover,
+.tg-nav--light .fm-toggle[aria-expanded="true"] {
+  border-color: #06294d;
+  color: #ffffff;
+  box-shadow: 0 6px 24px rgba(6, 41, 77, 0.3);
+}
+
+.fm-icon {
+  position: relative;
+  z-index: 1;
+  height: 14px;
+  width: 24px;
+}
+
+.fm-bar {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 2px;
+  background: currentColor;
+  will-change: transform;
+  /* Duzinu vozi CSS, a pomeranje i rotaciju GSAP — razdvojena svojstva,
+     pa se ne tuku oko `transform`. */
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fm-bar--top {
+  width: 100%;
+  transform: translateY(-5px);
+}
+.fm-bar--bot {
+  width: 58%;
+  transform: translateY(5px);
+}
+
+/* Na hover linije zamene duzine, donja sa malim zakasnjenjem.
+   Vezano za zatvoreno stanje: dok je meni otvoren, hover i pravilo za X
+   imaju istu tezinu, pa bi gornja linija ostala kraca i X bi bio kriv. */
+.fm-toggle[aria-expanded="false"]:hover .fm-bar--top {
+  width: 58%;
+}
+.fm-toggle[aria-expanded="false"]:hover .fm-bar--bot {
+  width: 100%;
+  transition-delay: 0.06s;
+}
+
+/* Otvoreno: obe pune, da X bude simetrican */
+.fm-toggle[aria-expanded="true"] .fm-bar {
+  width: 100%;
+}
+
+/* --- Slojevi i panel: preko CELE strane --- */
+.fm-prelayers,
+.fm-panel {
+  position: fixed;
+  inset: 0;
+  height: 100svh;
+  width: 100%;
+}
+
+/* Ispod trake (z-50): logo, dva dugmeta i sam hamburger moraju da ostanu
+   vidljivi dok je meni otvoren — inace nema cime da se zatvori. Panel je
+   zato nizi od trake, a ne visi. */
+.fm-prelayers {
+  z-index: 35;
+  pointer-events: none;
+}
+.fm-prelayer {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.fm-panel {
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  overflow-y: auto;
+  padding: 7rem 1.5rem 2rem;
+  /* Podloga ispod platna — da nista ne prosijava dok se shader ne pojavi */
+  background: #020c2e;
+}
+@media (min-width: 640px) {
+  .fm-panel {
+    /* Traka je gore svega ~62px; ranijih 8rem je trosilo visinu koja
+       kolazu treba. */
+    padding: 5.5rem 3rem 2.5rem;
+  }
+}
+
+/* Talasaste linije preko celog panela */
+.fm-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+/* Veo: linije ostaju kao atmosfera, tekst ostaje citljiv */
+.fm-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      95% 65% at 18% 0%,
+      rgba(9, 34, 84, 0.4) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(2, 12, 46, 0.62) 0%,
+      rgba(2, 12, 46, 0.74) 55%,
+      rgba(0, 7, 23, 0.9) 100%
+    );
+}
+
+/* --- Telo panela: stavke levo, kolaz desno --- */
+.fm-body {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  /* Bez ovoga grid dete ne moze da se skupi ispod svog sadrzaja, pa bi
+     kolaz gurao podnozje van ekrana umesto da se prilagodi. */
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 2.5rem;
+}
+@media (min-width: 1024px) {
+  .fm-body {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    /* Kolaz se rasteze na punu visinu tela, lista ostaje centrirana */
+    align-items: stretch;
+    gap: 3rem;
+  }
+  .fm-list {
+    align-self: center;
+  }
+  /* Bez kolaza lista ide preko cele sirine, da ne ostane praznina desno */
+  .fm-body--solo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --- Kolaz --- */
+.fm-media {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .fm-media {
+    /* Dva reda dele raspolozivu visinu tela, a sirina stavke izlazi iz
+       njihove visine. Tako su slike uvek najvece sto panel dopusta i ne
+       moraju da se pogadjaju brojevi po velicini ekrana. */
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    justify-content: end;
+    align-content: center;
+    gap: 1.25rem;
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+.fm-media-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(150, 255, 0, 0.16);
+  background: #061a3f;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  min-height: 0;
+  aspect-ratio: 3 / 4;
+  will-change: transform, opacity;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.fm-media-item:hover {
+  border-color: rgba(150, 255, 0, 0.55);
+  box-shadow: 0 0 34px rgba(150, 255, 0, 0.18);
+}
+
+.fm-media-item img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  /* Zumiranje ide na slici, jer wrapper ima GSAP transform */
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fm-media-item:hover img {
+  transform: scale(1.07);
+}
+
+/* --- Velike stavke --- */
+.fm-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.fm-item {
+  position: relative;
+}
+
+/* Broj se pali kroz --fm-num koji vozi GSAP */
+.fm-item::after {
+  content: attr(data-num);
+  position: absolute;
+  top: 0.55em;
+  left: -1.8rem;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: #96ff00;
+  opacity: var(--fm-num, 0);
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  .fm-item::after {
+    display: none;
+  }
+}
+
+/* Maska: slova ulaze odozdo */
+.fm-item-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.fm-item-label {
+  display: block;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+.fm-item-btn {
+  display: inline-block;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5.2vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  transition:
+    color 0.3s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fm-item-btn:hover {
+  color: #96ff00;
+  transform: translateX(1.1rem);
+}
+
+/* --- Podnozje --- */
+.fm-foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+.fm-meta-row,
+.fm-social {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.fm-social:hover {
+  color: #96ff00;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fm-item-btn:hover {
+    transform: none;
+  }
+  .fm-toggle::before,
+  .fm-bar {
+    transition: none;
+  }
+}

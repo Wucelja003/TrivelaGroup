@@ -1,0 +1,54 @@
+/* ===== Gallery animacije ===== */
+@keyframes gal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gal-item {
+  opacity: 0;
+  animation: gal-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Lightbox backdrop + slika */
+@keyframes gal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gal-zoom {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gal-backdrop {
+  animation: gal-fade 0.25s ease forwards;
+}
+
+.gal-figure {
+  animation: gal-zoom 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gal-item,
+  .gal-backdrop,
+  .gal-figure {
+    animation: none;
+    opacity: 1;
+  }
+}

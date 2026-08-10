@@ -1,0 +1,93 @@
+/* ===== Footer =====
+   Nema svoju podlogu — pusta pozadinu strane da prodje kroz njega, i na
+   Trivela Group (tamna) i na Trivela Drop (bela). Zato sve boje idu kroz
+   promenljive: iste klase, dva skupa vrednosti. */
+
+.tg-footer {
+  --f-ink: #ffffff;
+  --f-muted: rgba(255, 255, 255, 0.5);
+  --f-faint: rgba(255, 255, 255, 0.25);
+  --f-accent: #96ff00;
+  --f-accent-h: #96ff00;
+  --f-rule: rgba(255, 255, 255, 0.1);
+  --f-ring: rgba(150, 255, 0, 0.35);
+  --f-ring-bg: rgba(150, 255, 0, 0.08);
+  --f-ring-glow: rgba(150, 255, 0, 0.18);
+  --f-glow: rgba(150, 255, 0, 0.14);
+  --f-edge: rgba(150, 255, 0, 0.28);
+}
+
+/* Trivela Drop — bela strana: zelena bi na njoj bila neupotrebljiva
+   (#96ff00 na beloj daje ~1.6:1), pa akcenat postaje tamno plava. */
+:root[data-page="drop"] .tg-footer {
+  --f-ink: #06294d;
+  --f-muted: rgba(6, 41, 77, 0.7);
+  --f-faint: rgba(6, 41, 77, 0.45);
+  --f-accent: rgba(6, 41, 77, 0.72);
+  --f-accent-h: #06294d;
+  --f-rule: rgba(6, 41, 77, 0.14);
+  --f-ring: rgba(6, 41, 77, 0.25);
+  --f-ring-bg: rgba(6, 41, 77, 0.04);
+  --f-ring-glow: rgba(6, 41, 77, 0.12);
+  --f-glow: rgba(124, 196, 255, 0.22);
+  --f-edge: rgba(6, 41, 77, 0.18);
+}
+
+.tg-footer .f-ink {
+  color: var(--f-ink);
+}
+.tg-footer .f-muted {
+  color: var(--f-muted);
+}
+.tg-footer .f-faint {
+  color: var(--f-faint);
+}
+.tg-footer .f-accent {
+  color: var(--f-accent);
+}
+.tg-footer .hover\:f-accent-h:hover {
+  color: var(--f-accent-h);
+}
+.tg-footer .f-rule {
+  border-color: var(--f-rule);
+}
+
+/* Obrub koji odvaja footer od strane — sad kad footer nema svoju podlogu,
+   bez njega se stapa sa sadrzajem iznad. */
+.tg-footer {
+  border-top-color: var(--f-edge);
+}
+
+/* Logo: zeleni sjaj ima smisla samo na tamnoj podlozi */
+.tg-footer .f-logo {
+  filter: drop-shadow(0 0 10px rgba(150, 255, 0, 0.6));
+}
+:root[data-page="drop"] .tg-footer .f-logo {
+  filter: none;
+}
+
+/* Krug oko loga */
+.tg-footer .f-logo-ring {
+  border-color: var(--f-ring);
+  background: var(--f-ring-bg);
+  box-shadow: 0 0 28px var(--f-ring-glow);
+  transition: box-shadow 0.3s ease;
+}
+.tg-footer .f-logo-ring:hover {
+  box-shadow: 0 0 40px var(--f-ring-glow);
+}
+
+/* Odsjaj iza wordmark-a */
+.tg-footer .f-glow {
+  background: radial-gradient(
+    60% 100% at 50% 120%,
+    var(--f-glow),
+    transparent 70%
+  );
+}
+
+/* Zeleni sjaj oko loga i ikonica nema smisla na beloj */
+:root[data-page="drop"] .tg-footer img,
+:root[data-page="drop"] .tg-footer .f-accent {
+  filter: none;
+}
