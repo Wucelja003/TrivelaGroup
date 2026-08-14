@@ -130,10 +130,6 @@ export default function Product() {
   const ddRef = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
-
   // zatvori dropdown na klik van njega
   useEffect(() => {
     const onDown = (e: MouseEvent) => {

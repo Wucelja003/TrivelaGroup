@@ -14,6 +14,7 @@ import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 import LenisScrollSync from "./Components/LenisScrollSync";
 import HashScroll from "./Components/HashScroll";
+import ScrollToTop from "./Components/ScrollToTop";
 import LandingNav from "./Components/LandingNav";
 import Intro from "./Components/Intro";
 import CartDrawer from "./Components/CartDrawer";
@@ -74,6 +75,7 @@ export default function App() {
       <BrowserRouter>
         <ReactLenis root options={{ lerp: 0.1 }}>
           <LenisScrollSync />
+          <ScrollToTop />
           <HashScroll />
           <SiteIntro />
           <PageTheme />
