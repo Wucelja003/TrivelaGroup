@@ -224,8 +224,8 @@ export default function Home() {
             <RotatingCards
               images={heroImages}
               radius={900}
-              cardWidth={169}
-              cardHeight={300}
+              cardWidth={198}
+              cardHeight={352}
               duration={90}
               initialRotation={-90}
               showTrackLine
