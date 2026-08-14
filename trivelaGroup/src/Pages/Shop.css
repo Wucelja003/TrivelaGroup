@@ -54,3 +54,29 @@
     transition: none;
   }
 }
+
+/* Traka "Players who trusted our work" — jedina tamna zona na beloj Drop
+   strani. Prelaz gore i dole je mek, da rez ne bude tvrd. */
+.drop-players {
+  position: relative;
+  background: #06294d;
+}
+.drop-players::before,
+.drop-players::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 90px;
+  pointer-events: none;
+}
+.drop-players::before {
+  top: 0;
+  background: linear-gradient(to bottom, #ffffff, transparent);
+  opacity: 0.06;
+}
+.drop-players::after {
+  bottom: 0;
+  background: linear-gradient(to top, #000000, transparent);
+  opacity: 0.12;
+}
