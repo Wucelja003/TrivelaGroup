@@ -31,3 +31,33 @@ body {
   color: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ===== Kartica proizvoda: punjenje tamnoplavom na prelazak =====
+   Koriste je i spisak (Shop) i predlozi (Product), pa stoji ovde.
+
+   Transform NAMERNO nije u igri: .shop-anim ulazi preko
+   `animation: ... forwards`, a animacija ima prednost nad obicnom
+   transform deklaracijom — podizanje kartice bi tiho izostalo. Dubinu
+   zato nosi senka, a pokret zumiranje slike unutra. */
+.tg-card {
+  transition:
+    background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Boju daje Tailwind (`hover:bg-mastilo`) — ovde ostaje samo senka.
+   Plain pravilo za background-color ovde nije prolazilo, a utility jeste. */
+.tg-card:hover {
+  box-shadow: 0 20px 46px rgba(6, 41, 77, 0.26);
+}
+
+/* Tekst prati podlogu, malo sporije da promena ne deluje kao prekidac */
+.tg-card-ink {
+  transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-card,
+  .tg-card-ink {
+    transition: none;
+  }
+}

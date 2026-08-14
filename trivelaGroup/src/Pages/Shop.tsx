@@ -153,7 +153,7 @@ function PhoneCase({ item }: { item: CaseItem }) {
 function ShopCard({ item, index }: { item: CaseItem; index: number }) {
   return (
     <article
-      className="shop-anim group rounded-[1.4rem] p-3 transition-colors duration-300 hover:bg-mastilo"
+      className="shop-anim tg-card group rounded-[1.4rem] p-3 hover:bg-mastilo"
       style={{ animationDelay: `${index * 45}ms` }}
     >
       <Link
@@ -188,14 +188,14 @@ function ShopCard({ item, index }: { item: CaseItem; index: number }) {
       <div className="mt-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <Link to={`/drop/${item.id}`} className="block">
-            <h3 className="truncate text-base font-semibold text-mastilo transition-colors duration-300 group-hover:text-white">
+            <h3 className="truncate text-base font-semibold text-mastilo tg-card-ink group-hover:text-white">
               {item.name}
             </h3>
           </Link>
-          <p className="mt-0.5 text-[11px] uppercase tracking-[0.15em] text-mastilo/65 transition-colors duration-300 group-hover:text-white/70">
+          <p className="mt-0.5 text-[11px] uppercase tracking-[0.15em] text-mastilo/65 tg-card-ink group-hover:text-white/70">
             {item.collection}
           </p>
-          <p className="mt-1 text-lg font-bold text-mastilo transition-colors duration-300 group-hover:text-white">
+          <p className="mt-1 text-lg font-bold text-mastilo tg-card-ink group-hover:text-white">
             {formatPrice(item.price)}
           </p>
         </div>

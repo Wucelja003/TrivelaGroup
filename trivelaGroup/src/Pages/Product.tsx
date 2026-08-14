@@ -101,20 +101,20 @@ function SuggestCard({ item }: { item: CaseItem }) {
   return (
     <Link
       to={`/drop/${item.id}`}
-      className="group block rounded-[1.4rem] p-3 transition-colors duration-300 hover:bg-mastilo"
+      className="tg-card group block rounded-[1.4rem] p-3 hover:bg-mastilo"
     >
       <div className="relative aspect-[9/16] overflow-hidden rounded-2xl border border-mastilo/12 transition-all duration-300 group-hover:border-white/25 group-hover:shadow-[0_0_28px_rgba(6,41,77,0.25)]">
         <div className="h-full transition-transform duration-500 ease-out group-hover:scale-105">
           <CaseVisual item={item} />
         </div>
       </div>
-      <h3 className="mt-3 text-sm font-semibold text-mastilo transition-colors duration-300 group-hover:text-white">
+      <h3 className="mt-3 text-sm font-semibold text-mastilo tg-card-ink group-hover:text-white">
         {item.name}
       </h3>
-      <p className="text-[11px] uppercase tracking-[0.15em] text-mastilo/65 transition-colors duration-300 group-hover:text-white/70">
+      <p className="text-[11px] uppercase tracking-[0.15em] text-mastilo/65 tg-card-ink group-hover:text-white/70">
         {item.collection}
       </p>
-      <p className="mt-1 text-sm font-bold text-mastilo transition-colors duration-300 group-hover:text-white">
+      <p className="mt-1 text-sm font-bold text-mastilo tg-card-ink group-hover:text-white">
         {formatPrice(item.price)}
       </p>
     </Link>
