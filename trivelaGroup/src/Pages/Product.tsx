@@ -100,7 +100,7 @@ function CaseVisual({ item, big = false }: { item: CaseItem; big?: boolean }) {
 function SuggestCard({ item }: { item: CaseItem }) {
   return (
     <Link to={`/drop/${item.id}`} className="group block">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-mastilo/12 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-ledena/40 group-hover:shadow-[0_0_34px_rgba(124,196,255,0.15)]">
+      <div className="relative aspect-[9/16] overflow-hidden rounded-2xl border border-mastilo/12 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-ledena/40 group-hover:shadow-[0_0_34px_rgba(124,196,255,0.15)]">
         <div className="h-full transition-transform duration-500 ease-out group-hover:scale-105">
           <CaseVisual item={item} />
         </div>
@@ -198,7 +198,7 @@ export default function Product() {
           {/* Left — big visual */}
           <div className="prod-left">
             <div
-              className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-mastilo/12"
+              className="relative aspect-[9/16] overflow-hidden rounded-3xl border border-mastilo/12"
               style={{
                 boxShadow: `0 0 60px ${item.color}22`,
               }}

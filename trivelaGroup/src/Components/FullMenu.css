@@ -292,7 +292,7 @@
   width: auto;
   max-width: 100%;
   min-height: 0;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 9 / 16;
   will-change: transform, opacity;
   transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }

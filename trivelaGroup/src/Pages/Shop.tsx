@@ -158,7 +158,7 @@ function ShopCard({ item, index }: { item: CaseItem; index: number }) {
     >
       <Link
         to={`/drop/${item.id}`}
-        className="relative block aspect-[4/5] overflow-hidden rounded-2xl border border-mastilo/12 transition-all duration-500 group-hover:border-ledena/40 group-hover:shadow-[0_0_40px_rgba(124,196,255,0.15)]"
+        className="relative block aspect-[9/16] overflow-hidden rounded-2xl border border-mastilo/12 transition-all duration-500 group-hover:border-ledena/40 group-hover:shadow-[0_0_40px_rgba(124,196,255,0.15)]"
       >
         {/* Zoom sloj */}
         <div className="h-full w-full transition-transform duration-[650ms] ease-out group-hover:scale-[1.07]">
@@ -397,7 +397,7 @@ export default function Shop() {
               Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={`skel-${i}`}
-                  className="aspect-[4/5] animate-pulse rounded-2xl border border-mastilo/12 bg-mastilo/[0.04]"
+                  className="aspect-[9/16] animate-pulse rounded-2xl border border-mastilo/12 bg-mastilo/[0.04]"
                 />
               ))}
             {!loading &&

@@ -272,7 +272,7 @@ export default function Timeline({
                       src={c.img}
                       alt={c.name}
                       loading="lazy"
-                      className="aspect-[4/5] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                      className="aspect-[9/16] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                     />
                   </div>
 

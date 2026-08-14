@@ -82,8 +82,11 @@
      namerno 0px sirok (plocice se odmicu transformacijom) — pa bi se slika
      stisla na sirinu ivice. */
   max-width: none;
-  height: clamp(76px, 9vw, 132px);
-  width: clamp(57px, 6.75vw, 99px);
+  /* 9:16 — isti odnos kao same fotke, pa nema odsecanja. Sirina se racuna
+     iz visine, da odnos ostane tacan na svakoj velicini ekrana. */
+  height: clamp(84px, 10vw, 148px);
+  width: auto;
+  aspect-ratio: 9 / 16;
   object-fit: cover;
   border-radius: 0.85rem;
   border: 1px solid rgba(6, 41, 77, 0.1);

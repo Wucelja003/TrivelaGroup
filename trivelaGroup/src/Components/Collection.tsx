@@ -6,7 +6,7 @@ function CaseCard({ item }: { item: CaseItem }) {
   return (
     <Link
       to={`/drop/${item.id}`}
-      className="group relative block aspect-[3/4] overflow-hidden rounded-2xl border border-white/10 transition-all duration-300 hover:border-zelena/50 hover:shadow-[0_0_34px_rgba(150,255,0,0.18)]"
+      className="group relative block aspect-[9/16] overflow-hidden rounded-2xl border border-white/10 transition-all duration-300 hover:border-zelena/50 hover:shadow-[0_0_34px_rgba(150,255,0,0.18)]"
     >
       {/* Slika / placeholder */}
       <div
@@ -67,7 +67,7 @@ export default function Collection() {
             ? Array.from({ length: 5 }).map((_, i) => (
                 <div
                   key={`skel-${i}`}
-                  className="aspect-[3/4] animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]"
+                  className="aspect-[9/16] animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]"
                 />
               ))
             : worldCup.map((item) => (
