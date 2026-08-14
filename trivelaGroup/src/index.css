@@ -30,4 +30,5 @@ body {
   font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
   color: #ffffff;
   -webkit-font-smoothing: antialiased;
+  padding: auto;
 }
