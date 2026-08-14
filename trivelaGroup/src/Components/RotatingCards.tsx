@@ -17,7 +17,8 @@ interface RotatingCardsProps {
 export default function RotatingCards({
   images,
   radius = 900,
-  cardWidth = 230,
+  /* 9:16 — isti odnos kao fotke, pa `object-cover` nema sta da odseca */
+  cardWidth = 169,
   cardHeight = 300,
   duration = 85,
   initialRotation = -90,
