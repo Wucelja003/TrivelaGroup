@@ -29,10 +29,8 @@ export default function Timeline({
   variant = "green",
 }: {
   items: TimelineItem[];
-  /* green = tamna podloga (zelen akcenat)
-     blue  = bela podloga (tamnoplav akcenat)
-     ice   = tamnoplava podloga (ledeno plav akcenat) */
-  variant?: "green" | "blue" | "ice";
+  /* green = tamna podloga (Clients), blue = bela podloga (Trivela Drop) */
+  variant?: "green" | "blue";
 }) {
   const itemsRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<SVGPathElement>(null);
@@ -199,9 +197,7 @@ export default function Timeline({
   return (
     <div
       ref={itemsRef}
-      className={`tl-scope relative${
-        variant === "green" ? "" : ` tl-scope--${variant}`
-      }`}
+      className={`tl-scope relative${variant === "blue" ? " tl-scope--blue" : ""}`}
     >
       {/* Zmijolika linija — isprekidana baza + akcenat koji se crta */}
       {geo.d && (
