@@ -153,12 +153,12 @@ function PhoneCase({ item }: { item: CaseItem }) {
 function ShopCard({ item, index }: { item: CaseItem; index: number }) {
   return (
     <article
-      className="shop-anim tg-card group rounded-[1.4rem] p-3 hover:bg-mastilo"
+      className="shop-anim group"
       style={{ animationDelay: `${index * 45}ms` }}
     >
       <Link
         to={`/drop/${item.id}`}
-        className="relative block aspect-[9/16] overflow-hidden rounded-2xl border border-mastilo/12 transition-all duration-500 group-hover:border-white/25 group-hover:shadow-[0_0_30px_rgba(6,41,77,0.25)]"
+        className="relative block aspect-[9/16] overflow-hidden rounded-2xl border border-mastilo/12 transition-all duration-500 group-hover:border-ledena/40 group-hover:shadow-[0_0_40px_rgba(124,196,255,0.15)]"
       >
         {/* Zoom sloj */}
         <div className="h-full w-full transition-transform duration-[650ms] ease-out group-hover:scale-[1.07]">
@@ -188,14 +188,14 @@ function ShopCard({ item, index }: { item: CaseItem; index: number }) {
       <div className="mt-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <Link to={`/drop/${item.id}`} className="block">
-            <h3 className="truncate text-base font-semibold text-mastilo tg-card-ink group-hover:text-white">
+            <h3 className="truncate text-base font-semibold text-mastilo transition-colors duration-300 group-hover:text-ledena-ink">
               {item.name}
             </h3>
           </Link>
-          <p className="mt-0.5 text-[11px] uppercase tracking-[0.15em] text-mastilo/65 tg-card-ink group-hover:text-white/70">
+          <p className="mt-0.5 text-[11px] uppercase tracking-[0.15em] text-mastilo/65">
             {item.collection}
           </p>
-          <p className="mt-1 text-lg font-bold text-mastilo tg-card-ink group-hover:text-white">
+          <p className="mt-1 text-lg font-bold text-mastilo">
             {formatPrice(item.price)}
           </p>
         </div>
