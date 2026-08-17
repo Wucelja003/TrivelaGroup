@@ -7,6 +7,13 @@ import { seedCases } from "./seedCases";
 let cache: CaseItem[] | null = null;
 let inflight: Promise<CaseItem[]> | null = null;
 
+/* Admin poziva ovo posle izmene, da prodavnica pri sledecem ulasku povuce
+   svez spisak umesto starog cache-a. */
+export function clearCasesCache(): void {
+  cache = null;
+  inflight = null;
+}
+
 interface ProductRow {
   slug: string;
   name: string;

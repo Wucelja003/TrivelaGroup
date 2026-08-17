@@ -182,3 +182,27 @@ on conflict (product_id, model) do nothing;
 --    insert into admins (user_id) values ('<tvoj-auth-user-id>');
 --  (user_id nađeš u Supabase → Authentication → Users)
 -- =====================================================================
+
+-- =====================================================================
+--  Storage — slike maskica (za /admin upload)
+-- =====================================================================
+-- Bucket je javno CITLJIV (slike se prikazuju bez logina), a pise samo admin.
+insert into storage.buckets (id, name, public)
+values ('product-images', 'product-images', true)
+on conflict (id) do nothing;
+
+create policy "public read product images"
+  on storage.objects for select
+  using (bucket_id = 'product-images');
+
+create policy "admin insert product images"
+  on storage.objects for insert
+  with check (bucket_id = 'product-images' and is_admin());
+
+create policy "admin update product images"
+  on storage.objects for update
+  using (bucket_id = 'product-images' and is_admin());
+
+create policy "admin delete product images"
+  on storage.objects for delete
+  using (bucket_id = 'product-images' and is_admin());
