@@ -185,12 +185,6 @@ export default function ContactForm() {
             </div>
             <div>
               <div className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
-                Working hours
-              </div>
-              <p className="mt-2 text-base text-white">Mon — Fri, 9—17h</p>
-            </div>
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                 Social
               </div>
               <div className="mt-2 flex gap-4">

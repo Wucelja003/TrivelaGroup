@@ -11,8 +11,8 @@ const socials = [
 export default function HeroCorners() {
   return (
     <div className="hero-corners">
+      <span className="hero-corner-item">Based in:</span>
       <span className="hero-corner-item">Belgrade, Serbia</span>
-
       <div className="flex items-center gap-5">
         {socials.map((s) => (
           <a

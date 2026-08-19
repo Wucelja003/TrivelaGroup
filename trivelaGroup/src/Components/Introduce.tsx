@@ -171,7 +171,7 @@ export default function Introduce() {
           src="/Logo_Trivela-2.svg"
           alt=""
           aria-hidden="true"
-          className="h-14 w-auto [filter:drop-shadow(0_0_18px_rgba(150,255,0,0.4))] sm:h-16"
+          className="h-10 w-auto [filter:drop-shadow(0_0_16px_rgba(150,255,0,0.4))] sm:h-11"
         />
         <span className="text-sm font-medium tracking-[0.14em] text-zelena sm:text-[15px]">
           The story of Trivela

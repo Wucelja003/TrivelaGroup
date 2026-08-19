@@ -43,14 +43,11 @@ export default function Footer() {
         >
           {/* Brand */}
           <div className="flex items-start gap-5">
-            <Link
-              to="/"
-              className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-full border f-logo-ring"
-            >
+            <Link to="/" className="flex shrink-0 items-center">
               <img
-                src="/Trivela_Logo.svg"
+                src="/Logo_Trivela-2.svg"
                 alt="Trivela Group"
-                className="f-logo h-12 w-12 object-contain"
+                className="f-logo h-16 w-16 object-contain"
               />
             </Link>
             <h3 className="text-2xl font-semibold uppercase leading-[1.05] tracking-tight f-ink sm:text-3xl">

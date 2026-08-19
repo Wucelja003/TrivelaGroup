@@ -175,10 +175,10 @@ export default function LandingNav({
           <img
             src="/Logo_Trivela-2.svg"
             alt="Trivela Group"
-            className={`h-24 w-auto sm:h-32 ${
+            className={`h-14 w-auto sm:h-16 ${
               light
                 ? ""
-                : "[filter:drop-shadow(0_0_22px_rgba(150,255,0,0.45))]"
+                : "[filter:drop-shadow(0_0_18px_rgba(150,255,0,0.4))]"
             }`}
           />
         </Link>

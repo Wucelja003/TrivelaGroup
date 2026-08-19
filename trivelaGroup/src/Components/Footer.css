@@ -10,9 +10,6 @@
   --f-accent: #96ff00;
   --f-accent-h: #96ff00;
   --f-rule: rgba(255, 255, 255, 0.1);
-  --f-ring: rgba(150, 255, 0, 0.35);
-  --f-ring-bg: rgba(150, 255, 0, 0.08);
-  --f-ring-glow: rgba(150, 255, 0, 0.18);
   --f-glow: rgba(150, 255, 0, 0.14);
   --f-edge: rgba(150, 255, 0, 0.28);
 }
@@ -26,9 +23,6 @@
   --f-accent: rgba(6, 41, 77, 0.72);
   --f-accent-h: #06294d;
   --f-rule: rgba(6, 41, 77, 0.14);
-  --f-ring: rgba(6, 41, 77, 0.25);
-  --f-ring-bg: rgba(6, 41, 77, 0.04);
-  --f-ring-glow: rgba(6, 41, 77, 0.12);
   --f-glow: rgba(124, 196, 255, 0.22);
   --f-edge: rgba(6, 41, 77, 0.18);
 }
@@ -64,17 +58,6 @@
 }
 :root[data-page="drop"] .tg-footer .f-logo {
   filter: none;
-}
-
-/* Krug oko loga */
-.tg-footer .f-logo-ring {
-  border-color: var(--f-ring);
-  background: var(--f-ring-bg);
-  box-shadow: 0 0 28px var(--f-ring-glow);
-  transition: box-shadow 0.3s ease;
-}
-.tg-footer .f-logo-ring:hover {
-  box-shadow: 0 0 40px var(--f-ring-glow);
 }
 
 /* Odsjaj iza wordmark-a */
