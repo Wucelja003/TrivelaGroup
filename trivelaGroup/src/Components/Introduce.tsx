@@ -168,10 +168,10 @@ export default function Introduce() {
       {/* Zaglavlje panela — logo pa naslov, na temenu luka */}
       <div className="relative z-10 mb-16 flex flex-col items-center gap-4 px-5 text-center sm:mb-20">
         <img
-          src="/Trivela_Logo_mark.svg"
+          src="/Logo_Trivela-2.svg"
           alt=""
           aria-hidden="true"
-          className="h-10 w-auto [filter:drop-shadow(0_0_18px_rgba(150,255,0,0.45))] sm:h-12"
+          className="h-14 w-auto [filter:drop-shadow(0_0_18px_rgba(150,255,0,0.4))] sm:h-16"
         />
         <span className="text-sm font-medium tracking-[0.14em] text-zelena sm:text-[15px]">
           The story of Trivela

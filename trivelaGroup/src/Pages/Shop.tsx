@@ -15,8 +15,8 @@ import "./Shop.css";
 /* Pet igraca za "Players who trusted our work".
    Imena/uloge su placeholder gde nisu poznata — slobodno menjaj. */
 const dropPlayers: TimelineItem[] = [
-  { img: "/TrivelaGroupPhotos/MITROVIC.jpg", name: "Player Name", role: "Footballer · Club Name" },
-  { img: "/TrivelaGroupPhotos/VeljkoMilosavljevic.JPG", name: "Veljko Milosavljević", role: "Footballer · Club Name" },
+  { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "Basketball Player · Olimpia Milano" },
+  { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Đžanan Musa", role: "Basketball Player · Dubai Basketball" },
   { img: "/TrivelaGroupPhotos/lucic.jpg", name: "Vladimir Lučić", role: "Basketball player · Club Name" },
   { img: "/TrivelaGroupPhotos/petko_lagalaxy.jpg", name: "Player Name", role: "Footballer · Club Name" },
   { img: "/TrivelaGroupPhotos/TracyLessorPhoto.JPG", name: "Tracy Lessort", role: "Basketball player · Club Name" },

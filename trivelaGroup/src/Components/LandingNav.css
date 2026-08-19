@@ -185,14 +185,14 @@
 
 /* --- Trivela Business: zelena --- */
 .tg-btn--business {
-  color: #00230a;
+  color: white;
   background-image: linear-gradient(
     270deg,
-    #3f8f14 0%,
-    #6fd320 25%,
-    #96ff00 50%,
-    #6fd320 75%,
-    #3f8f14 100%
+    #23282e 0%,
+    #3b424a 25%,
+    #545d67 50%,
+    #3b424a 75%,
+    #23282e 100%
   );
   box-shadow: 0 10px 28px rgba(150, 255, 0, 0.3);
 }

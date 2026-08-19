@@ -181,7 +181,7 @@ export default function Home() {
           />
           <StaggeredText
             as="p"
-            text="Where the magic happens."
+            text="Crafting icons athlete brands"
             className="hero-tagline"
             segmentBy="words"
             direction="top"
@@ -209,7 +209,7 @@ export default function Home() {
 
           <div className="hero-actions">
             <Link to="/getInTouch" className="hero-cta">
-              <span className="hero-cta-label">Start working with Trivela</span>
+              <span className="hero-cta-label">Start working with us</span>
               <span className="hero-cta-arrow" aria-hidden="true">
                 →
               </span>
