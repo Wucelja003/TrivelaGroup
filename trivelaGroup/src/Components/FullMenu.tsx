@@ -18,8 +18,9 @@ import "./FullMenu.css";
  */
 
 const ITEMS = [
-  { label: "Home", to: "/" },
+  { label: "Trivela Group", to: "/" },
   { label: "What we do", to: "/#what-we-do" },
+  { label: "Who we are", to: "/" },
   { label: "Gallery", to: "/gallery" },
   { label: "Trivela Drop", to: "/drop" },
   { label: "Trivela Business", to: "/drop" },

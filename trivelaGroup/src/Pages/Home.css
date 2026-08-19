@@ -339,6 +339,13 @@
   pointer-events: auto;
 }
 
+/* Lokacija: "Based in:" pa "Belgrade, Serbia" ispod */
+.hero-corner-loc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
 .hero-corner-item {
   font-size: 0.68rem;
   font-weight: 600;
@@ -359,7 +366,7 @@
     justify-content: center;
     padding-top: 1.75rem;
   }
-  .hero-corners > div {
+  .hero-corner-socials {
     display: none;
   }
 }
