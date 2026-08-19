@@ -1,14 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  galleryPhotos,
-  GALLERY_CATEGORIES,
-  type GalleryPhoto,
-} from "../data/galleryPhotos";
-import LineSidebar from "../Components/LineSidebar";
+import { useCallback, useEffect, useState } from "react";
+import { galleryPhotos, type GalleryPhoto } from "../data/galleryPhotos";
 import "./Gallery.css";
-
-/* Filteri: "Full Gallery" je prvi (prikazuje sve), pa realne kategorije. */
-const FILTERS = ["Full Gallery", ...GALLERY_CATEGORIES] as const;
 
 /* ---------- Icons ---------- */
 function Close({ className = "h-6 w-6" }: { className?: string }) {
@@ -189,18 +181,8 @@ function GalleryItem({
 /* ---------- Page ---------- */
 export default function Gallery() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [filterIndex, setFilterIndex] = useState(0);
 
-  const activeFilter = FILTERS[filterIndex];
-
-  // Filtrirane fotke: "Full Gallery" (index 0) = sve, ostalo = po kategoriji.
-  const photos = useMemo(
-    () =>
-      filterIndex === 0
-        ? galleryPhotos
-        : galleryPhotos.filter((p) => p.category === activeFilter),
-    [filterIndex, activeFilter]
-  );
+  const photos = galleryPhotos;
   const count = photos.length;
 
   const open = useCallback((i: number) => setOpenIndex(i), []);
@@ -213,11 +195,6 @@ export default function Gallery() {
     () => setOpenIndex((i) => (i === null ? i : (i + 1) % count)),
     [count]
   );
-
-  const onFilter = useCallback((index: number) => {
-    setOpenIndex(null);
-    setFilterIndex(index);
-  }, []);
 
   return (
     <section className="min-h-screen bg-teget px-5 pb-24 pt-40 sm:px-8 sm:pt-48">
@@ -232,60 +209,11 @@ export default function Gallery() {
           </p>
         </div>
 
-        {/* Layout: filter sidebar + masonry */}
-        <div className="flex flex-col gap-10 lg:flex-row lg:gap-14">
-          {/* Filter (LineSidebar) */}
-          <aside className="lg:sticky lg:top-28 lg:h-fit lg:w-72 lg:shrink-0">
-            <p className="mb-5 pl-[60px] text-[11px] font-semibold uppercase tracking-[0.25em] text-white/40">
-              Filter
-            </p>
-            <LineSidebar
-              items={[...FILTERS]}
-              activeIndex={filterIndex}
-              accentColor="#96ff00"
-              textColor="#c4c4c4"
-              markerColor="#3a4a66"
-              proximityRadius={100}
-              maxShift={30}
-              falloff="smooth"
-              markerLength={60}
-              markerGap={0}
-              tickScale={0.5}
-              scaleTick
-              itemGap={20}
-              fontSize={1.1}
-              smoothing={100}
-              onItemClick={onFilter}
-            />
-          </aside>
-
-          {/* Masonry — key po filteru => re-trigger animacije izlistavanja */}
-          <div className="min-w-0 flex-1">
-            {count > 0 ? (
-              <div
-                key={filterIndex}
-                className="columns-1 gap-5 sm:columns-2 lg:columns-2 xl:columns-3"
-              >
-                {photos.map((photo, i) => (
-                  <GalleryItem
-                    key={photo.src}
-                    photo={photo}
-                    index={i}
-                    onOpen={open}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex min-h-[40vh] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 text-center">
-                <p className="text-lg font-medium text-white/70">
-                  No photos in “{activeFilter}” yet
-                </p>
-                <p className="mt-2 text-sm text-white/40">
-                  Add photos to this category in galleryPhotos.ts
-                </p>
-              </div>
-            )}
-          </div>
+        {/* Masonry preko cele sirine */}
+        <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
+          {photos.map((photo, i) => (
+            <GalleryItem key={photo.src} photo={photo} index={i} onOpen={open} />
+          ))}
         </div>
       </div>
 
