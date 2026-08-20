@@ -1,0 +1,80 @@
+/* ===== Who we are — tim iza Trivele ===== */
+
+/* Sidro: kad se skrola sa /#who-we-are, da ne stane pod fiksnu traku */
+.wwa {
+  scroll-margin-top: 6rem;
+}
+
+/* Ikonica u zelenom krugu */
+.wwa-icon {
+  display: inline-flex;
+  height: 3.25rem;
+  width: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(150, 255, 0, 0.3);
+  background: rgba(150, 255, 0, 0.08);
+  color: #96ff00;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+.wwa-icon svg {
+  height: 1.7rem;
+  width: 1.7rem;
+}
+.wwa-card:hover .wwa-icon {
+  transform: translateY(-2px) rotate(-4deg);
+  box-shadow: 0 0 24px rgba(150, 255, 0, 0.28);
+}
+
+/* Ulazak kartica na skrol — iz dubine, jedna za drugom.
+   Animacija je na omotacu (.wwa-card-wrap), a NE na .wwa-card, jer kartica
+   ima svoj hover transform pa bi se dva transform-a tukla. */
+.wwa-grid {
+  perspective: 1400px;
+  perspective-origin: 50% 30%;
+}
+
+.wwa-card-wrap {
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+  opacity: 0;
+  transform: translateY(70px) rotateX(-30deg);
+  filter: blur(8px);
+}
+
+.wwa-grid.in .wwa-card-wrap {
+  animation: wwa-card-in 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i) * 0.13s);
+}
+
+@keyframes wwa-card-in {
+  0% {
+    opacity: 0;
+    transform: translateY(70px) rotateX(-30deg);
+    filter: blur(8px);
+  }
+  55% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wwa-card-wrap {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
+  }
+  .wwa-card:hover .wwa-icon {
+    transform: none;
+  }
+}

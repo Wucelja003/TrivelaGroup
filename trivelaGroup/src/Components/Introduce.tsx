@@ -185,7 +185,7 @@ export default function Introduce() {
           <div className="flex items-center gap-4">
             <span className="intro-hline" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zelena">
-              (01) — Who we are
+              (01) — About us
             </span>
           </div>
 

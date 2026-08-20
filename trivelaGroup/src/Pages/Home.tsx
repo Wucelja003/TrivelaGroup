@@ -10,6 +10,7 @@ import TextType from "../Components/TextType";
 import HeroVideo from "../Components/HeroVideo";
 import RotatingCards from "../Components/RotatingCards";
 import Introduce from "../Components/Introduce";
+import WhoWeAre from "../Components/WhoWeAre";
 import WhatWeDo from "../Components/WhatWeDo";
 import Partners from "../Components/Partners";
 import PlayersShowcase from "../Components/PlayersShowcase";
@@ -237,6 +238,9 @@ export default function Home() {
       {/* data-theme cita SectionThemes i menja ton fiksirane pozadine */}
       <div data-theme="blue">
         <Introduce />
+      </div>
+      <div data-theme="blue">
+        <WhoWeAre />
       </div>
       <div data-theme="green">
         <WhatWeDo />
