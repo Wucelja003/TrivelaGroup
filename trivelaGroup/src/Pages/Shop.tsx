@@ -9,6 +9,7 @@ import {
 import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import DropHero from "../Components/DropHero";
+import CustomCase from "../Components/CustomCase";
 import Timeline, { type TimelineItem } from "../Components/Timeline";
 import "./Shop.css";
 
@@ -348,6 +349,7 @@ export default function Shop() {
   return (
     <>
       <DropHero />
+      <CustomCase />
       <section id="drop-grid" className="min-h-screen px-5 pb-16 pt-12 sm:px-8 sm:pb-20 sm:pt-16">
       <div className="mx-auto max-w-7xl">
         {/* Header */}

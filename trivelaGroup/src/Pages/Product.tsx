@@ -3,21 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { formatPrice, type CaseItem } from "../data/cases";
 import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
+import { PHONE_MODELS as MODELS } from "../data/phoneModels";
 import "./Product.css";
-
-const MODELS = [
-  "iPhone 17 Pro Max",
-  "iPhone 17 Pro",
-  "iPhone 17",
-  "iPhone 16 Pro Max",
-  "iPhone 16 Pro",
-  "iPhone 16",
-  "iPhone 15 Pro Max",
-  "iPhone 15 Pro",
-  "iPhone 15",
-  "Samsung S24 Ultra",
-  "Samsung S24",
-];
 
 /* ---------- Icons ---------- */
 function Chevron({ open = false }: { open?: boolean }) {

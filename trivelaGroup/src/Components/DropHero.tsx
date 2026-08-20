@@ -140,8 +140,8 @@ export default function DropHero() {
 
   /* Skrol mora da ide kroz Lenis. Nativni scrollIntoView ne radi kako treba
      dok Lenis vozi poziciju — ostaje `scrollTo` kao rezerva ako ga nema. */
-  const toShop = () => {
-    const el = document.getElementById("drop-grid");
+  const toCustom = () => {
+    const el = document.getElementById("custom-case");
     if (!el) return;
     if (lenis) {
       lenis.scrollTo(el, { duration: 1.1 });
@@ -188,8 +188,8 @@ export default function DropHero() {
           printed in Belgrade.
         </p>
         <div className="dh-actions dh-reveal">
-          <button type="button" onClick={toShop} className="dh-cta">
-            Shop the drop
+          <button type="button" onClick={toCustom} className="dh-cta">
+            Create your custom case
             <span aria-hidden="true">↓</span>
           </button>
         </div>

@@ -206,3 +206,47 @@ create policy "admin update product images"
 create policy "admin delete product images"
   on storage.objects for delete
   using (bucket_id = 'product-images' and is_admin());
+
+-- =====================================================================
+--  Custom case zahtevi (Trivela Drop -> "Create your custom case")
+-- =====================================================================
+create table if not exists custom_requests (
+  id           uuid primary key default gen_random_uuid(),
+  full_name    text not null,
+  email        text not null,
+  phone        text,
+  phone_model  text not null,
+  quantity     int  not null default 1 check (quantity > 0),
+  address      text,
+  city         text,
+  postal_code  text,
+  country      text,
+  notes        text,
+  image_url    text,                       -- kupceva slika (Storage)
+  status       text not null default 'new',
+  created_at   timestamptz not null default now()
+);
+
+alter table custom_requests enable row level security;
+
+-- Svako sme da posalje zahtev; cita/menja samo admin.
+create policy "public submit custom" on custom_requests for insert with check (true);
+create policy "admin read custom"    on custom_requests for select using (is_admin());
+create policy "admin manage custom"  on custom_requests for update using (is_admin()) with check (is_admin());
+
+-- Bucket za slike koje kupci otpremaju uz zahtev.
+insert into storage.buckets (id, name, public)
+values ('custom-uploads', 'custom-uploads', true)
+on conflict (id) do nothing;
+
+create policy "public upload custom images"
+  on storage.objects for insert
+  with check (bucket_id = 'custom-uploads');
+
+create policy "public read custom images"
+  on storage.objects for select
+  using (bucket_id = 'custom-uploads');
+
+create policy "admin delete custom images"
+  on storage.objects for delete
+  using (bucket_id = 'custom-uploads' and is_admin());
