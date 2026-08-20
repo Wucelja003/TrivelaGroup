@@ -85,7 +85,7 @@ export default function WhoWeAre() {
           </span>
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
             Built by people who{" "}
-            <span className="text-zelena">live football.</span>
+            <span className="text-zelena">live sport.</span>
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-white/60">
             Trivela is made by people with years of experience in football and
