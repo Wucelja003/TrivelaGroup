@@ -12,6 +12,7 @@ import RotatingCards from "../Components/RotatingCards";
 import Introduce from "../Components/Introduce";
 import WhoWeAre from "../Components/WhoWeAre";
 import WhatWeDo from "../Components/WhatWeDo";
+import SeeOurWork from "../Components/SeeOurWork";
 import Partners from "../Components/Partners";
 import PlayersShowcase from "../Components/PlayersShowcase";
 import { galleryPhotos } from "../data/galleryPhotos";
@@ -244,6 +245,9 @@ export default function Home() {
       </div>
       <div data-theme="green">
         <WhatWeDo />
+      </div>
+      <div data-theme="deep">
+        <SeeOurWork />
       </div>
       <div data-theme="deep">
         <Partners />
