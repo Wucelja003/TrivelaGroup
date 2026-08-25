@@ -1,6 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import { useRef, useState } from "react";
 import "./PlayersShowcase.css";
+
+/*
+ * "Players who trusted our work" — traka video kartica koja se sama lista i
+ * staje na hover (isti obrazac kao Partners/PlayerMarquee). Ispod svakog videa
+ * idu ime i uloga. Jedna kartica moze da ima vise osoba (isti video).
+ */
 
 interface Person {
   name: string;
@@ -32,34 +37,10 @@ const players: Player[] = [
   },
 ];
 
-/* Reveal na scroll (robusno, sa fallback visinom za preview) */
-function useReveal<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const check = () => {
-      const vh =
-        window.innerHeight || document.documentElement.clientHeight || 800;
-      const r = el.getBoundingClientRect();
-      if (r.top < vh * 0.82 && r.bottom > 0) {
-        setShown(true);
-        window.removeEventListener("scroll", check);
-        return true;
-      }
-      return false;
-    };
-    if (check()) return;
-    window.addEventListener("scroll", check, { passive: true });
-    return () => window.removeEventListener("scroll", check);
-  }, []);
-  return [ref, shown] as const;
-}
-
-function PlayerVideo({ src, label }: { src: string; label: string }) {
+function PlayerCard({ player }: { player: Player }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+  const multi = player.people.length > 1;
 
   const toggleMute = () => {
     const v = videoRef.current;
@@ -70,24 +51,23 @@ function PlayerVideo({ src, label }: { src: string; label: string }) {
   };
 
   return (
-    <div className="relative w-full max-w-[300px] lg:max-w-[340px]">
-      <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[2.5rem] bg-[radial-gradient(60%_60%_at_50%_40%,rgba(150,255,0,0.13),transparent_70%)]" />
-      <div className="relative aspect-[9/16] overflow-hidden rounded-[1.75rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(150,255,0,0.2)]">
+    <figure className="pls-card">
+      <div className="pls-thumb">
         <video
           ref={videoRef}
-          src={src}
+          src={player.video}
           autoPlay
           muted
           loop
           playsInline
           className="h-full w-full object-cover"
         />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent" />
         <button
           type="button"
           onClick={toggleMute}
-          aria-label={muted ? `Unmute ${label}` : `Mute ${label}`}
-          className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-zelena hover:text-zelena"
+          aria-label={muted ? "Unmute" : "Mute"}
+          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-zelena hover:text-zelena"
         >
           <svg
             viewBox="0 0 24 24"
@@ -96,7 +76,7 @@ function PlayerVideo({ src, label }: { src: string; label: string }) {
             strokeWidth={1.8}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-5 w-5"
+            className="h-4 w-4"
           >
             <path d="M11 5 6 9H2v6h4l5 4V5z" />
             {muted ? (
@@ -107,111 +87,28 @@ function PlayerVideo({ src, label }: { src: string; label: string }) {
           </svg>
         </button>
       </div>
-    </div>
-  );
-}
 
-function PlayerRow({ player, index }: { player: Player; index: number }) {
-  const [ref, shown] = useReveal<HTMLDivElement>();
-  const videoLeft = index % 2 === 0;
-  const num = String(index + 1).padStart(2, "0");
-  /* Vise igraca u redu => manja slova da sva stanu */
-  const multi = player.people.length > 1;
-  const align = videoLeft
-    ? "justify-center lg:justify-start"
-    : "justify-center lg:justify-end";
-
-  return (
-    <div
-      ref={ref}
-      className={`grid items-center gap-10 lg:gap-16 ${
-        videoLeft
-          ? "lg:grid-cols-[minmax(0,360px)_1fr]"
-          : "lg:grid-cols-[1fr_minmax(0,360px)]"
-      }`}
-    >
-      {/* Video — hugged to the outer edge */}
-      <div
-        className={`flex justify-center ${
-          videoLeft
-            ? "lg:order-1 lg:justify-start pl-from-left"
-            : "lg:order-2 lg:justify-end pl-from-right"
-        } ${shown ? "show" : ""}`}
-      >
-        <PlayerVideo
-          src={player.video}
-          label={player.people.map((p) => p.name).join(", ")}
-        />
-      </div>
-
-      {/* Text */}
-      <div
-        className={`relative ${
-          videoLeft
-            ? "lg:order-2 pl-from-right lg:text-left"
-            : "lg:order-1 pl-from-left lg:text-right"
-        } ${shown ? "show" : ""} text-center`}
-      >
-        {/* Ghost number */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 select-none text-[8rem] font-black leading-none text-white/[0.045] sm:text-[11rem]"
-        >
-          {num}
-        </span>
-
-        <div className="relative z-10">
-          {/* Eyebrow */}
-          <div className={`flex items-center gap-3 ${align}`}>
-            <span className="h-px w-8 bg-gradient-to-r from-transparent via-zelena to-transparent" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zelena">
-              ({num}) — {multi ? "Clients" : "Client"}
+      <figcaption className={`pls-cap${multi ? " pls-cap--multi" : ""}`}>
+        {player.people.map((p) => (
+          <div key={p.name} className="pls-person">
+            <span className="pls-name">{p.name}</span>
+            <span className="pls-role">
+              <span className="pls-dot" />
+              {p.role}
             </span>
           </div>
-
-          {/* Igraci — svaki se pojavljuje sa malim kasnjenjem (--i) */}
-          <div className={`mt-5 flex flex-col ${multi ? "gap-7" : ""}`}>
-            {player.people.map((p, i) => (
-              <div
-                key={p.name}
-                className="pl-person"
-                style={{ "--i": i } as CSSProperties}
-              >
-                <h3
-                  className={`pl-name font-extrabold leading-[1.02] tracking-tight ${
-                    multi
-                      ? "text-2xl sm:text-3xl lg:text-4xl"
-                      : "text-4xl sm:text-5xl lg:text-6xl"
-                  }`}
-                >
-                  {p.name}
-                </h3>
-
-                <div className={`mt-2.5 flex items-center gap-2.5 ${align}`}>
-                  <span className="h-2 w-2 shrink-0 rounded-full bg-zelena shadow-[0_0_10px_#96ff00]" />
-                  <p
-                    className={`text-white/60 ${
-                      multi ? "text-sm sm:text-base" : "text-base sm:text-lg"
-                    }`}
-                  >
-                    {p.role}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+        ))}
+      </figcaption>
+    </figure>
   );
 }
 
 export default function PlayersShowcase() {
   return (
     <section className="relative overflow-hidden py-24 sm:py-32">
-      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="relative z-10">
         {/* Header */}
-        <div className="mb-20 text-center sm:mb-28">
+        <div className="mx-auto mb-16 max-w-7xl px-5 text-center sm:mb-20 sm:px-8">
           <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zelena">
             Trusted by
           </span>
@@ -220,11 +117,17 @@ export default function PlayersShowcase() {
           </h2>
         </div>
 
-        {/* Rows */}
-        <div className="flex flex-col gap-24 sm:gap-32">
-          {players.map((p, i) => (
-            <PlayerRow key={i} player={p} index={i} />
-          ))}
+        {/* Traka — TACNO dve iste kopije, pomak -50% pa se vrti bez skoka.
+            Razmak kroz margin (ne gap), da -50% bude tacan. */}
+        <div className="pls-marquee">
+          <div className="pls-track">
+            {players.map((p, i) => (
+              <PlayerCard key={`1-${i}`} player={p} />
+            ))}
+            {players.map((p, i) => (
+              <PlayerCard key={`2-${i}`} player={p} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
