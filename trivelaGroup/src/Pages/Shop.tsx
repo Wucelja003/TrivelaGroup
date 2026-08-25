@@ -10,12 +10,12 @@ import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import DropHero from "../Components/DropHero";
 import CustomCase from "../Components/CustomCase";
-import PlayerMarquee, { type PlayerItem } from "../Components/PlayerMarquee";
+import Timeline, { type TimelineItem } from "../Components/Timeline";
 import "./Shop.css";
 
 /* Pet igraca za "Players who trusted our work".
    Imena/uloge su placeholder gde nisu poznata — slobodno menjaj. */
-const dropPlayers: PlayerItem[] = [
+const dropPlayers: TimelineItem[] = [
   { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "Basketball Player · Olimpia Milano" },
   { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Đžanan Musa", role: "Basketball Player · Dubai Basketball" },
   { img: "/TrivelaGroupPhotos/lucic.jpg", name: "Vladimir Lučić", role: "Basketball player · Club Name" },
@@ -423,7 +423,7 @@ export default function Shop() {
             </h2>
           </div>
 
-          <PlayerMarquee items={dropPlayers} />
+          <Timeline items={dropPlayers} variant="blue" />
         </div>
       </div>
       </section>
