@@ -173,7 +173,9 @@ export default function Checkout() {
     window.scrollTo(0, 0);
   }, []);
 
-  const shipping = useMemo(() => (subtotal >= 50 ? 0 : 4.9), [subtotal]);
+  /* Dinari: besplatna postarina preko 6.000 RSD, inace 590 RSD. Slobodno
+     promeni pragove. */
+  const shipping = useMemo(() => (subtotal >= 6000 ? 0 : 590), [subtotal]);
   const total = subtotal + shipping;
 
   const set = (key: FieldKey) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -464,7 +466,7 @@ export default function Checkout() {
                 </div>
                 {shipping === 0 && (
                   <p className="text-[11px] uppercase tracking-[0.15em] text-zelena">
-                    Free shipping over €50 ✓
+                    Free shipping over 6.000 RSD ✓
                   </p>
                 )}
               </div>

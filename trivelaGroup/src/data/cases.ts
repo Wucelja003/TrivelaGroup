@@ -4,7 +4,7 @@ export interface CaseItem {
   id: string; // slug iz baze — koristi se u ruti /shop/:id
   name: string;
   collection: CollectionName;
-  price: number; // EUR
+  price: number; // RSD (dinari) — cele vrednosti, npr 2900
   badge: string;
   color: string;
   image?: string;
@@ -12,4 +12,6 @@ export interface CaseItem {
 
 export const collections: CollectionName[] = ["World Cup", "Euroleague"];
 
-export const formatPrice = (v: number): string => `€${v.toFixed(2)}`;
+/* Cena u dinarima: "2.900 RSD" (bez decimala, tacka kao hiljadu — sr-RS). */
+const rsdFmt = new Intl.NumberFormat("sr-RS", { maximumFractionDigits: 0 });
+export const formatPrice = (v: number): string => `${rsdFmt.format(v)} RSD`;

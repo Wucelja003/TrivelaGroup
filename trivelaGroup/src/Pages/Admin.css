@@ -323,3 +323,33 @@
     justify-content: flex-end;
   }
 }
+
+/* --- Kolekcije --- */
+.adm-coll-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.adm-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(150, 255, 0, 0.3);
+  background: rgba(150, 255, 0, 0.08);
+  color: #cfffa0;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.adm-coll-add {
+  display: flex;
+  gap: 0.6rem;
+  max-width: 460px;
+}
+.adm-coll-add .adm-input {
+  flex: 1 1 auto;
+}
+.adm-coll-add .adm-btn {
+  flex-shrink: 0;
+}

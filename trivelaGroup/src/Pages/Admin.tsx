@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { formatPrice } from "../data/cases";
 import {
+  createCollection,
   createProduct,
   deleteProduct,
   fetchAdminProducts,
@@ -257,45 +258,33 @@ function ProductForm({
             </label>
 
             <label className="adm-label">
-              Cena (€)
+              Cena (RSD)
               <input
                 inputMode="decimal"
                 value={priceText}
                 onChange={(e) => setPriceText(e.target.value)}
                 className="adm-input"
-                placeholder="24.90"
+                placeholder="2900"
               />
             </label>
           </div>
 
-          <div className="adm-row">
-            <label className="adm-label">
-              Boja akcenta
-              <span className="adm-color">
-                <input
-                  type="color"
-                  value={form.color}
-                  onChange={(e) => patch({ color: e.target.value })}
-                  className="adm-color-swatch"
-                />
-                <input
-                  value={form.color}
-                  onChange={(e) => patch({ color: e.target.value })}
-                  className="adm-input"
-                />
-              </span>
-            </label>
-
-            <label className="adm-label">
-              Badge (ako nema slike)
+          <label className="adm-label">
+            Boja akcenta
+            <span className="adm-color">
               <input
-                value={form.badge}
-                onChange={(e) => patch({ badge: e.target.value })}
-                className="adm-input"
-                placeholder="🇷🇸 ili RM"
+                type="color"
+                value={form.color}
+                onChange={(e) => patch({ color: e.target.value })}
+                className="adm-color-swatch"
               />
-            </label>
-          </div>
+              <input
+                value={form.color}
+                onChange={(e) => patch({ color: e.target.value })}
+                className="adm-input"
+              />
+            </span>
+          </label>
 
           <label className="adm-label">
             Opis (opciono)
@@ -333,6 +322,9 @@ function Dashboard() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState<AdminProduct | null>(null);
+  const [newColl, setNewColl] = useState("");
+  const [collBusy, setCollBusy] = useState(false);
+  const [collError, setCollError] = useState<string | null>(null);
 
   const load = async () => {
     try {
@@ -373,6 +365,22 @@ function Dashboard() {
     load();
   };
 
+  const onAddCollection = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newColl.trim()) return;
+    setCollBusy(true);
+    setCollError(null);
+    try {
+      await createCollection(newColl);
+      setNewColl("");
+      load();
+    } catch (err) {
+      setCollError(err instanceof Error ? err.message : "Nije dodato.");
+    } finally {
+      setCollBusy(false);
+    }
+  };
+
   return (
     <div className="adm-wrap">
       <header className="adm-top">
@@ -381,6 +389,37 @@ function Dashboard() {
           Odjavi se
         </button>
       </header>
+
+      {/* Kolekcije */}
+      <section className="adm-card">
+        <h2 className="adm-h2">Kolekcije</h2>
+        <div className="adm-coll-list">
+          {collections.length === 0 && (
+            <span className="adm-sub">Još nema kolekcija.</span>
+          )}
+          {collections.map((c) => (
+            <span key={c.id} className="adm-chip">
+              {c.name}
+            </span>
+          ))}
+        </div>
+        <form onSubmit={onAddCollection} className="adm-coll-add">
+          <input
+            value={newColl}
+            onChange={(e) => setNewColl(e.target.value)}
+            placeholder="Nova kolekcija (npr. World Cup 2026)"
+            className="adm-input"
+          />
+          <button
+            type="submit"
+            disabled={collBusy || !newColl.trim()}
+            className="adm-btn adm-btn--primary"
+          >
+            {collBusy ? "Dodajem…" : "Dodaj"}
+          </button>
+        </form>
+        {collError && <p className="adm-error">{collError}</p>}
+      </section>
 
       <ProductForm
         collections={collections}

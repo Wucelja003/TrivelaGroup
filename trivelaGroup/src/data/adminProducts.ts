@@ -94,6 +94,16 @@ export async function fetchCollections(): Promise<Collection[]> {
   return (data ?? []) as Collection[];
 }
 
+/* Nova kolekcija: slug se pravi iz imena. Pise samo admin (RLS). */
+export async function createCollection(name: string): Promise<void> {
+  const clean = name.trim();
+  if (!clean) throw new Error("Ime kolekcije je obavezno.");
+  const { error } = await supabase
+    .from("collections")
+    .insert({ slug: baseSlug(clean), name: clean });
+  if (error) throw new Error(error.message);
+}
+
 /* Cist slug iz imena: mala slova, crtice, bez znakova. Prazan (npr. ime na
    cirilici) dobija rezervni koren. */
 function baseSlug(name: string): string {
