@@ -187,7 +187,25 @@ function ProductForm({
               <img src={form.imageUrl} alt="" className="adm-thumb" />
             ) : (
               <span className="adm-drop-hint">
-                {uploading ? "Otpremam…" : "Klikni da otpremiš sliku"}
+                {uploading ? (
+                  "Otpremam…"
+                ) : (
+                  <>
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.6}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 16V4M7 9l5-5 5 5" />
+                      <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+                    </svg>
+                    Klikni da otpremiš
+                  </>
+                )}
               </span>
             )}
           </button>
