@@ -53,4 +53,27 @@ export async function submitCustomRequest(
     image_url: input.imageUrl,
   });
   if (error) throw new Error(error.message);
+
+  /* Potvrda mejlom — best-effort: ako Resend/edge funkcija zakaze, zahtev je
+     ipak upisan, pa ne rusimo formu. */
+  try {
+    await supabase.functions.invoke("send-email", {
+      body: {
+        kind: "custom",
+        fullName: input.fullName,
+        email: input.email,
+        phone: input.phone,
+        phoneModel: input.phoneModel,
+        quantity: input.quantity,
+        address: input.address,
+        city: input.city,
+        postalCode: input.postalCode,
+        country: input.country,
+        notes: input.notes,
+        imageUrl: input.imageUrl,
+      },
+    });
+  } catch (e) {
+    console.warn("[customRequests] mejl nije poslat:", e);
+  }
 }

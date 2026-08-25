@@ -8,6 +8,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useCart, type CartItem } from "../context/CartContext";
 import { formatPrice } from "../data/cases";
+import { supabase } from "../lib/supabase";
 import "./Checkout.css";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -202,11 +203,37 @@ export default function Checkout() {
     if (!validate()) return;
 
     setStatus("placing");
-    // TODO (backend): POST /api/orders — kreiraj porudžbinu u Supabase-u i pošalji mejlove
-    await new Promise((res) => setTimeout(res, 1400));
-
+    // TODO (backend): kreiranje porudzbine u bazi (orders) ide preko servera,
+    // da se cena ne bi falsifikovala. Za sad je porudzbina lokalna maketa.
     const number = `TRV-${Date.now().toString(36).slice(-6).toUpperCase()}`;
-    setOrder({ number, items: [...items], total, email: form.email });
+    const placed = [...items];
+
+    /* Potvrda mejlom — best-effort, ne blokira zavrsetak porudzbine. */
+    try {
+      await supabase.functions.invoke("send-email", {
+        body: {
+          kind: "order",
+          number,
+          email: form.email,
+          name: `${form.firstName} ${form.lastName}`.trim(),
+          phone: form.phone,
+          address: form.address,
+          city: form.city,
+          postal: form.postal,
+          total,
+          items: placed.map((it) => ({
+            name: it.name,
+            model: it.model,
+            price: it.price,
+            qty: it.qty,
+          })),
+        },
+      });
+    } catch (err) {
+      console.warn("[checkout] mejl nije poslat:", err);
+    }
+
+    setOrder({ number, items: placed, total, email: form.email });
     clear();
     setStatus("done");
   };
