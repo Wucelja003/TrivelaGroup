@@ -1,0 +1,99 @@
+/* ===== Players marquee — sama se lista, staje na hover ===== */
+
+.pm-marquee {
+  overflow: hidden;
+  /* Ivice se gube u belo, da traka nema tvrd rez */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+
+.pm-track {
+  display: flex;
+  width: max-content;
+  animation: pm-scroll 46s linear infinite;
+  will-change: transform;
+}
+
+/* Stani dok neko gleda */
+.pm-marquee:hover .pm-track {
+  animation-play-state: paused;
+}
+
+@keyframes pm-scroll {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* --- Kartica --- */
+.pm-card {
+  flex: 0 0 auto;
+  width: clamp(158px, 20vw, 210px);
+  /* Razmak kroz margin, NE gap na traci — inace -50% nije tacan */
+  margin-right: 1.75rem;
+}
+
+.pm-thumb {
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(6, 41, 77, 0.12);
+  background: #eef3fa;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.pm-card:hover .pm-thumb {
+  border-color: rgba(124, 196, 255, 0.6);
+  box-shadow: 0 0 30px rgba(124, 196, 255, 0.3);
+}
+.pm-thumb img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pm-card:hover .pm-thumb img {
+  transform: scale(1.05);
+}
+
+/* --- Dva teksta ispod --- */
+.pm-cap {
+  margin-top: 0.85rem;
+  text-align: center;
+}
+.pm-name {
+  display: block;
+  font-weight: 700;
+  color: #06294d;
+}
+.pm-role {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: rgba(6, 41, 77, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-track {
+    animation: none;
+  }
+  /* Bez animacije mora rucno da se prevuce */
+  .pm-marquee {
+    overflow-x: auto;
+  }
+}
