@@ -1,3 +1,7 @@
+// @ts-nocheck  Deno edge funkcija — radi na Supabase Edge runtime-u, ne na
+// projektnom TypeScript-u. Editor bez Deno ekstenzije ne poznaje globalni
+// `Deno`, pa ovde iskljucujemo tsc proveru. Frontend build (tsc -b) ionako
+// gleda samo src/, ovaj fajl je van toga.
 // =====================================================================
 //  Supabase Edge Function: send-email
 //  Salje mejlove preko Resend-a. Zove je frontend posle:

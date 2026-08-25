@@ -56,11 +56,11 @@ export default function SeeOurWork() {
             perspective={900}
             borderRadius={16}
             loop
-            autoplay
-            autoplayDelay={2800}
             showTitles
             showControls
             showDots
+            enableDrag
+            enableKeyboard
           />
         </div>
 
