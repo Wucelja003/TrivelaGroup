@@ -62,11 +62,12 @@ function SiteNav() {
   /* Landing ceka sekvencu (intro -> hero -> traka); svuda drugde ulazi odmah.
      Drop je svetla tema, nema meni i drugo dugme vraca na Trivela Group. */
   if (pathname === "/") return <LandingNav />;
+  /* Drop: svetla traka; dva dugmeta vode na Business + Group (Drop se krije) */
   if (isDrop(pathname))
-    return <LandingNav immediate cart light backToGroup menu={false} />;
-  /* Business: tamna traka (zeleni akcenat), drugo dugme vraca na Trivela Group */
+    return <LandingNav immediate cart light current="drop" menu={false} />;
+  /* Business: tamna traka; dva dugmeta vode na Drop + Group (Business se krije) */
   if (isBusiness(pathname))
-    return <LandingNav immediate cart backToGroup menu={false} />;
+    return <LandingNav immediate cart current="business" menu={false} />;
   return <LandingNav immediate cart />;
 }
 

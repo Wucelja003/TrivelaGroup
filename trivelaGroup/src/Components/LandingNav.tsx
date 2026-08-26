@@ -12,23 +12,29 @@ import "./CartDrawer.css";
  *
  * Na landingu ulazi poslednja u sekvenci (intro -> hero -> traka).
  *
- * Drugo dugme vodi tamo gde NISI: sa landinga na Trivela Drop, a sa Drop
- * (i Business) strane nazad na Trivela Group. Prvo dugme uvek vodi na
- * Trivela Business (/business).
+ * Dva dugmeta vode na dve marke na koje MOZES da odes — nikad na onu na
+ * kojoj vec jesi. Redosled je fiksan (Business, Drop, Group), pa je raspored
+ * dosledan svuda: na Business strani se vide Drop + Group, na Drop strani
+ * Business + Group, na landingu Business + Drop.
  */
+type Brand = "business" | "drop" | "group";
+
 type NavItem = {
   label: string;
-  variant: "business" | "drop" | "group";
-  to: string | null;
+  variant: Brand;
+  to: string;
 };
 
-const buildItems = (backToGroup: boolean): NavItem[] => [
-  { label: "Trivela Business", variant: "business", to: "/business" },
-  backToGroup
-    ? /* Nosi zelenu Trivela Group — boju odredista na koje vraca */
-      { label: "Trivela Group", variant: "group", to: "/" }
-    : { label: "Trivela Drop", variant: "drop", to: "/drop" },
-];
+const BRAND_ITEMS: Record<Brand, NavItem> = {
+  business: { label: "Trivela Business", variant: "business", to: "/business" },
+  drop: { label: "Trivela Drop", variant: "drop", to: "/drop" },
+  group: { label: "Trivela Group", variant: "group", to: "/" },
+};
+
+const buildItems = (current: Brand): NavItem[] =>
+  (["business", "drop", "group"] as Brand[])
+    .filter((b) => b !== current)
+    .map((b) => BRAND_ITEMS[b]);
 
 /* Korpa iz starog headera — bez nje se sa Drop strane ne bi moglo do nje.
    Kad je u grupi sa menijem, gubi svoj okvir; okvir nosi sama grupa. */
@@ -86,8 +92,9 @@ interface Props {
   menuMedia?: boolean;
   /* Svetla tema: bela podloga ispod trake (Trivela Drop) */
   light?: boolean;
-  /* Na Drop strani drugo dugme vodi NAZAD na Trivela Group */
-  backToGroup?: boolean;
+  /* Marka strane na kojoj smo — ta se skriva iz dva dugmeta u sredini.
+     Podrazumevano "group" (landing i sve opste strane). */
+  current?: Brand;
   /* Rute koje se skrivaju iz menija — npr. strana na kojoj vec jesi */
   menuExclude?: string[];
   /* Hamburger meni. Na Drop strani ga nema — ostaje samo korpa. */
@@ -99,11 +106,11 @@ export default function LandingNav({
   cart = false,
   menuMedia = true,
   light = false,
-  backToGroup = false,
+  current = "group",
   menuExclude,
   menu = true,
 }: Props) {
-  const items = buildItems(backToGroup);
+  const items = buildItems(current);
   const rootRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
