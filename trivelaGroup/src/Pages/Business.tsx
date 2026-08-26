@@ -185,10 +185,12 @@ function MarqueeRow({ variant }: { variant?: "b" }) {
   );
 }
 
-/* --- Spotlight: izdvojeni klijent (foto + dva podteksta) i duza prica pored.
-   PLACEHOLDER slike i tekst — zameni stvarnim radovima. --- */
+/* --- Spotlight: izdvojeni klijent (video/foto + dva podteksta) i duza prica.
+   PLACEHOLDER tekst — restoran, ispravicemo posle. Ako `video` postoji renderuje
+   se video, u suprotnom `image`. --- */
 interface Spotlight {
-  image: string;
+  video?: string;
+  image?: string;
   name: string;
   role: string;
   kicker: string;
@@ -198,24 +200,24 @@ interface Spotlight {
 }
 const SPOTLIGHTS: Spotlight[] = [
   {
-    image: "/TrivelaGroupPhotos/IMG_2681.JPG",
-    name: "Aurora Studios",
-    role: "Brand identity & launch",
+    video: "/videoTrivela-web/restaurant.mp4",
+    name: "Ambar Restaurant",
+    role: "Brand & social film",
     kicker: "Case 01",
-    title: "A launch that felt like a premiere.",
+    title: "A table worth talking about.",
     story:
-      "Aurora came to us with a product and no story. We built the narrative, shaped the visual identity and ran the launch across press and social — the same playbook that turns athletes into household names, aimed at a brand far outside sport. Three weeks in, they had tripled their reach and sold out the first drop.",
-    tags: ["Identity", "Launch", "Social"],
+      "We gave Ambar more than a menu — we gave it a mood. From the plating to the lighting, we shot and cut the content that fills the room every night, and built the social presence that keeps the reservations coming. Proof that the same eye for a story works just as well in a kitchen as on a pitch.",
+    tags: ["Content", "Social", "Film"],
   },
   {
-    image: "/TrivelaGroupPhotos/IMG_4170.JPG",
-    name: "Vertex Tech",
-    role: "PR & positioning",
+    video: "/videoTrivela-web/restaurant_2.mp4",
+    name: "Ambar — Grand opening",
+    role: "Launch campaign",
     kicker: "Case 02",
-    title: "From unknown to unavoidable.",
+    title: "Opening night, sold out.",
     story:
-      "Vertex had the kind of product the press should have been writing about — but nobody was. We opened the right doors, framed the message and put their founders in front of the audiences that mattered. By the end of the quarter, they were the name their competitors were benchmarking against.",
-    tags: ["PR", "Media", "Strategy"],
+      "For the launch we ran the full campaign — teaser films, influencer seeding and a night the whole city wanted an invite to. The doors opened to a full house and a waiting list, and the footage lived on long after the last plate was cleared.",
+    tags: ["Launch", "Campaign", "Video"],
   },
 ];
 
@@ -238,12 +240,23 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
           className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(62,207,142,0.18),transparent_70%)]"
         />
         <div className="group overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(62,207,142,0.22)]">
-          <img
-            src={s.image}
-            alt={s.name}
-            loading="lazy"
-            className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          />
+          {s.video ? (
+            <video
+              src={s.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+          ) : (
+            <img
+              src={s.image}
+              alt={s.name}
+              loading="lazy"
+              className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+          )}
         </div>
         <figcaption className="mt-5 flex items-baseline justify-between gap-4">
           <span className="text-xl font-bold tracking-tight text-white">
