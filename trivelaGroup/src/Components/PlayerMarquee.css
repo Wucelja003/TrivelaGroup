@@ -22,7 +22,7 @@
 .pm-track {
   display: flex;
   width: max-content;
-  animation: pm-scroll 46s linear infinite;
+  animation: pm-scroll 30s linear infinite;
   will-change: transform;
 }
 
