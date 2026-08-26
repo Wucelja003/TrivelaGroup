@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import AuroraField from "../Components/AuroraField";
@@ -222,6 +222,17 @@ const SPOTLIGHTS: Spotlight[] = [
 ];
 
 function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggleMute = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    if (!v.muted) v.play().catch(() => {});
+    setMuted(v.muted);
+  };
+
   return (
     <motion.div
       variants={container}
@@ -241,16 +252,44 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
           aria-hidden="true"
           className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(62,207,142,0.18),transparent_70%)]"
         />
-        <div className="group overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(62,207,142,0.22)]">
+        <div className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(62,207,142,0.22)]">
           {s.video ? (
-            <video
-              src={s.video}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-            />
+            <>
+              <video
+                ref={videoRef}
+                src={s.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+              {/* Gradijent + dugme za zvuk — isti obrazac kao ostali video */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent" />
+              <button
+                type="button"
+                onClick={toggleMute}
+                aria-label={muted ? "Unmute" : "Mute"}
+                className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-[#3ecf8e] hover:text-[#3ecf8e]"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.8}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
+                >
+                  <path d="M11 5 6 9H2v6h4l5 4V5z" />
+                  {muted ? (
+                    <path d="m22 9-6 6M16 9l6 6" />
+                  ) : (
+                    <path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14" />
+                  )}
+                </svg>
+              </button>
+            </>
           ) : (
             <img
               src={s.image}
