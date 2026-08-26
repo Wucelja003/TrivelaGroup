@@ -80,7 +80,6 @@ const emptyForm: ProductInput = {
   price: 0,
   description: "",
   badge: "",
-  color: "#7cc4ff",
   imageUrl: null,
 };
 
@@ -116,7 +115,6 @@ function ProductForm({
           price: editing.price,
           description: editing.description,
           badge: editing.badge,
-          color: editing.color,
           imageUrl: editing.imageUrl,
         }
       : { ...emptyForm, collectionId: collections[0]?.id ?? "" };
@@ -268,23 +266,6 @@ function ProductForm({
               />
             </label>
           </div>
-
-          <label className="adm-label">
-            Boja akcenta
-            <span className="adm-color">
-              <input
-                type="color"
-                value={form.color}
-                onChange={(e) => patch({ color: e.target.value })}
-                className="adm-color-swatch"
-              />
-              <input
-                value={form.color}
-                onChange={(e) => patch({ color: e.target.value })}
-                className="adm-input"
-              />
-            </span>
-          </label>
 
           <label className="adm-label">
             Opis (opciono)

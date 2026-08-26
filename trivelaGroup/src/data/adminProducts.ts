@@ -38,7 +38,6 @@ export interface ProductInput {
   price: number;
   description: string;
   badge: string;
-  color: string;
   imageUrl: string | null;
 }
 
@@ -152,7 +151,6 @@ export async function createProduct(
     price: input.price,
     description: input.description.trim() || null,
     badge: input.badge.trim() || null,
-    color: input.color,
     image_url: input.imageUrl,
     active: true,
   });
@@ -172,7 +170,6 @@ export async function updateProduct(
       price: input.price,
       description: input.description.trim() || null,
       badge: input.badge.trim() || null,
-      color: input.color,
       image_url: input.imageUrl,
     })
     .eq("id", id);
