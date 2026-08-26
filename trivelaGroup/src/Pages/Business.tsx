@@ -233,7 +233,9 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
       {/* Foto + dva podteksta (ime + uloga) */}
       <motion.figure
         variants={item}
-        className={`relative ${flip ? "lg:order-2" : ""}`}
+        className={`relative mx-auto w-full max-w-[360px] ${
+          flip ? "lg:order-2" : ""
+        }`}
       >
         <div
           aria-hidden="true"
@@ -247,14 +249,14 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
               muted
               loop
               playsInline
-              className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             />
           ) : (
             <img
               src={s.image}
               alt={s.name}
               loading="lazy"
-              className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             />
           )}
         </div>
