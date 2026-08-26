@@ -151,6 +151,40 @@ const CLIENTS: Client[] = [
   },
 ];
 
+function ClientTile({ c }: { c: Client }) {
+  return (
+    <div className="biz-item">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        {c.mark}
+      </svg>
+      <span className="biz-item-name">{c.name}</span>
+    </div>
+  );
+}
+
+/* Traka mora da nosi TACNO dve iste kopije: pomak je -50%, pa se ostatak
+   poklopi sa pocetkom i vrti bez skoka. */
+function MarqueeRow({ variant }: { variant?: "b" }) {
+  return (
+    <div className={`biz-track${variant ? " biz-track--b" : ""}`}>
+      {CLIENTS.map((c) => (
+        <ClientTile key={`1-${c.name}`} c={c} />
+      ))}
+      {CLIENTS.map((c) => (
+        <ClientTile key={`2-${c.name}`} c={c} />
+      ))}
+    </div>
+  );
+}
+
 function Emblem({ reduce }: { reduce: boolean | null }) {
   return (
     <div className="relative h-24 w-24">
@@ -357,30 +391,13 @@ export default function Business() {
             </motion.p>
           </motion.div>
 
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-40px" }}
-            className="mt-14 grid grid-cols-2 gap-4 sm:mt-16 sm:grid-cols-3 lg:grid-cols-4"
-          >
-            {CLIENTS.map((c) => (
-              <motion.div key={c.name} variants={item} className="biz-client">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.6}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  {c.mark}
-                </svg>
-                <span className="biz-client-name">{c.name}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+          {/* Dve trake logotipa klize u suprotnim smerovima, staju na hover */}
+          <div className="mt-14 sm:mt-16">
+            <div className="biz-marquee">
+              <MarqueeRow />
+              <MarqueeRow variant="b" />
+            </div>
+          </div>
         </div>
       </section>
 
