@@ -23,6 +23,12 @@
   background-color: #ffffff;
 }
 
+/* Trivela Business — tamno siva podloga, da overscroll iznad/ispod aurore
+   ne otkrije teget. */
+:root[data-page="business"] body {
+  background-color: #14171a;
+}
+
 body {
   background-color: #000b38;
   min-height: 100vh;

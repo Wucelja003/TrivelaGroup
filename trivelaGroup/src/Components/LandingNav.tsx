@@ -13,8 +13,8 @@ import "./CartDrawer.css";
  * Na landingu ulazi poslednja u sekvenci (intro -> hero -> traka).
  *
  * Drugo dugme vodi tamo gde NISI: sa landinga na Trivela Drop, a sa Drop
- * strane nazad na Trivela Group. Za Trivela Business ruta jos nije
- * dogovorena, pa ostaje dugme bez akcije.
+ * (i Business) strane nazad na Trivela Group. Prvo dugme uvek vodi na
+ * Trivela Business (/business).
  */
 type NavItem = {
   label: string;
@@ -23,7 +23,7 @@ type NavItem = {
 };
 
 const buildItems = (backToGroup: boolean): NavItem[] => [
-  { label: "Trivela Business", variant: "business", to: null },
+  { label: "Trivela Business", variant: "business", to: "/business" },
   backToGroup
     ? /* Nosi zelenu Trivela Group — boju odredista na koje vraca */
       { label: "Trivela Group", variant: "group", to: "/" }

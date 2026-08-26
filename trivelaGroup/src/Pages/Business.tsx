@@ -1,0 +1,420 @@
+import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { motion, useReducedMotion, type Variants } from "motion/react";
+import AuroraField from "../Components/AuroraField";
+import "./Business.css";
+
+/*
+ * Trivela Business — strana za saradnju VAN sporta. Ista prica koja je od
+ * sportista napravila brendove, sada za firme, osnivace i marke. Dole je
+ * pregled klijenata.
+ *
+ * Boje: siva iz "Trivela Business" dugmeta + tamno/smaragdno zelena akcenat.
+ * Pozadina: AuroraField (WebGL) fiksiran iza cele strane.
+ *
+ * PAZNJA: imena klijenata ispod su PLACEHOLDER — izmisljena da se vidi kako
+ * mreza radi. Zameni ih stvarnim klijentima (i po zelji logotipima) pre nego
+ * sto strana ode uzivo.
+ */
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+};
+const item: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
+};
+const headline: Variants = {
+  hidden: { opacity: 0, y: 26, filter: "blur(10px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.8, ease: EASE },
+  },
+};
+
+/* --- Stubovi "van sporta" --- */
+interface Pillar {
+  title: string;
+  copy: string;
+  icon: ReactNode;
+}
+const PILLARS: Pillar[] = [
+  {
+    title: "Marketing & Content",
+    copy: "Campaigns that travel — the same instinct that turned athletes into icons, pointed straight at your market.",
+    icon: (
+      <path d="M4 20V9m6 11V4m6 16v-7m6 7V8" />
+    ),
+  },
+  {
+    title: "PR & Media",
+    copy: "Relationships with press and platforms that put your name where the right people are already looking.",
+    icon: (
+      <>
+        <path d="M3 11l16-6v14L3 15z" />
+        <path d="M7 13v4a2 2 0 0 0 4 0" />
+      </>
+    ),
+  },
+  {
+    title: "Brand Consulting",
+    copy: "Strategy, identity and positioning for founders and companies ready to stand out — on and off the field.",
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 8v4l3 2" />
+      </>
+    ),
+  },
+];
+
+/* --- Klijenti (PLACEHOLDER — vidi napomenu na vrhu) --- */
+interface Client {
+  name: string;
+  mark: ReactNode;
+}
+const CLIENTS: Client[] = [
+  { name: "Aurora Studios", mark: <path d="M4 20l8-14 8 14M8 20l4-7 4 7" /> },
+  { name: "Vertex Tech", mark: <path d="M4 18h16M9 18l3-10 3 10M12 4v4" /> },
+  {
+    name: "Kompas Logistics",
+    mark: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <path d="M8.5 15.5L14 10l1.5 5.5-5.5-1.5z" />
+      </>
+    ),
+  },
+  { name: "Lumen Media", mark: <path d="M4 12h4l3-8 4 16 3-8h2" /> },
+  {
+    name: "Bella Foods",
+    mark: (
+      <>
+        <path d="M12 4c4 0 6 3 6 7s-3 9-6 9-6-5-6-9 2-7 6-7z" />
+        <path d="M12 4v16" />
+      </>
+    ),
+  },
+  {
+    name: "Fjord Apparel",
+    mark: <path d="M9 4l3 3 3-3 4 4-3 3v9H8v-9L5 8z" />,
+  },
+  {
+    name: "Orion Bank",
+    mark: (
+      <>
+        <path d="M4 10l8-5 8 5" />
+        <path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 20h16" />
+      </>
+    ),
+  },
+  {
+    name: "Nimbus Cloud",
+    mark: <path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4A3.5 3.5 0 0 1 16 18z" />,
+  },
+  {
+    name: "Verde Organics",
+    mark: (
+      <>
+        <path d="M12 20c-5 0-8-3-8-8 5 0 8 3 8 8z" />
+        <path d="M12 20c5 0 8-3 8-8-5 0-8 3-8 8z" />
+      </>
+    ),
+  },
+  {
+    name: "Atria Group",
+    mark: (
+      <>
+        <path d="M12 4l8 16H4z" />
+        <path d="M12 11l4.5 9h-9z" />
+      </>
+    ),
+  },
+  {
+    name: "Delta Motors",
+    mark: (
+      <>
+        <path d="M4 15l2-5h12l2 5" />
+        <circle cx="8" cy="16" r="1.6" />
+        <circle cx="16" cy="16" r="1.6" />
+      </>
+    ),
+  },
+  {
+    name: "Pulse Fitness",
+    mark: <path d="M3 13h4l2-5 3 9 2-7 2 3h4" />,
+  },
+];
+
+function Emblem({ reduce }: { reduce: boolean | null }) {
+  return (
+    <div className="relative h-24 w-24">
+      <div
+        aria-hidden="true"
+        className="absolute -inset-6 rounded-full bg-[#3ecf8e]/25 blur-2xl"
+      />
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-0 rounded-full bg-[conic-gradient(from_140deg,#14532d,#3ecf8e,#7ff0bb,#545d67,#14532d)] blur-[5px]"
+        animate={reduce ? undefined : { rotate: 360 }}
+        transition={{ rotate: { duration: 22, repeat: Infinity, ease: "linear" } }}
+      />
+      <div className="absolute inset-[12px] flex items-center justify-center rounded-full border border-white/12 bg-[#14171a]/85 backdrop-blur-sm">
+        <img
+          src="/Trivela_Logo_mark.svg"
+          alt="Trivela"
+          className="h-9 w-9 [filter:drop-shadow(0_0_10px_rgba(62,207,142,0.6))]"
+        />
+      </div>
+    </div>
+  );
+}
+
+export default function Business() {
+  const reduce = useReducedMotion();
+
+  const toClients = () =>
+    document
+      .getElementById("clients")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  return (
+    <main className="biz">
+      {/* Aurora + preliv — fiksirano iza cele strane */}
+      <div className="biz-bg" aria-hidden="true">
+        <AuroraField />
+      </div>
+
+      {/* ===== HERO ===== */}
+      <section className="relative flex min-h-screen items-center overflow-hidden px-5 pb-24 pt-32 sm:px-8">
+        <div className="biz-grid" aria-hidden="true" />
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center"
+        >
+          <motion.div variants={item}>
+            <Emblem reduce={reduce} />
+          </motion.div>
+
+          <motion.span
+            variants={item}
+            className="mt-7 text-[12px] font-semibold uppercase tracking-[0.35em] text-[#3ecf8e]"
+          >
+            Trivela Business
+          </motion.span>
+
+          <motion.h1
+            variants={headline}
+            className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-6xl md:text-7xl"
+          >
+            Bigger than the game.
+            <br />
+            <span className="bg-gradient-to-r from-[#7ff0bb] via-[#3ecf8e] to-[#2f8f5b] bg-clip-text text-transparent">
+              Built for business.
+            </span>
+          </motion.h1>
+
+          <motion.p
+            variants={item}
+            className="mt-6 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg"
+          >
+            The same storytelling that turned athletes into icons — now working
+            for companies, founders and brands far outside sport.
+          </motion.p>
+
+          <motion.div
+            variants={item}
+            className="mt-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+          >
+            <Link
+              to="/getInTouch"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f8f5b] to-[#3ecf8e] px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#06231a] shadow-[0_16px_40px_-10px_rgba(62,207,142,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(62,207,142,0.8)] sm:w-auto"
+            >
+              Start a project
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
+            <button
+              type="button"
+              onClick={toClients}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white backdrop-blur transition-colors duration-300 hover:border-[#3ecf8e]/60 hover:bg-white/10 sm:w-auto"
+            >
+              See our clients
+            </button>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ===== BEYOND SPORT ===== */}
+      <section className="relative px-5 py-24 sm:px-8 sm:py-32">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <motion.span
+              variants={item}
+              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]"
+            >
+              (01) — Beyond sport
+            </motion.span>
+            <motion.h2
+              variants={headline}
+              className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
+            >
+              Not just athletes.
+            </motion.h2>
+            <motion.p
+              variants={item}
+              className="mx-auto mt-5 max-w-xl text-white/65"
+            >
+              We spent years making sportspeople unforgettable. That same craft —
+              marketing, PR and brand consulting — now powers companies in every
+              industry.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-60px" }}
+            className="mt-14 grid gap-6 sm:mt-16 sm:grid-cols-3"
+          >
+            {PILLARS.map((p) => (
+              <motion.div
+                key={p.title}
+                variants={item}
+                className="group rounded-2xl border border-white/10 bg-white/[0.035] p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#3ecf8e]/45 hover:bg-[#3ecf8e]/[0.06] hover:shadow-[0_24px_60px_-24px_rgba(62,207,142,0.5)]"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#3ecf8e]/12 text-[#3ecf8e] ring-1 ring-inset ring-[#3ecf8e]/25">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.7}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-6 w-6"
+                  >
+                    {p.icon}
+                  </svg>
+                </span>
+                <h3 className="mt-5 text-xl font-bold tracking-tight">
+                  {p.title}
+                </h3>
+                <p className="mt-2.5 text-sm leading-relaxed text-white/60">
+                  {p.copy}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ===== CLIENTS ===== */}
+      <section id="clients" className="relative scroll-mt-24 px-5 py-24 sm:px-8 sm:py-32">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <motion.span
+              variants={item}
+              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]"
+            >
+              (02) — Clients
+            </motion.span>
+            <motion.h2
+              variants={headline}
+              className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
+            >
+              Companies who{" "}
+              <span className="bg-gradient-to-r from-[#7ff0bb] to-[#3ecf8e] bg-clip-text text-transparent">
+                trust Trivela
+              </span>
+              .
+            </motion.h2>
+            <motion.p
+              variants={item}
+              className="mx-auto mt-5 max-w-xl text-white/65"
+            >
+              From startups to established names — inside sport and far beyond it.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-40px" }}
+            className="mt-14 grid grid-cols-2 gap-4 sm:mt-16 sm:grid-cols-3 lg:grid-cols-4"
+          >
+            {CLIENTS.map((c) => (
+              <motion.div key={c.name} variants={item} className="biz-client">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.6}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  {c.mark}
+                </svg>
+                <span className="biz-client-name">{c.name}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ===== CTA ===== */}
+      <section className="relative px-5 pb-32 pt-10 sm:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#1b2f26]/80 to-[#14171a]/80 px-6 py-16 text-center backdrop-blur-md sm:px-12 sm:py-20"
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(62,207,142,0.35),transparent_70%)] blur-2xl"
+          />
+          <h2 className="relative text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Let's build your brand.
+          </h2>
+          <p className="relative mx-auto mt-4 max-w-lg text-white/65">
+            Tell us where you want to be. We'll bring the story that gets you
+            there.
+          </p>
+          <Link
+            to="/getInTouch"
+            className="group relative mt-9 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f8f5b] to-[#3ecf8e] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#06231a] shadow-[0_16px_40px_-10px_rgba(62,207,142,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(62,207,142,0.85)]"
+          >
+            Get in touch
+            <span className="transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </Link>
+        </motion.div>
+      </section>
+    </main>
+  );
+}

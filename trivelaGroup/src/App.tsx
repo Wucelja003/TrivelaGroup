@@ -6,7 +6,7 @@ import {
   useLocation,
   useParams,
 } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { ReactLenis } from "lenis/react";
 /* Lenis-ov stylesheet je OBAVEZAN. Bez njega se klase (lenis, lenis-smooth)
    postavljaju na <html> ali nemaju nikakav efekat, pa skrol ostaje nativan —
@@ -25,6 +25,9 @@ import Checkout from "./Pages/Checkout";
 import Gallery from "./Pages/Gallery";
 import GetInTouch from "./Pages/GetInTouch";
 import Admin from "./Pages/Admin";
+/* Business povlaci three.js (WebGL aurora) — lazy da ne uleti u glavni bundle
+   i ne uspori ostale strane; three se skida tek kad se otvori /business. */
+const Business = lazy(() => import("./Pages/Business"));
 import Footer from "./Components/Footer";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -32,16 +35,19 @@ import { AuthProvider } from "./context/AuthContext";
 /* Sve strane nose istu traku: logo levo, dva dugmeta na sredini, korpa i
    meni desno. Stari Header vise ne postoji. */
 const isDrop = (p: string) => p === "/drop" || p.startsWith("/drop/");
+const isBusiness = (p: string) => p === "/business";
 
 /* Admin je zaseban alat — bez trake, footera, korpe i uvodne animacije. */
 const isBare = (p: string) => p.startsWith("/admin");
 
-/* Obelezi <html> da CSS zna kad je svetla tema (bela podloga) */
+/* Obelezi <html> da CSS zna koja je tema: drop = svetla (bela podloga),
+   business = tamno siva (aurora). Ostalo = podrazumevano teget. */
 function PageTheme() {
   const { pathname } = useLocation();
   useEffect(() => {
     const el = document.documentElement;
     if (isDrop(pathname)) el.dataset.page = "drop";
+    else if (isBusiness(pathname)) el.dataset.page = "business";
     else delete el.dataset.page;
     return () => {
       delete el.dataset.page;
@@ -58,6 +64,9 @@ function SiteNav() {
   if (pathname === "/") return <LandingNav />;
   if (isDrop(pathname))
     return <LandingNav immediate cart light backToGroup menu={false} />;
+  /* Business: tamna traka (zeleni akcenat), drugo dugme vraca na Trivela Group */
+  if (isBusiness(pathname))
+    return <LandingNav immediate cart backToGroup menu={false} />;
   return <LandingNav immediate cart />;
 }
 
@@ -103,6 +112,14 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/drop" element={<Shop />} />
+              <Route
+                path="/business"
+                element={
+                  <Suspense fallback={null}>
+                    <Business />
+                  </Suspense>
+                }
+              />
               <Route path="/drop/:id" element={<Product />} />
               <Route path="/shop" element={<Navigate to="/drop" replace />} />
               <Route path="/shop/:id" element={<ProductRedirect />} />
