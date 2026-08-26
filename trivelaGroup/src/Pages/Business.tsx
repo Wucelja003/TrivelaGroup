@@ -185,6 +185,103 @@ function MarqueeRow({ variant }: { variant?: "b" }) {
   );
 }
 
+/* --- Spotlight: izdvojeni klijent (foto + dva podteksta) i duza prica pored.
+   PLACEHOLDER slike i tekst — zameni stvarnim radovima. --- */
+interface Spotlight {
+  image: string;
+  name: string;
+  role: string;
+  kicker: string;
+  title: string;
+  story: string;
+  tags: string[];
+}
+const SPOTLIGHTS: Spotlight[] = [
+  {
+    image: "/TrivelaGroupPhotos/IMG_2681.JPG",
+    name: "Aurora Studios",
+    role: "Brand identity & launch",
+    kicker: "Case 01",
+    title: "A launch that felt like a premiere.",
+    story:
+      "Aurora came to us with a product and no story. We built the narrative, shaped the visual identity and ran the launch across press and social — the same playbook that turns athletes into household names, aimed at a brand far outside sport. Three weeks in, they had tripled their reach and sold out the first drop.",
+    tags: ["Identity", "Launch", "Social"],
+  },
+  {
+    image: "/TrivelaGroupPhotos/IMG_4170.JPG",
+    name: "Vertex Tech",
+    role: "PR & positioning",
+    kicker: "Case 02",
+    title: "From unknown to unavoidable.",
+    story:
+      "Vertex had the kind of product the press should have been writing about — but nobody was. We opened the right doors, framed the message and put their founders in front of the audiences that mattered. By the end of the quarter, they were the name their competitors were benchmarking against.",
+    tags: ["PR", "Media", "Strategy"],
+  },
+];
+
+function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
+  return (
+    <motion.div
+      variants={container}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-80px" }}
+      className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+    >
+      {/* Foto + dva podteksta (ime + uloga) */}
+      <motion.figure
+        variants={item}
+        className={`relative ${flip ? "lg:order-2" : ""}`}
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(62,207,142,0.18),transparent_70%)]"
+        />
+        <div className="group overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(62,207,142,0.22)]">
+          <img
+            src={s.image}
+            alt={s.name}
+            loading="lazy"
+            className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+        </div>
+        <figcaption className="mt-5 flex items-baseline justify-between gap-4">
+          <span className="text-xl font-bold tracking-tight text-white">
+            {s.name}
+          </span>
+          <span className="inline-flex items-center gap-2 text-sm text-white/60">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#3ecf8e] shadow-[0_0_10px_#3ecf8e]" />
+            {s.role}
+          </span>
+        </figcaption>
+      </motion.figure>
+
+      {/* Duza prica */}
+      <motion.div variants={item} className={flip ? "lg:order-1" : ""}>
+        <span className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]">
+          {s.kicker}
+        </span>
+        <h3 className="mt-4 text-2xl font-extrabold leading-[1.12] tracking-tight sm:text-3xl">
+          {s.title}
+        </h3>
+        <p className="mt-5 text-base leading-relaxed text-white/70 sm:text-lg">
+          {s.story}
+        </p>
+        <div className="mt-7 flex flex-wrap gap-2.5">
+          {s.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-white/12 bg-white/[0.04] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-white/70"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 function Emblem({ reduce }: { reduce: boolean | null }) {
   return (
     <div className="relative h-24 w-24">
@@ -397,6 +494,49 @@ export default function Business() {
               <MarqueeRow />
               <MarqueeRow variant="b" />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== MASTERPIECES (spotlight klijenti) ===== */}
+      <section className="relative px-5 py-24 sm:px-8 sm:py-32">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <motion.span
+              variants={item}
+              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]"
+            >
+              (03) — Clients &amp; masterpieces
+            </motion.span>
+            <motion.h2
+              variants={headline}
+              className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
+            >
+              Masterpieces,{" "}
+              <span className="bg-gradient-to-r from-[#7ff0bb] to-[#3ecf8e] bg-clip-text text-transparent">
+                made together
+              </span>
+              .
+            </motion.h2>
+            <motion.p
+              variants={item}
+              className="mx-auto mt-5 max-w-xl text-white/65"
+            >
+              Every brand we touch gets the same obsession we bring to an
+              athlete's name. A few of the stories we're proud of.
+            </motion.p>
+          </motion.div>
+
+          <div className="mt-16 space-y-20 sm:mt-20 sm:space-y-28">
+            {SPOTLIGHTS.map((s, i) => (
+              <SpotlightBlock key={s.name} s={s} flip={i % 2 === 1} />
+            ))}
           </div>
         </div>
       </section>
