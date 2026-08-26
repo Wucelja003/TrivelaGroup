@@ -1,6 +1,4 @@
-// Fotke igrača za "Players who trusted our work" carousel.
-// Napomena: HEIC fajlovi iz istog foldera ne rade u browseru — kad ih
-// konvertuješ u JPG/PNG, samo dodaj putanju ovde.
+
 export const playerPhotos: string[] = [
   "/TrivelaGroupPhotos/MITROVIC.jpg",
   "/TrivelaGroupPhotos/MusaPhoto.JPG",
