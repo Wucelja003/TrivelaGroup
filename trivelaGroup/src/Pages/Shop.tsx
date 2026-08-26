@@ -349,7 +349,6 @@ export default function Shop() {
   return (
     <>
       <DropHero />
-      <CustomCase />
       <section id="drop-grid" className="min-h-screen px-5 pb-16 pt-12 sm:px-8 sm:pb-20 sm:pt-16">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
@@ -427,6 +426,7 @@ export default function Shop() {
         </div>
       </div>
       </section>
+      <CustomCase />
     </>
   );
 }

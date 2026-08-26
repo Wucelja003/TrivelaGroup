@@ -86,9 +86,14 @@ export default function CustomCase() {
   /* ---- Uspeh ---- */
   if (status === "sent") {
     return (
-      <section id="custom-case" className="scroll-mt-24 px-5 py-24 sm:px-8 sm:py-28">
+      <section
+        id="custom-case"
+        className="scroll-mt-24 px-5 py-28 sm:px-8 sm:py-32"
+      >
         <div className="mx-auto max-w-xl text-center">
-          <div className="mb-6 text-6xl text-ledena">✓</div>
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#7cc4ff] to-[#14589b] text-3xl text-white shadow-[0_16px_40px_-8px_rgba(124,196,255,0.7)]">
+            ✓
+          </div>
           <h2 className="text-3xl font-bold tracking-tight text-mastilo sm:text-4xl">
             Request received.
           </h2>
@@ -105,8 +110,11 @@ export default function CustomCase() {
   const labelCls = "mb-1.5 block text-[13px] font-semibold text-mastilo/70";
 
   return (
-    <section id="custom-case" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-28">
-      <div className="mx-auto max-w-5xl">
+    <section
+      id="custom-case"
+      className="scroll-mt-24 px-5 py-24 sm:px-8 sm:py-32"
+    >
+      <div className="relative mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-12 text-center">
           <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-mastilo/60">
@@ -126,7 +134,7 @@ export default function CustomCase() {
 
         <form
           onSubmit={submit}
-          className="grid gap-8 rounded-3xl border border-mastilo/12 bg-white p-6 shadow-[0_24px_60px_rgba(6,41,77,0.1)] sm:p-9 lg:grid-cols-[0.85fr_1.15fr]"
+          className="grid gap-8 rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-[0_40px_100px_-24px_rgba(6,41,77,0.35)] backdrop-blur-xl sm:p-10 lg:grid-cols-[0.85fr_1.15fr]"
         >
           {/* Slika */}
           <div>
@@ -134,7 +142,7 @@ export default function CustomCase() {
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="group relative flex aspect-[9/16] w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-mastilo/25 bg-mastilo/[0.03] transition-colors hover:border-ledena"
+              className="group relative flex aspect-[9/16] w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-mastilo/25 bg-gradient-to-br from-[#eaf3ff] to-white shadow-[inset_0_2px_20px_rgba(6,41,77,0.06)] transition-all hover:border-ledena hover:shadow-[0_0_30px_rgba(124,196,255,0.3)]"
             >
               {imageUrl ? (
                 <img
@@ -283,7 +291,7 @@ export default function CustomCase() {
             <button
               type="submit"
               disabled={status === "sending" || uploading}
-              className="mt-1 inline-flex items-center justify-center gap-2 self-start rounded-full bg-mastilo px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_12px_30px_rgba(6,41,77,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d3f70] disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-1 inline-flex items-center justify-center gap-2 self-start rounded-full bg-gradient-to-r from-[#06294d] to-[#14589b] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_16px_36px_-8px_rgba(6,41,77,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_44px_-8px_rgba(124,196,255,0.6)] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === "sending" ? "Sending…" : "Send my request"}
               <span aria-hidden="true">→</span>
