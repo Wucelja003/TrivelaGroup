@@ -19,14 +19,15 @@ import LandingNav from "./Components/LandingNav";
 import Intro from "./Components/Intro";
 import CartDrawer from "./Components/CartDrawer";
 import Home from "./Pages/Home";
-import Shop from "./Pages/Shop";
-import Product from "./Pages/Product";
-import Checkout from "./Pages/Checkout";
-import Gallery from "./Pages/Gallery";
-import GetInTouch from "./Pages/GetInTouch";
-import Admin from "./Pages/Admin";
-/* Business povlaci three.js (WebGL aurora) — lazy da ne uleti u glavni bundle
-   i ne uspori ostale strane; three se skida tek kad se otvori /business. */
+/* Sve strane osim landinga su lazy — svaka ide u svoj chunk, pa glavni bundle
+   ostaje mali i pocetno ucitavanje je brzo. Kod strane se skida tek kad se ona
+   otvori (Business npr. tek tada povuce three.js/WebGL auroru). */
+const Shop = lazy(() => import("./Pages/Shop"));
+const Product = lazy(() => import("./Pages/Product"));
+const Checkout = lazy(() => import("./Pages/Checkout"));
+const Gallery = lazy(() => import("./Pages/Gallery"));
+const GetInTouch = lazy(() => import("./Pages/GetInTouch"));
+const Admin = lazy(() => import("./Pages/Admin"));
 const Business = lazy(() => import("./Pages/Business"));
 import Footer from "./Components/Footer";
 import { CartProvider } from "./context/CartContext";
@@ -110,17 +111,11 @@ export default function App() {
             <HashScroll />
             <SiteIntro />
             <PageTheme />
+            <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/drop" element={<Shop />} />
-              <Route
-                path="/business"
-                element={
-                  <Suspense fallback={null}>
-                    <Business />
-                  </Suspense>
-                }
-              />
+              <Route path="/business" element={<Business />} />
               <Route path="/drop/:id" element={<Product />} />
               <Route path="/shop" element={<Navigate to="/drop" replace />} />
               <Route path="/shop/:id" element={<ProductRedirect />} />
@@ -129,6 +124,7 @@ export default function App() {
               <Route path="/getInTouch" element={<GetInTouch />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>
+            </Suspense>
             <SiteFooter />
             <SiteNav />
             <SiteCart />
