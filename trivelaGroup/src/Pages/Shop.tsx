@@ -349,7 +349,26 @@ export default function Shop() {
   return (
     <>
       <DropHero />
-      <section id="drop-grid" className="min-h-screen px-5 pb-16 pt-12 sm:px-8 sm:pb-20 sm:pt-16">
+
+      {/* Players who trusted our work — odmah posle hero-a, pre maski */}
+      <section className="px-5 pt-16 sm:px-8 sm:pt-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-mastilo">
+              Trusted by the best
+            </span>
+            <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#06294d] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
+              Players who trusted
+              <br />
+              our work
+            </h2>
+          </div>
+
+          <PlayerMarquee items={dropPlayers} />
+        </div>
+      </section>
+
+      <section id="drop-grid" className="min-h-screen px-5 pb-16 pt-16 sm:px-8 sm:pb-20 sm:pt-20">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-12">
@@ -407,22 +426,6 @@ export default function Shop() {
                 <ShopCard key={item.id} item={item} index={i} />
               ))}
           </div>
-        </div>
-
-        {/* Players carousel */}
-        <div className="mt-28 sm:mt-36">
-          <div className="mb-12 text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-mastilo">
-              Trusted by the best
-            </span>
-            <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#06294d] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
-              Players who trusted
-              <br />
-              our work
-            </h2>
-          </div>
-
-          <PlayerMarquee items={dropPlayers} />
         </div>
       </div>
       </section>
