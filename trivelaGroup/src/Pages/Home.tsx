@@ -196,10 +196,7 @@ export default function Home() {
             <TextType
               as="span"
               text={[
-                "Marketing that sticks — turning fans into believers.",
-                "PR that opens doors and keeps them wide open.",
-                "Consulting that makes a real difference off the pitch.",
-                "Cases with your favorite footballers, made to carry.",
+                "Exclusive boutique agency for world-class players - elite vision, timeless legacy & unstoppable passion",
               ]}
               typingSpeed={55}
               deletingSpeed={28}
@@ -245,12 +242,13 @@ export default function Home() {
       <div data-theme="green">
         <WhatWeDo />
       </div>
+       <div data-theme="blue">
+        <PlayersShowcase />
+      </div>
       <div data-theme="deep">
         <SeeOurWork />
       </div>
-      <div data-theme="blue">
-        <PlayersShowcase />
-      </div>
+     
     </>
   );
 }
