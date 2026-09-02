@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabase";
-import { clearCasesCache } from "./useCases";
+import { clearCasesCache, clearCollectionsCache } from "./useCases";
 
 /*
  * CRUD nad maskicama za /admin.
@@ -101,6 +101,8 @@ export async function createCollection(name: string): Promise<void> {
     .from("collections")
     .insert({ slug: baseSlug(clean), name: clean });
   if (error) throw new Error(error.message);
+  /* Da se nova kolekcija odmah pojavi u Drop filteru */
+  clearCollectionsCache();
 }
 
 /* Cist slug iz imena: mala slova, crtice, bez znakova. Prazan (npr. ime na

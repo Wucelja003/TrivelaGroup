@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import type { CaseItem, CollectionName } from "./cases";
+import { collections as staticCollections } from "./cases";
 import { seedCases } from "./seedCases";
 
 // Deljeni cache — svi komponenti povuku podatke jednom
@@ -12,6 +13,61 @@ let inflight: Promise<CaseItem[]> | null = null;
 export function clearCasesCache(): void {
   cache = null;
   inflight = null;
+}
+
+/* --- Kolekcije (za filter u prodavnici) --- */
+let collCache: string[] | null = null;
+let collInflight: Promise<string[]> | null = null;
+
+/* Admin poziva posle dodavanja kolekcije, da se odmah pojavi u Drop filteru. */
+export function clearCollectionsCache(): void {
+  collCache = null;
+  collInflight = null;
+}
+
+async function fetchCollections(): Promise<string[]> {
+  if (collCache) return collCache;
+  if (collInflight) return collInflight;
+
+  collInflight = (async () => {
+    const { data, error } = await supabase
+      .from("collections")
+      .select("name")
+      .order("name", { ascending: true });
+
+    if (error) throw error;
+    const names = ((data ?? []) as { name: string }[]).map((r) => r.name);
+    collCache = names;
+    return names;
+  })();
+
+  try {
+    return await collInflight;
+  } finally {
+    collInflight = null;
+  }
+}
+
+/* Spisak kolekcija iz baze (uklljucuje i nove dodate iz admina). Dok se ucitava
+   ili ako baza ne odgovara, vraca staticni fallback da filter nikad ne bude prazan. */
+export function useCollections(): string[] {
+  const [names, setNames] = useState<string[]>(collCache ?? []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchCollections()
+      .then((n) => {
+        if (!cancelled && n.length) setNames(n);
+      })
+      .catch(() => {
+        /* Baza ne odgovara — ostavi sta vec imamo, ili staticni spisak */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return names.length ? names : [...staticCollections];
 }
 
 interface ProductRow {

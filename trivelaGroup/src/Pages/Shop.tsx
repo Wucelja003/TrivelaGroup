@@ -1,12 +1,11 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  collections,
   formatPrice,
   type CaseItem,
   type CollectionName,
 } from "../data/cases";
-import { useCases } from "../data/useCases";
+import { useCases, useCollections } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import DropHero from "../Components/DropHero";
 import CustomCase from "../Components/CustomCase";
@@ -216,6 +215,7 @@ function Sidebar({
   toggleCollection,
   collectionsOpen,
   setCollectionsOpen,
+  collectionList,
 }: {
   sort: SortKey;
   setSort: (s: SortKey) => void;
@@ -223,6 +223,7 @@ function Sidebar({
   toggleCollection: (c: CollectionName) => void;
   collectionsOpen: boolean;
   setCollectionsOpen: (v: boolean) => void;
+  collectionList: CollectionName[];
 }) {
   return (
     <aside className="shop-side h-fit lg:sticky lg:top-24">
@@ -278,7 +279,7 @@ function Sidebar({
       <div className={`shop-collapse mt-1 ${collectionsOpen ? "open" : ""}`}>
         <div>
           <div className="flex flex-col gap-1 pt-4">
-            {collections.map((c) => {
+            {collectionList.map((c) => {
               const checked = selected.includes(c);
               return (
                 <button
@@ -317,6 +318,7 @@ function Sidebar({
 /* ---------- Page ---------- */
 export default function Shop() {
   const { cases, loading, error, fallback } = useCases();
+  const collectionList = useCollections();
   const [sort, setSort] = useState<SortKey>("az");
   const [selected, setSelected] = useState<CollectionName[]>([]);
   const [collectionsOpen, setCollectionsOpen] = useState(true);
@@ -401,6 +403,7 @@ export default function Shop() {
             toggleCollection={toggleCollection}
             collectionsOpen={collectionsOpen}
             setCollectionsOpen={setCollectionsOpen}
+            collectionList={collectionList}
           />
 
           {/* Grid — key okida re-animaciju pri promeni filtera */}

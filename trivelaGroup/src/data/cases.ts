@@ -1,4 +1,6 @@
-export type CollectionName = "World Cup" | "Euroleague";
+/* Ime kolekcije je slobodan tekst — kolekcije se prave iz admina (tabela
+   `collections` u bazi), pa nije fiksni union. */
+export type CollectionName = string;
 
 export interface CaseItem {
   id: string; // slug iz baze — koristi se u ruti /shop/:id
