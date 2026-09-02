@@ -201,17 +201,17 @@ interface Spotlight {
 const SPOTLIGHTS: Spotlight[] = [
   {
     video: "/videoTrivela-web/restaurant.mp4",
-    name: "Ambar Restaurant",
+    name: "Restaurant Savic",
     role: "Brand & social film",
     kicker: "Case 01",
     title: "A table worth talking about.",
     story:
-      "We gave Ambar more than a menu — we gave it a mood. From the plating to the lighting, we shot and cut the content that fills the room every night, and built the social presence that keeps the reservations coming. Proof that the same eye for a story works just as well in a kitchen as on a pitch.",
+      "We gave Restaurant Savic more than a menu — we gave it a mood. From the plating to the lighting, we shot and cut the content that fills the room every night, and built the social presence that keeps the reservations coming. Proof that the same eye for a story works just as well in a kitchen as on a pitch.",
     tags: ["Content", "Social", "Film"],
   },
   {
     video: "/videoTrivela-web/restaurant_2.mp4",
-    name: "Ambar — Grand opening",
+    name: "Restaurant Savic — Grand opening",
     role: "Launch campaign",
     kicker: "Case 02",
     title: "Opening night, sold out.",
