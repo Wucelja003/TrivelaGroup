@@ -21,6 +21,7 @@ const navLinks = [
   { to: "/#what-we-do", label: "What we do" },
   { to: "/gallery", label: "Gallery" },
   { to: "/drop", label: "Trivela Drop" },
+  { to: "/business", label: "Trivela Business" },
   { to: "/getInTouch", label: "Get In Touch" },
 ];
 
