@@ -1,32 +1,78 @@
-/* ===== Who we are — tim iza Trivele ===== */
+/* ===== Who we are — tim iza Trivele (4 uloge sa headcount-om) ===== */
 
 /* Sidro: kad se skrola sa /#who-we-are, da ne stane pod fiksnu traku */
 .wwa {
   scroll-margin-top: 6rem;
 }
 
-/* Ikonica u zelenom krugu */
-.wwa-icon {
+/* Akcenat ikonica u gornjem desnom uglu — suptilna, "watermark" */
+.wwa-badge {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
   display: inline-flex;
-  height: 3.25rem;
-  width: 3.25rem;
+  height: 2.6rem;
+  width: 2.6rem;
   align-items: center;
   justify-content: center;
-  border-radius: 0.9rem;
-  border: 1px solid rgba(150, 255, 0, 0.3);
-  background: rgba(150, 255, 0, 0.08);
-  color: #96ff00;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(150, 255, 0, 0.18);
+  background: rgba(150, 255, 0, 0.05);
+  color: rgba(150, 255, 0, 0.55);
   transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s ease;
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.wwa-icon svg {
-  height: 1.7rem;
-  width: 1.7rem;
+.wwa-badge svg {
+  height: 1.4rem;
+  width: 1.4rem;
 }
-.wwa-card:hover .wwa-icon {
+.wwa-card:hover .wwa-badge {
+  color: #96ff00;
+  border-color: rgba(150, 255, 0, 0.45);
+  box-shadow: 0 0 22px rgba(150, 255, 0, 0.25);
   transform: translateY(-2px) rotate(-4deg);
-  box-shadow: 0 0 24px rgba(150, 255, 0, 0.28);
+}
+
+/* Veliki broj (headcount) */
+.wwa-num {
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 6vw, 4.6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  padding-bottom: 0.06em; /* prostor za repove gradijent teksta */
+  filter: drop-shadow(0 0 26px rgba(150, 255, 0, 0.22));
+}
+
+/* Tanka gradijent linija ispod broja */
+.wwa-line {
+  margin: 0.9rem 0 1.1rem;
+  height: 2px;
+  width: 2.75rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #96ff00, rgba(150, 255, 0, 0));
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.wwa-card:hover .wwa-line {
+  width: 4rem;
+}
+
+/* Uloga */
+.wwa-role {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+}
+
+/* Opis */
+.wwa-desc {
+  margin-top: 0.5rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 /* Ulazak kartica na skrol — iz dubine, jedna za drugom.
@@ -47,7 +93,7 @@
 
 .wwa-grid.in .wwa-card-wrap {
   animation: wwa-card-in 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: calc(var(--i) * 0.13s);
+  animation-delay: calc(var(--i) * 0.12s);
 }
 
 @keyframes wwa-card-in {
@@ -74,7 +120,7 @@
     filter: none;
     animation: none;
   }
-  .wwa-card:hover .wwa-icon {
+  .wwa-card:hover .wwa-badge {
     transform: none;
   }
 }
