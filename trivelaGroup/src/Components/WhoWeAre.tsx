@@ -53,7 +53,7 @@ const ROLES: Role[] = [
   },
   {
     count: 6,
-    title: "Designers",
+    title: "Graphic Designers",
     copy: "Giving every athlete a visual identity of their own.",
     icon: (
       <>

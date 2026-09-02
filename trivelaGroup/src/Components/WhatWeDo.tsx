@@ -79,19 +79,19 @@ const services: Service[] = [
   {
     num: "01.",
     title: "Marketing",
-    desc: "Creative campaigns, social media and digital strategy that build a recognizable brand — on and off the pitch.",
+    desc: "Managing and elevating your digital presence across today’s most relevant social media platforms. Our services include full profile management, verification, content creation across posts, reels and stories, supported by high-end video production and premium visual design.",
     icon: <MegaphoneIcon />,
   },
   {
     num: "02.",
     title: "PR",
-    desc: "Public relations, media appearances and reputation management for athletes, clubs and brands.",
+    desc: "A dedicated PR Officer focused on building and protecting your public image through strategic media relations, tailored PR campaigns and carefully managed communication.",
     icon: <MicrophoneIcon />,
   },
   {
     num: "03.",
     title: "Consulting",
-    desc: "Career guidance, personal branding and smart business decisions beyond the game.",
+    desc: "A dedicated Marketing Manager focused on building and growing your personal brand, while managing sponsorship agreements and identifying new commercial and partnership opportunities.",
     icon: <LightbulbIcon />,
   },
 ];
@@ -162,7 +162,7 @@ export default function WhatWeDo() {
             What we do
           </span>
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Three pillars, one goal —{" "}
+            Different skills, one vision —{" "}
             <span className="text-zelena">making you unmissable.</span>
           </h2>
         </div>

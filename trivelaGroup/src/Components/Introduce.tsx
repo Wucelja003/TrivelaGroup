@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import "./Introduce.css";
 
 const stats = [
-  { value: "20+", label: "Athletes" },
-  { value: "50+", label: "Projects" },
+  { value: "60+", label: "Athletes" },
+  { value: "100+", label: "Projects" },
   { value: "3", label: "Core services" },
 ];
 
@@ -203,14 +203,19 @@ export default function Introduce() {
             <span className="intro-vline" />
             <div className="max-w-xl space-y-5">
               <p className="text-lg leading-relaxed text-white/80 sm:text-xl">
-                <span className="text-white">A young, creative agency</span>{" "}
-                built around marketing, PR and consulting — we help footballers
-                and brands tell their story and stand out, on and off the pitch.
+                <span className="text-white">Trivela Group is a young,</span>{" "}
+              forward-thinking creative agency built by people who share a 
+              genuine passion for sports,marketing, design, and storytelling.
+              <br></br>
+              We specialize in Social Media Management, PR, creative content, and strategic marketing, 
+              helping athletes build powerful personal brands that go far beyond their performance on the field.
+
+
               </p>
               <p className="leading-relaxed text-white/55">
-                Beyond managing the profiles of our clients, we craft custom
-                phone cases featuring your favorite players — turning passion for
-                football into something you can carry every day.
+                By combining creativity, strategy, and a deep understanding of the sports industry, 
+                we turn careers into stories, personalities into brands, and athletes into icons.
+                We don’t just manage presence. We build iconic athlete brands.
               </p>
             </div>
           </div>

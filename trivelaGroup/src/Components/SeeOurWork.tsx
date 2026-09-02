@@ -69,7 +69,7 @@ export default function SeeOurWork() {
           to="/gallery"
           className="mt-12 inline-flex items-center gap-2 rounded-full bg-zelena px-8 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-teget shadow-[0_10px_30px_rgba(150,255,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_40px_rgba(150,255,0,0.5)]"
         >
-          See our work
+          Trivela Group Gallery
           <span aria-hidden="true">→</span>
         </Link>
       </div>
