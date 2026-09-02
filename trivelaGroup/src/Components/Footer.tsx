@@ -83,9 +83,7 @@ export default function Footer() {
               Who We Are
             </h4>
             <p className="text-xl leading-tight f-ink sm:text-2xl">
-              A marketing, PR &amp; consulting studio
-              <br />
-              crafting football cases with care
+              Crafting iconic athlete brands.
             </p>
             <div className="flex flex-col gap-1 text-sm f-muted">
               <a
