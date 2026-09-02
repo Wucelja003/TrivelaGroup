@@ -114,22 +114,35 @@ alter table order_items      enable row level security;
 alter table admins           enable row level security;
 
 -- Katalog: javno čitljiv (aktivni proizvodi), izmene samo admin
+-- `drop policy if exists` pre svake da se skripta moze pustiti VISE PUTA bez
+-- greske "policy already exists" (idempotentno).
+drop policy if exists "read collections"  on collections;
 create policy "read collections"  on collections      for select using (true);
+drop policy if exists "admin collections" on collections;
 create policy "admin collections" on collections      for all using (is_admin()) with check (is_admin());
 
+drop policy if exists "read products"     on products;
 create policy "read products"     on products         for select using (active or is_admin());
+drop policy if exists "admin products"    on products;
 create policy "admin products"    on products         for all using (is_admin()) with check (is_admin());
 
+drop policy if exists "read variants"     on product_variants;
 create policy "read variants"     on product_variants for select using (true);
+drop policy if exists "admin variants"    on product_variants;
 create policy "admin variants"    on product_variants for all using (is_admin()) with check (is_admin());
 
 -- Porudžbine: čita/menja samo admin iz browsera.
 -- Kreiranje porudžbine ide preko servera (service_role zaobilazi RLS) da se cena ne bi falsifikovala.
+drop policy if exists "admin read orders"    on orders;
 create policy "admin read orders"    on orders      for select using (is_admin());
+drop policy if exists "admin manage orders"  on orders;
 create policy "admin manage orders"  on orders      for all using (is_admin()) with check (is_admin());
+drop policy if exists "admin read items"     on order_items;
 create policy "admin read items"     on order_items for select using (is_admin());
+drop policy if exists "admin manage items"   on order_items;
 create policy "admin manage items"   on order_items for all using (is_admin()) with check (is_admin());
 
+drop policy if exists "admin read admins"    on admins;
 create policy "admin read admins"    on admins       for select using (is_admin());
 
 -- =====================================================================
@@ -191,18 +204,22 @@ insert into storage.buckets (id, name, public)
 values ('product-images', 'product-images', true)
 on conflict (id) do nothing;
 
+drop policy if exists "public read product images" on storage.objects;
 create policy "public read product images"
   on storage.objects for select
   using (bucket_id = 'product-images');
 
+drop policy if exists "admin insert product images" on storage.objects;
 create policy "admin insert product images"
   on storage.objects for insert
   with check (bucket_id = 'product-images' and is_admin());
 
+drop policy if exists "admin update product images" on storage.objects;
 create policy "admin update product images"
   on storage.objects for update
   using (bucket_id = 'product-images' and is_admin());
 
+drop policy if exists "admin delete product images" on storage.objects;
 create policy "admin delete product images"
   on storage.objects for delete
   using (bucket_id = 'product-images' and is_admin());
@@ -230,8 +247,11 @@ create table if not exists custom_requests (
 alter table custom_requests enable row level security;
 
 -- Svako sme da posalje zahtev; cita/menja samo admin.
+drop policy if exists "public submit custom" on custom_requests;
 create policy "public submit custom" on custom_requests for insert with check (true);
+drop policy if exists "admin read custom"    on custom_requests;
 create policy "admin read custom"    on custom_requests for select using (is_admin());
+drop policy if exists "admin manage custom"  on custom_requests;
 create policy "admin manage custom"  on custom_requests for update using (is_admin()) with check (is_admin());
 
 -- Bucket za slike koje kupci otpremaju uz zahtev.
@@ -239,14 +259,17 @@ insert into storage.buckets (id, name, public)
 values ('custom-uploads', 'custom-uploads', true)
 on conflict (id) do nothing;
 
+drop policy if exists "public upload custom images" on storage.objects;
 create policy "public upload custom images"
   on storage.objects for insert
   with check (bucket_id = 'custom-uploads');
 
+drop policy if exists "public read custom images" on storage.objects;
 create policy "public read custom images"
   on storage.objects for select
   using (bucket_id = 'custom-uploads');
 
+drop policy if exists "admin delete custom images" on storage.objects;
 create policy "admin delete custom images"
   on storage.objects for delete
   using (bucket_id = 'custom-uploads' and is_admin());
