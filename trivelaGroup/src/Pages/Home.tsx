@@ -6,7 +6,6 @@ import { markDone, onDone } from "../lib/sequence";
 import HeroCorners from "../Components/HeroCorners";
 import SectionThemes from "../Components/SectionThemes";
 import StaggeredText from "../Components/StaggeredText";
-import TextType from "../Components/TextType";
 import HeroVideo from "../Components/HeroVideo";
 import RotatingCards from "../Components/RotatingCards";
 import Introduce from "../Components/Introduce";
@@ -48,7 +47,7 @@ export default function Home() {
     ).matches;
 
     const ctx = gsap.context(() => {
-      const targets = [".hero-subtitle", ".hero-actions", ".hero-cards"];
+      const targets = [".hero-actions", ".hero-cards"];
 
       if (reduce) {
         markDone("hero");
@@ -65,33 +64,21 @@ export default function Home() {
       const play = () => {
         tl = gsap.timeline({ onComplete: () => markDone("hero") });
 
-        /* Naslov i tagline vodi StaggeredText — ovo krece posle njih.
-           Duze trajanje + mekši ease da prelaz bude gladak. */
+        /* Naslov, tagline i subtitle vode StaggeredText (ispisuju se rec po
+           rec) — ovde ostaju samo dugme i kartice, posle njih. */
         tl.fromTo(
-          ".hero-subtitle",
-          { autoAlpha: 0, y: 20, filter: "blur(8px)" },
+          ".hero-actions",
+          { autoAlpha: 0, y: 24, scale: 0.97, filter: "blur(8px)" },
           {
             autoAlpha: 1,
             y: 0,
+            scale: 1,
             filter: "blur(0px)",
-            duration: 0.9,
+            duration: 1,
             ease: "power2.out",
-            delay: 0.95,
+            delay: 1.6,
           },
         )
-          .fromTo(
-            ".hero-actions",
-            { autoAlpha: 0, y: 24, scale: 0.97, filter: "blur(8px)" },
-            {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              filter: "blur(0px)",
-              duration: 1,
-              ease: "power2.out",
-            },
-            "-=0.55",
-          )
           .fromTo(
             ".hero-cards",
             { autoAlpha: 0, y: 70, scale: 0.97 },
@@ -182,7 +169,7 @@ export default function Home() {
           />
           <StaggeredText
             as="p"
-            text="Crafting icons athlete brands"
+            text="Crafting iconic athlete brands."
             className="hero-tagline"
             segmentBy="words"
             direction="top"
@@ -193,15 +180,16 @@ export default function Home() {
             enabled={heroIn}
           />
           <div className="hero-subtitle">
-            <TextType
+            <StaggeredText
               as="span"
-              text={[
-                "Exclusive boutique agency for world-class players - elite vision, timeless legacy & unstoppable passion",
-              ]}
-              typingSpeed={55}
-              deletingSpeed={28}
-              pauseDuration={2000}
-              cursorCharacter="|"
+              text="Exclusive boutique agency for world-class players: elite vision, timeless legacy & unstoppable passion."
+              segmentBy="words"
+              direction="top"
+              blur
+              delay={55}
+              duration={0.7}
+              startDelay={0.6}
+              enabled={heroIn}
             />
           </div>
 
