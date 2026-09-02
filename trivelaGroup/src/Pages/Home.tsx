@@ -6,6 +6,7 @@ import { markDone, onDone } from "../lib/sequence";
 import HeroCorners from "../Components/HeroCorners";
 import SectionThemes from "../Components/SectionThemes";
 import StaggeredText from "../Components/StaggeredText";
+import Typewriter from "../Components/Typewriter";
 import HeroVideo from "../Components/HeroVideo";
 import RotatingCards from "../Components/RotatingCards";
 import Introduce from "../Components/Introduce";
@@ -26,12 +27,25 @@ export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   /* Tekst (naslov, tagline) ide preko StaggeredText-a i ceka intro zavesu */
   const [heroIn, setHeroIn] = useState(false);
+  /* Subtitle se kuca "kao rukom" TEK kad se ostali hero elementi pojave
+     (naslov, tagline, dugme, kartice) — signal je markDone("hero"). */
+  const [subtitleStart, setSubtitleStart] = useState(false);
 
   useEffect(() => {
     const off = onDone("intro", () => setHeroIn(true));
     /* Osigurac: ako intro nikad ne javi da je gotov, tekst svejedno mora da
        se pojavi — nikad ne ostavljaj sadrzaj zavisan od animacije. */
     const safety = window.setTimeout(() => setHeroIn(true), 7000);
+    return () => {
+      off();
+      window.clearTimeout(safety);
+    };
+  }, []);
+
+  useEffect(() => {
+    const off = onDone("hero", () => setSubtitleStart(true));
+    /* Osigurac: kucanje mora da krene i ako sekvenca zapne */
+    const safety = window.setTimeout(() => setSubtitleStart(true), 9000);
     return () => {
       off();
       window.clearTimeout(safety);
@@ -180,16 +194,10 @@ export default function Home() {
             enabled={heroIn}
           />
           <div className="hero-subtitle">
-            <StaggeredText
-              as="span"
+            <Typewriter
               text="Exclusive boutique agency for world-class players: elite vision, timeless legacy & unstoppable passion."
-              segmentBy="words"
-              direction="top"
-              blur
-              delay={55}
-              duration={0.7}
-              startDelay={0.6}
-              enabled={heroIn}
+              start={subtitleStart}
+              speed={42}
             />
           </div>
 

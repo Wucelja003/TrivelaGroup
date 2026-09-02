@@ -1,0 +1,19 @@
+/* Kursor koji trepće dok se kuca, pa nestane na kraju (currentColor = boja teksta) */
+.tw-caret {
+  display: inline-block;
+  margin-left: 1px;
+  font-weight: 400;
+  animation: tw-blink 0.9s steps(1) infinite;
+}
+
+@keyframes tw-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-caret {
+    animation: none;
+  }
+}
