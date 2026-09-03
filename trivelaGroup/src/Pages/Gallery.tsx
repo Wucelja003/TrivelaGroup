@@ -15,6 +15,28 @@ import "./Gallery.css";
  * Za sad su sve slike "Match Day" — ostali tabovi se pojave čim neka slika u
  * galleryPhotos.ts dobije tu kategoriju.
  */
+/* Svaka kategorija ima svoj oblik kartice — Match Day su portret 9:16, a
+   Verifications su landscape (screenshot-i profila, ~2:1). Ostale koriste
+   podrazumevani portret. */
+interface CatShape {
+  aspect: number;
+  width: string;
+  height: string;
+}
+const DEFAULT_SHAPE: CatShape = {
+  aspect: 9 / 16,
+  width: "clamp(240px, 30vw, 400px)",
+  height: "h-[82vh] min-h-[560px]",
+};
+const CAT_SHAPE: Partial<Record<GalleryCategory, CatShape>> = {
+  "Match Day": DEFAULT_SHAPE,
+  "Trivela Verifications": {
+    aspect: 2 / 1,
+    width: "clamp(320px, 52vw, 720px)",
+    height: "h-[60vh] min-h-[360px]",
+  },
+};
+
 export default function Gallery() {
   // Kategorije koje imaju bar jednu sliku (prazne se ne prikazuju)
   const available = useMemo(
@@ -34,6 +56,8 @@ export default function Gallery() {
       galleryPhotos.filter((p) => p.category === active).map((p) => p.src),
     [active]
   );
+
+  const shape = CAT_SHAPE[active] ?? DEFAULT_SHAPE;
 
   return (
     <section className="min-h-screen bg-teget pb-24 pt-40 sm:pt-48">
@@ -74,12 +98,13 @@ export default function Gallery() {
 
       {/* Carousel — preko CELE širine strane (edge-to-edge), 9:16 kartice.
           `key` re-inicijalizuje pri promeni kategorije da se slike rasporede. */}
-      <div className="relative h-[82vh] min-h-[560px] w-full">
+      <div className={`relative w-full ${shape.height}`}>
         {images.length > 0 ? (
           <GradientCarousel
             key={active}
             images={images}
-            cardAspectRatio={9 / 16}
+            cardAspectRatio={shape.aspect}
+            cardWidth={shape.width}
           />
         ) : (
           <div className="flex h-full items-center justify-center text-white/40">

@@ -24,6 +24,8 @@ export interface GradientCarouselProps {
   enableKeyboard?: boolean;
   onCardChange?: (index: number) => void;
   cardAspectRatio?: number;
+  /** CSS sirina kartice (npr. "clamp(240px, 30vw, 400px)") */
+  cardWidth?: string;
   initialIndex?: number;
 }
 
@@ -62,6 +64,7 @@ const GradientCarousel: React.FC<GradientCarouselProps> = ({
   enableKeyboard = true,
   onCardChange,
   cardAspectRatio = 4 / 5,
+  cardWidth = "clamp(240px, 30vw, 400px)",
   initialIndex = 0,
 }) => {
   const imagesKey = JSON.stringify(images);
@@ -805,7 +808,7 @@ const GradientCarousel: React.FC<GradientCarouselProps> = ({
             }}
             className="absolute left-1/2 top-1/2 will-change-transform"
             style={{
-              width: "clamp(240px, 30vw, 400px)",
+              width: cardWidth,
               aspectRatio: String(cardAspectRatio),
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
