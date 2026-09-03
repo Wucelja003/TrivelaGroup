@@ -805,7 +805,7 @@ const GradientCarousel: React.FC<GradientCarouselProps> = ({
             }}
             className="absolute left-1/2 top-1/2 will-change-transform"
             style={{
-              width: "min(30vw, 380px)",
+              width: "clamp(240px, 30vw, 400px)",
               aspectRatio: String(cardAspectRatio),
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",

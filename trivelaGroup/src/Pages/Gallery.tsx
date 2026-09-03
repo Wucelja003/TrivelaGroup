@@ -36,8 +36,8 @@ export default function Gallery() {
   );
 
   return (
-    <section className="min-h-screen bg-teget px-5 pb-24 pt-40 sm:px-8 sm:pt-48">
-      <div className="mx-auto max-w-7xl">
+    <section className="min-h-screen bg-teget pb-24 pt-40 sm:pt-48">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Header */}
         <div className="mb-10 text-center">
           <h1 className="bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-5xl font-extrabold leading-none tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.3))] sm:text-6xl lg:text-7xl">
@@ -72,11 +72,15 @@ export default function Gallery() {
         )}
       </div>
 
-      {/* Carousel — full width, fiksna visina. `key` re-inicijalizuje pri promeni
-          kategorije da se novi set slika lepo rasporedi. */}
-      <div className="relative mx-auto h-[68vh] min-h-[440px] w-full max-w-[1500px]">
+      {/* Carousel — preko CELE širine strane (edge-to-edge), 9:16 kartice.
+          `key` re-inicijalizuje pri promeni kategorije da se slike rasporede. */}
+      <div className="relative h-[82vh] min-h-[560px] w-full">
         {images.length > 0 ? (
-          <GradientCarousel key={active} images={images} cardAspectRatio={4 / 5} />
+          <GradientCarousel
+            key={active}
+            images={images}
+            cardAspectRatio={9 / 16}
+          />
         ) : (
           <div className="flex h-full items-center justify-center text-white/40">
             No photos in this category yet.
