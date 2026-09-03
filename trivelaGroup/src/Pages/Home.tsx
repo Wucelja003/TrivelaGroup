@@ -14,14 +14,21 @@ import WhoWeAre from "../Components/WhoWeAre";
 import WhatWeDo from "../Components/WhatWeDo";
 import SeeOurWork from "../Components/SeeOurWork";
 import PlayersShowcase from "../Components/PlayersShowcase";
-import { galleryPhotos } from "../data/galleryPhotos";
 import "./Home.css";
 
-// Izbor matchday postera za rotirajući točak (svaki 3. za raznovrsnost)
-const heroImages = galleryPhotos
-  .filter((_, i) => i % 3 === 0)
-  .slice(0, 12)
-  .map((p) => p.src);
+// Slike za rotirajući točak u hero-u — iz public/TrivelaHero
+const heroImages = [
+  "/TrivelaHero/IMG_3620.JPG",
+  "/TrivelaHero/IMG_4181.JPG",
+  "/TrivelaHero/IMG_4878.jpg",
+  "/TrivelaHero/IMG_7923.JPG",
+  "/TrivelaHero/IMG_8577.JPG",
+  "/TrivelaHero/IMG_9469.JPG",
+  "/TrivelaHero/IMG_9537.JPG",
+  "/TrivelaHero/kostov-hapoel.jpg",
+  "/TrivelaHero/petko_lagalaxy.jpg",
+  "/TrivelaHero/whatsapp-1.jpeg",
+];
 
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
