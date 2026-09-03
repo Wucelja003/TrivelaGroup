@@ -14,6 +14,7 @@ import WhoWeAre from "../Components/WhoWeAre";
 import WhatWeDo from "../Components/WhatWeDo";
 import SeeOurWork from "../Components/SeeOurWork";
 import PlayersShowcase from "../Components/PlayersShowcase";
+import Pricing from "../Components/Pricing";
 import "./Home.css";
 
 // Slike za rotirajući točak u hero-u — iz public/TrivelaHero
@@ -247,6 +248,9 @@ export default function Home() {
       </div>
        <div data-theme="blue">
         <PlayersShowcase />
+      </div>
+      <div data-theme="blue">
+        <Pricing />
       </div>
       <div data-theme="deep">
         <SeeOurWork />
