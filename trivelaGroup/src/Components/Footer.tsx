@@ -87,16 +87,10 @@ export default function Footer() {
             </p>
             <div className="flex flex-col gap-1 text-sm f-muted">
               <a
-                href="mailto:info@trivelagroup.com"
+                href="mailto:trivelabusiness@gmail.com"
                 className="transition-colors duration-300 hover:f-accent-h"
               >
-                info@trivelagroup.com
-              </a>
-              <a
-                href="mailto:contact@trivelagroup.com"
-                className="transition-colors duration-300 hover:f-accent-h"
-              >
-                contact@trivelagroup.com
+                trivelabusiness@gmail.com
               </a>
             </div>
           </div>

@@ -14,15 +14,14 @@
   isolation: isolate;
 }
 
-/* Aurora + preliv stoje fiksirani iza cele strane (kao site-bg na home-u),
-   pa svaka sekcija lezi na istoj zivoj podlozi. */
+
 .biz-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   background: #14171a; /* ako WebGL padne, ostaje ugljena siva */
 }
-/* Zatamnjenje ka dnu + blagi vinjet, da beli tekst svuda ima kontrast */
+
 .biz-bg::after {
   content: "";
   position: absolute;
@@ -57,13 +56,12 @@
   );
 }
 
-/* --- Klijenti: dve trake logotipa koje klize u suprotnim smerovima
-   (isti obrazac kao Partners na Trivela Group), samo u smaragdnoj temi. --- */
+
 .biz-marquee {
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  /* Krajevi se gube u pozadinu, bez tvrdog reza */
+
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,

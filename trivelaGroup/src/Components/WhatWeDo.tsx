@@ -78,7 +78,7 @@ function LightbulbIcon() {
 const services: Service[] = [
   {
     num: "01.",
-    title: "Marketing",
+    title: "Social Media Managment",
     desc: "Managing and elevating your digital presence across today’s most relevant social media platforms. Our services include full profile management, verification, content creation across posts, reels and stories, supported by high-end video production and premium visual design.",
     icon: <MegaphoneIcon />,
   },
@@ -90,7 +90,7 @@ const services: Service[] = [
   },
   {
     num: "03.",
-    title: "Consulting",
+    title: "Marketing",
     desc: "A dedicated Marketing Manager focused on building and growing your personal brand, while managing sponsorship agreements and identifying new commercial and partnership opportunities.",
     icon: <LightbulbIcon />,
   },

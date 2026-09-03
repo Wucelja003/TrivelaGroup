@@ -4,19 +4,6 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 import AuroraField from "../Components/AuroraField";
 import "./Business.css";
 
-/*
- * Trivela Business — strana za saradnju VAN sporta. Ista prica koja je od
- * sportista napravila brendove, sada za firme, osnivace i marke. Dole je
- * pregled klijenata.
- *
- * Boje: siva iz "Trivela Business" dugmeta + tamno/smaragdno zelena akcenat.
- * Pozadina: AuroraField (WebGL) fiksiran iza cele strane.
- *
- * PAZNJA: imena klijenata ispod su PLACEHOLDER — izmisljena da se vidi kako
- * mreza radi. Zameni ih stvarnim klijentima (i po zelji logotipima) pre nego
- * sto strana ode uzivo.
- */
-
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const container: Variants = {
@@ -37,7 +24,7 @@ const headline: Variants = {
   },
 };
 
-/* --- Stubovi "van sporta" --- */
+
 interface Pillar {
   title: string;
   copy: string;
@@ -46,14 +33,14 @@ interface Pillar {
 const PILLARS: Pillar[] = [
   {
     title: "Marketing & Content",
-    copy: "Campaigns that travel — the same instinct that turned athletes into icons, pointed straight at your market.",
+    copy: "Complete management of your brand’s digital presence: from day-to-day social media operations to premium content creation that reflects the quality and identity of your business. We build a consistent online image supported by a clear communication, content and advertising strategy.",
     icon: (
       <path d="M4 20V9m6 11V4m6 16v-7m6 7V8" />
     ),
   },
   {
     title: "PR & Media",
-    copy: "Relationships with press and platforms that put your name where the right people are already looking.",
+    copy: "Developing tailored PR strategies and building strong media relationships to increase brand visibility, strengthen reputation and create meaningful exposure. Our approach also includes strategic PR activation, corporate social responsibility initiatives and adds making.",
     icon: (
       <>
         <path d="M3 11l16-6v14L3 15z" />
@@ -62,8 +49,8 @@ const PILLARS: Pillar[] = [
     ),
   },
   {
-    title: "Brand Consulting",
-    copy: "Strategy, identity and positioning for founders and companies ready to stand out — on and off the field.",
+    title: "Marketing & Branding",
+    copy: "Building and strengthening the identity of your organization and the products, services and ideas behind it. From brand positioning and creative direction to sponsorship strategy and brand partnerships, we create opportunities that drive recognition, connection and long-term growth.",
     icon: (
       <>
         <circle cx="12" cy="12" r="8" />
@@ -399,7 +386,7 @@ export default function Business() {
             variants={headline}
             className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-6xl md:text-7xl"
           >
-            Bigger than the game.
+            Beyond the game
             <br />
             <span className="bg-gradient-to-r from-[#7ff0bb] via-[#3ecf8e] to-[#2f8f5b] bg-clip-text text-transparent">
               Built for business.

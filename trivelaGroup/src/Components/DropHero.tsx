@@ -184,8 +184,7 @@ export default function DropHero() {
           <span className="dh-title-accent">colors</span>
         </h1>
         <p className="dh-lead dh-reveal">
-          Phone cases built around the players you actually watch. Limited runs,
-          printed in Belgrade.
+         Exclusive athlete-driven drops. Limited editions by Trivela Group.
         </p>
         <div className="dh-actions dh-reveal">
           <button type="button" onClick={toCustom} className="dh-cta">
