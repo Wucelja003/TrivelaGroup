@@ -6,13 +6,15 @@ export type GalleryCategory =
   | "Match Day"
   | "Trivela Cases"
   | "Feel the atmosphere"
-  | "Our loyal clients";
+  | "Our loyal clients"
+  | "Trivela Verifications";
 
 export const GALLERY_CATEGORIES: GalleryCategory[] = [
   "Match Day",
   "Trivela Cases",
   "Feel the atmosphere",
   "Our loyal clients",
+  "Trivela Verifications",
 ];
 
 export interface GalleryPhoto {
@@ -88,4 +90,13 @@ export const galleryPhotos: GalleryPhoto[] = [
   { src: "/TrivelaGallery/petkovsatl.jpg", title: "Trivela 63", description: "Trivela Group.", category: "Match Day" },
   { src: "/TrivelaGallery/pisa.jpg", title: "Trivela 64", description: "Trivela Group.", category: "Match Day" },
   { src: "/TrivelaGallery/ratkov.jpg", title: "Trivela 65", description: "Trivela Group.", category: "Match Day" },
+  { src: "/trivelaVerifications/verifiDzodic.jpg", title: "Dzodic", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verifiKostov.jpg", title: "Kostov", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verifiMilosavljevic.jpg", title: "Milosavljevic", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verifiPrijovic.jpg", title: "Prijovic", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verifiRadojevic.jpg", title: "Radojevic", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verifiSavicRestoran.jpg", title: "Savic Restoran", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verifiUgresic.jpg", title: "Ugresic", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verifiZaric.jpg", title: "Zaric", description: "Trivela verification.", category: "Trivela Verifications" },
+  { src: "/trivelaVerifications/verification1.jpg", title: "cation1", description: "Trivela verification.", category: "Trivela Verifications" },
 ];
