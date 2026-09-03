@@ -177,8 +177,8 @@ export default function Home() {
             segmentBy="chars"
             direction="top"
             blur
-            delay={45}
-            duration={0.85}
+            delay={26}
+            duration={0.5}
             enabled={heroIn}
           />
           <StaggeredText
@@ -188,9 +188,9 @@ export default function Home() {
             segmentBy="words"
             direction="top"
             blur
-            delay={70}
-            duration={0.75}
-            startDelay={0.55}
+            delay={40}
+            duration={0.5}
+            startDelay={0.32}
             enabled={heroIn}
           />
           <div className="hero-subtitle">
