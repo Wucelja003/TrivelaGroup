@@ -27,8 +27,8 @@ const DEFAULT_SHAPE: CatShape = {
   height: "h-[640px]",
 };
 const CAT_SHAPE: Partial<Record<GalleryCategory, CatShape>> = {
-  "Match Day": DEFAULT_SHAPE,
-  "Trivela Verifications": {
+  Matchdays: DEFAULT_SHAPE,
+  Verifications: {
     aspect: "2 / 1",
     cardWidth: 460,
     height: "h-[440px]",
@@ -36,18 +36,16 @@ const CAT_SHAPE: Partial<Record<GalleryCategory, CatShape>> = {
 };
 
 export default function Gallery() {
-  // Kategorije koje imaju bar jednu sliku (prazne se ne prikazuju)
-  const available = useMemo(
-    () =>
-      GALLERY_CATEGORIES.filter((c) =>
-        galleryPhotos.some((p) => p.category === c)
-      ),
-    []
-  );
+  // Prikazujemo SVE kategorije kao tabove — i one prazne (Reels, Posts) da bi
+  // se videlo da stižu. Prazna kategorija dobije "coming soon" prazno stanje.
+  const available = GALLERY_CATEGORIES;
 
-  const [active, setActive] = useState<GalleryCategory>(
-    available[0] ?? "Match Day"
-  );
+  // Prvi tab koji stvarno ima fotke — da galerija ne otvori prazan tab.
+  const firstWithPhotos =
+    available.find((c) => galleryPhotos.some((p) => p.category === c)) ??
+    available[0];
+
+  const [active, setActive] = useState<GalleryCategory>(firstWithPhotos);
 
   const items = useMemo<LenticularCarouselItem[]>(
     () =>
@@ -67,9 +65,6 @@ export default function Gallery() {
           <h1 className="bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-5xl font-extrabold leading-none tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.3))] sm:text-6xl lg:text-7xl">
             Trivela Gallery
           </h1>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.3em] text-white/50 sm:text-base">
-            Hover to reveal · drag or arrow keys to browse
-          </p>
         </div>
 
         {/* Filter tabovi po kategorijama */}
@@ -115,8 +110,13 @@ export default function Gallery() {
             className={shape.height}
           />
         ) : (
-          <div className="flex h-64 items-center justify-center text-white/40">
-            No photos in this category yet.
+          <div className="flex h-64 flex-col items-center justify-center gap-2 text-center">
+            <span className="text-lg font-bold uppercase tracking-[0.2em] text-zelena">
+              Coming soon
+            </span>
+            <span className="text-sm text-white/45">
+              {active} are on the way — check back shortly.
+            </span>
           </div>
         )}
       </div>
