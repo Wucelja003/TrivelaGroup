@@ -22,12 +22,18 @@ gsap.registerPlugin(ScrollTrigger);
  */
 
 const IMAGES = [
-  "/hero/h-01.jpg",
-  "/hero/h-02.jpg",
-  "/hero/h-03.jpg",
-  "/hero/h-04.jpg",
-  "/hero/h-05.jpg",
-  "/hero/h-06.jpg",
+  "/dropHero/cr7.png",
+  "/dropHero/messi.png",
+  "/dropHero/mbappe.png",
+  "/dropHero/haland.png",
+  "/dropHero/ney.png",
+  "/dropHero/vini.png",
+  "/dropHero/belingem.png",
+  "/dropHero/dembele.png",
+  "/dropHero/doue.png",
+  "/dropHero/olise.png",
+  "/dropHero/musa.png",
+  "/dropHero/nole.png",
 ];
 
 interface Ring {
