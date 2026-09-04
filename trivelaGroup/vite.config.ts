@@ -7,6 +7,14 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  // React mora biti JEDNA kopija — inace @react-three/fiber (svoj reconciler)
+  // padne na "Invalid hook call / dual React".
+  resolve: {
+    dedupe: ['react', 'react-dom'],
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'three', '@react-three/fiber'],
+  },
   server: {
     open: true,
     port: 5173,

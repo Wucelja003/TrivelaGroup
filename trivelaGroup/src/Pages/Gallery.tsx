@@ -4,36 +4,34 @@ import {
   GALLERY_CATEGORIES,
   type GalleryCategory,
 } from "../data/galleryPhotos";
-import GradientCarousel from "../Components/GradientCarousel";
+import LenticularCarousel, {
+  type LenticularCarouselItem,
+} from "../Components/LenticularCarousel";
 import "./Gallery.css";
 
 /*
- * Galerija — 3D "gradient" carousel (GradientCarousel), a iznad njega filter
- * tabovi po kategorijama. Prikazuje se samo izabrana kategorija; menjaš tab i
- * carousel prelista drugu grupu.
+ * Galerija — "lenticular" carousel (R3F/three): pređeš preko slike i ona se
+ * prevrne uz naziv. Iznad su filter tabovi po kategorijama.
  *
- * Za sad su sve slike "Match Day" — ostali tabovi se pojave čim neka slika u
- * galleryPhotos.ts dobije tu kategoriju.
+ * Svaka kategorija nosi svoj oblik kartice (prirodne veličine slika) — Match
+ * Day su portret 9:16, Verifications su landscape (~2:1).
  */
-/* Svaka kategorija ima svoj oblik kartice — Match Day su portret 9:16, a
-   Verifications su landscape (screenshot-i profila, ~2:1). Ostale koriste
-   podrazumevani portret. */
 interface CatShape {
-  aspect: number;
-  width: string;
+  aspect: string;
+  cardWidth: number;
   height: string;
 }
 const DEFAULT_SHAPE: CatShape = {
-  aspect: 9 / 16,
-  width: "clamp(240px, 30vw, 400px)",
-  height: "h-[82vh] min-h-[560px]",
+  aspect: "9 / 16",
+  cardWidth: 300,
+  height: "h-[640px]",
 };
 const CAT_SHAPE: Partial<Record<GalleryCategory, CatShape>> = {
   "Match Day": DEFAULT_SHAPE,
   "Trivela Verifications": {
-    aspect: 2 / 1,
-    width: "clamp(320px, 52vw, 720px)",
-    height: "h-[60vh] min-h-[360px]",
+    aspect: "2 / 1",
+    cardWidth: 460,
+    height: "h-[440px]",
   },
 };
 
@@ -51,9 +49,11 @@ export default function Gallery() {
     available[0] ?? "Match Day"
   );
 
-  const images = useMemo(
+  const items = useMemo<LenticularCarouselItem[]>(
     () =>
-      galleryPhotos.filter((p) => p.category === active).map((p) => p.src),
+      galleryPhotos
+        .filter((p) => p.category === active)
+        .map((p) => ({ src: p.src, title: p.title, meta: p.category })),
     [active]
   );
 
@@ -68,7 +68,7 @@ export default function Gallery() {
             Trivela Gallery
           </h1>
           <p className="mt-4 text-sm font-semibold uppercase tracking-[0.3em] text-white/50 sm:text-base">
-            Drag, scroll or use arrow keys
+            Hover to reveal · drag or arrow keys to browse
           </p>
         </div>
 
@@ -96,18 +96,26 @@ export default function Gallery() {
         )}
       </div>
 
-      {/* Carousel — preko CELE širine strane (edge-to-edge), 9:16 kartice.
-          `key` re-inicijalizuje pri promeni kategorije da se slike rasporede. */}
-      <div className={`relative w-full ${shape.height}`}>
-        {images.length > 0 ? (
-          <GradientCarousel
+      {/* Carousel — preko cele širine strane. `key` re-inicijalizuje pri
+          promeni kategorije da se novi set slika rasporedi. */}
+      <div className="w-full px-2 sm:px-6">
+        {items.length > 0 ? (
+          <LenticularCarousel
             key={active}
-            images={images}
-            cardAspectRatio={shape.aspect}
-            cardWidth={shape.width}
+            items={items}
+            aspectRatio={shape.aspect}
+            cardWidth={shape.cardWidth}
+            initialIndex={Math.floor(items.length / 2)}
+            gap={30}
+            strips={34}
+            sweep={0.7}
+            foil={0.55}
+            tilt={16}
+            loop
+            className={shape.height}
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-white/40">
+          <div className="flex h-64 items-center justify-center text-white/40">
             No photos in this category yet.
           </div>
         )}
