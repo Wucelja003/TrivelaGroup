@@ -96,9 +96,9 @@ export default function Home() {
             y: 0,
             scale: 1,
             filter: "blur(0px)",
-            duration: 1,
+            duration: 0.6,
             ease: "power2.out",
-            delay: 1.6,
+            delay: 0.5,
           },
         )
           .fromTo(
@@ -108,10 +108,10 @@ export default function Home() {
               autoAlpha: 1,
               y: 0,
               scale: 1,
-              duration: 1.4,
+              duration: 0.9,
               ease: "power2.out",
             },
-            "-=0.7",
+            "-=0.45",
           );
       };
 
@@ -205,7 +205,7 @@ export default function Home() {
             <Typewriter
               text="Exclusive boutique agency for world-class players: elite vision, timeless legacy & unstoppable passion."
               start={subtitleStart}
-              speed={42}
+              speed={28}
             />
           </div>
 
