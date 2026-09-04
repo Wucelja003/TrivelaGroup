@@ -82,12 +82,11 @@
      namerno 0px sirok (plocice se odmicu transformacijom) — pa bi se slika
      stisla na sirinu ivice. */
   max-width: none;
-  /* Renderi maskica su obrezani PNG-ovi sa transparentnom pozadinom — prikazuju
-     se prirodno (bez okvira), a senka ide po obliku maske (drop-shadow prati
-     alfa kanal, ne pravougaonik). */
+  /* Renderi maskica su obrezani PNG-ovi sa transparentnom pozadinom. Bez senke
+     — na beloj podlozi je i najmeksi drop-shadow izgledao kao pravougaona
+     "pozadina" oko maske; ovako maske cisto lebde. */
   height: clamp(140px, 15vw, 250px);
   width: auto;
-  filter: drop-shadow(0 16px 30px rgba(6, 41, 77, 0.28));
 }
 
 @keyframes dh-spin {
