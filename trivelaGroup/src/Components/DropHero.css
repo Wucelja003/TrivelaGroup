@@ -85,9 +85,9 @@
   /* Renderi maskica su obrezani PNG-ovi sa transparentnom pozadinom — prikazuju
      se prirodno (bez okvira), a senka ide po obliku maske (drop-shadow prati
      alfa kanal, ne pravougaonik). */
-  height: clamp(280px, 30vw, 520px);
+  height: clamp(190px, 20vw, 340px);
   width: auto;
-  filter: drop-shadow(0 18px 34px rgba(6, 41, 77, 0.3));
+  filter: drop-shadow(0 16px 30px rgba(6, 41, 77, 0.28));
 }
 
 @keyframes dh-spin {
