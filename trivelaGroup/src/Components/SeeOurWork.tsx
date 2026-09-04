@@ -40,8 +40,7 @@ export default function SeeOurWork() {
           See our work
         </span>
         <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-          A broad spectrum of{" "}
-          <span className="text-zelena">what we make.</span>
+          Our Gallery{" "}
         </h2>
 
         {/* Karusel — belo nasledjuje boju za strelice/traku na tamnoj podlozi */}
@@ -56,7 +55,7 @@ export default function SeeOurWork() {
             perspective={900}
             borderRadius={16}
             loop
-            showTitles
+            showTitles={false}
             showControls
             showDots
             enableDrag
@@ -69,7 +68,7 @@ export default function SeeOurWork() {
           to="/gallery"
           className="mt-12 inline-flex items-center gap-2 rounded-full bg-zelena px-8 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-teget shadow-[0_10px_30px_rgba(150,255,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_40px_rgba(150,255,0,0.5)]"
         >
-          Trivela Group Gallery
+           SEE MORE 
           <span aria-hidden="true">→</span>
         </Link>
       </div>
