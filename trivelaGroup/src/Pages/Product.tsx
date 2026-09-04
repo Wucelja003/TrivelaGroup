@@ -1,10 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { formatPrice, type CaseItem } from "../data/cases";
 import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import { PHONE_MODELS as MODELS } from "../data/phoneModels";
 import "./Product.css";
+
+/* Đoković maskica (Legends) ima vise varijacija boje — swatch-evi menjaju sliku.
+   Slike: /public/DjokovicCases (4:5). Vezano za slug proizvoda. */
+const DJOKOVIC_SLUG = "novak-djokovic";
+const DJOKOVIC_COLORS = [
+  { name: "Green", file: "DjokovicZelena", swatch: "#1f7a3d" },
+  { name: "Light Green", file: "DjokovicSvetloZelena", swatch: "#a3e043" },
+  { name: "Blue", file: "DjokovicPlava", swatch: "#2b6cb0" },
+  { name: "Black", file: "DjokovicCrna", swatch: "#1a1a1a" },
+];
 
 /* ---------- Icons ---------- */
 function Chevron({ open = false }: { open?: boolean }) {
@@ -114,8 +125,14 @@ export default function Product() {
   const [model, setModel] = useState(MODELS[0]);
   const [open, setOpen] = useState(false);
   const [added, setAdded] = useState(false);
+  const [colorIdx, setColorIdx] = useState(0);
   const ddRef = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
+  const reduce = useReducedMotion();
+
+  const isDjok = !!item && item.id === DJOKOVIC_SLUG;
+  const djokColor = DJOKOVIC_COLORS[colorIdx];
+  const djokImg = isDjok ? `/DjokovicCases/${djokColor.file}.PNG` : null;
 
   // zatvori dropdown na klik van njega
   useEffect(() => {
@@ -181,12 +198,31 @@ export default function Product() {
           {/* Left — big visual */}
           <div className="prod-left">
             <div
-              className="relative aspect-[9/16] overflow-hidden rounded-3xl border border-mastilo/12"
+              className={`relative overflow-hidden rounded-3xl border border-mastilo/12 ${
+                isDjok ? "aspect-[4/5] bg-[#eef3f9]" : "aspect-[9/16]"
+              }`}
               style={{
-                boxShadow: `0 0 60px ${item.color}22`,
+                boxShadow: `0 0 60px ${
+                  isDjok ? djokColor.swatch : item.color
+                }22`,
               }}
             >
-              <CaseVisual item={item} big />
+              {isDjok ? (
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.img
+                    key={djokColor.file}
+                    src={djokImg ?? undefined}
+                    alt={`${item.name} — ${djokColor.name}`}
+                    initial={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
+                    transition={{ duration: reduce ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </AnimatePresence>
+              ) : (
+                <CaseVisual item={item} big />
+              )}
             </div>
           </div>
 
@@ -209,6 +245,39 @@ export default function Product() {
               built to show your colors. Precise cutouts, wireless-charging
               friendly.
             </p>
+
+            {/* Izbor boje — samo za Đoković maskicu (vise varijacija) */}
+            {isDjok && (
+              <div className="mt-9 max-w-md">
+                <div className="mb-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-mastilo/65">
+                  Colour —{" "}
+                  <span className="normal-case tracking-normal text-mastilo/45">
+                    {djokColor.name}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  {DJOKOVIC_COLORS.map((c, i) => {
+                    const on = i === colorIdx;
+                    return (
+                      <button
+                        key={c.file}
+                        type="button"
+                        onClick={() => setColorIdx(i)}
+                        aria-label={c.name}
+                        aria-pressed={on}
+                        title={c.name}
+                        className={`h-9 w-9 rounded-full border transition-all duration-200 ${
+                          on
+                            ? "border-mastilo ring-2 ring-mastilo ring-offset-2 ring-offset-white"
+                            : "border-mastilo/20 hover:scale-110"
+                        }`}
+                        style={{ backgroundColor: c.swatch }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Model selector */}
             <div className="mt-9 max-w-md">
@@ -265,13 +334,13 @@ export default function Product() {
                 onClick={() => {
                   if (!item) return;
                   addItem({
-                    id: item.id,
-                    name: item.name,
+                    id: isDjok ? `${item.id}--${djokColor.file}` : item.id,
+                    name: isDjok ? `${item.name} — ${djokColor.name}` : item.name,
                     model,
                     price: item.price,
                     badge: item.badge,
-                    color: item.color,
-                    image: item.image,
+                    color: isDjok ? djokColor.swatch : item.color,
+                    image: isDjok ? djokImg ?? item.image : item.image,
                   });
                   setAdded(true);
                   setTimeout(() => setAdded(false), 1800);
