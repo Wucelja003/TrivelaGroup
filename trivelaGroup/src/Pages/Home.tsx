@@ -4,7 +4,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { markDone, onDone } from "../lib/sequence";
 import HeroCorners from "../Components/HeroCorners";
-import SectionThemes from "../Components/SectionThemes";
 import StaggeredText from "../Components/StaggeredText";
 import Typewriter from "../Components/Typewriter";
 import HeroVideo from "../Components/HeroVideo";
@@ -140,8 +139,8 @@ export default function Home() {
   }, []);
 
   /* Pozadina "pliva" i sa skrolom: vezano za poziciju (scrub), pa prati
-     tocak/prst umesto da ide po tajmeru. Radi zajedno sa sopstvenom
-     animacijom shadera — jedno je stalno kretanje, drugo reakcija na skrol. */
+     tocak/prst umesto da ide po tajmeru. Jeftin transform (scale/yPercent)
+     na fiksiranoj podlozi — samo kompozitor, bez repaint-a. */
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -166,16 +165,14 @@ export default function Home() {
 
   return (
     <>
-      {/* Pozadina cele strane, ne samo hero-a. Fiksirana je, pa svaka sekcija
-          stoji na istoj zivoj podlozi — nema granice na kojoj bi se videla
-          razlika izmedju "hero ima animaciju" i "ostalo je ravno teget". */}
+      {/* Pozadina cele strane, ne samo hero-a. Fiksirana je i JEDNE boje
+          (teget) — nema promene tona po sekcijama (to je pravilo lag) niti
+          WebGL shadera; ostaje samo suptilno "disanje" i skrol-parallax. */}
       <div className="site-bg" aria-hidden="true">
         <HeroVideo />
       </div>
 
-      <SectionThemes />
-
-      <section className="hero" ref={heroRef} data-theme="hero">
+      <section className="hero" ref={heroRef}>
 
         <div className="hero-content">
           <StaggeredText
@@ -236,26 +233,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* data-theme cita SectionThemes i menja ton fiksirane pozadine */}
-      <div data-theme="blue">
-        <Introduce />
-      </div>
-      <div data-theme="blue">
-        <WhoWeAre />
-      </div>
-      <div data-theme="green">
-        <WhatWeDo />
-      </div>
-       <div data-theme="blue">
-        <PlayersShowcase />
-      </div>
-      <div data-theme="blue">
-        <Pricing />
-      </div>
-      <div data-theme="deep">
-        <SeeOurWork />
-      </div>
-     
+      <Introduce />
+      <WhoWeAre />
+      <WhatWeDo />
+      <PlayersShowcase />
+      <Pricing />
+      <SeeOurWork />
     </>
   );
 }

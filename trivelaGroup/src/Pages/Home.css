@@ -28,11 +28,18 @@
   position: absolute;
   inset: 0;
   z-index: -2;
-  /* Atmosfera gore, fade u teget (#000b38) dole da se stopi sa ostatkom.
-     Drzano blizu tegeta — #16306f je ranije bio primetno svetliji i pravio
-     razliku prema ostalim sekcijama. */
+  overflow: hidden;
+  /* Podloga ispod shadera — teget, da se stopi ako shader kasni. */
   background:
     radial-gradient(120% 75% at 50% -5%, #051545 0%, #02103c 42%, #000b38 100%);
+}
+
+/* Animirani MeshGradient (zelena se vrti) puni celu podlogu */
+.hero-mesh {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-video video {
@@ -41,43 +48,14 @@
   object-fit: cover;
 }
 
-/* Veo preko shadera — drzi tekst citljivim i nosi TEMU sekcije.
-   Pozadina je jedna i pliva sve vreme; menja se samo njen ton, u zavisnosti
-   od toga koja je sekcija na sredini ekrana (vidi SectionThemes.tsx). */
+/* Veo preko shadera — drzi tekst citljivim i drzi zelenu smirenom.
+   JEDAN fiksni teget ton preko cele strane: ne menja se po sekcijama, pa
+   zelena nikad ne preuzme sredinu — "teget-zelena" konstantno. */
 .hero-overlay {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--site-tint, rgba(0, 11, 56, 0.55));
-  /* Dug prelaz da smena teme bude neprimetna, a ne "prekidac" */
-  transition: background-color 1.1s ease;
-}
-
-/* ===== Teme po sekcijama ===== */
-:root {
-  --site-tint: rgba(0, 11, 56, 0.55);
-}
-/* Hero — neutralan teget, pusta zelenu iz shadera da se vidi */
-:root[data-site-theme="hero"] {
-  --site-tint: rgba(0, 11, 56, 0.5);
-}
-/* Introduce — plavo, uz kruzni oblak te sekcije */
-:root[data-site-theme="blue"] {
-  --site-tint: rgba(6, 24, 82, 0.62);
-}
-/* What we do — zelenkast ton, prati brend akcenat sekcije */
-:root[data-site-theme="green"] {
-  --site-tint: rgba(4, 32, 26, 0.6);
-}
-/* Collection — dublje i tamnije, da proizvodi iskoce */
-:root[data-site-theme="deep"] {
-  --site-tint: rgba(0, 7, 34, 0.72);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-overlay {
-    transition: none;
-  }
+  background: rgba(0, 11, 56, 0.55);
 }
 
 .hero-content {

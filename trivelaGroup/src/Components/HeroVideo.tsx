@@ -1,23 +1,20 @@
 import { MeshGradient } from "@paper-design/shaders-react";
 
 /**
- * Hero pozadina — animirani MeshGradient shader.
+ * Hero pozadina — animirani MeshGradient (teget sa zelenim akcentom).
  *
- * Taktika: teget (#000b38, ista boja kao ostatak sajta) je DOMINANTAN — cetiri
- * od pet stopova su teget ili tik uz njega, pa hero ne odudara od ostalih
- * sekcija. Zelena je samo JEDAN stop, pa se ponasa kao pokretni akcenat koji
- * pluta kroz tamnoplavo polje.
- *
- * Ranije su ovde bila DVA jaka zelena stopa (#2a8a00 i #96ff00) pa je zelena
- * preuzimala celu povrsinu i hero je izgledao kao potpuno druga pozadina.
+ * Zelena animacija se vrti sve vreme, ali preko nje stoji FIKSNI teget veo
+ * (.hero-overlay) koji se NE menja po sekcijama. Zato zelena nikad ne postaje
+ * dominantna na sredini strane — ostaje "teget-zelena" konstantno.
+ * (Ranije je SectionThemes menjao ton veoa po sekciji -> zelena bi preuzela
+ * sredinu; to je uklonjeno.)
  */
 export default function HeroVideo() {
   return (
     <>
       <div className="hero-video">
         <MeshGradient
-          className="absolute inset-0 h-full w-full"
-          style={{ width: "100%", height: "100%" }}
+          className="hero-mesh"
           colors={["#000b38", "#01123f", "#96ff00", "#01123f", "#000b38"]}
           distortion={0.9}
           swirl={0.22}
