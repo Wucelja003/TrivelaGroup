@@ -13,7 +13,7 @@ const DJOKOVIC_SLUG = "novak-djokovic";
 const DJOKOVIC_COLORS = [
   { name: "Green", file: "DjokovicZelena", swatch: "#1f7a3d" },
   { name: "Light Green", file: "DjokovicSvetloZelena", swatch: "#a3e043" },
-  { name: "Blue", file: "DjokovicPlava", swatch: "#2b6cb0" },
+  { name: "Purple", file: "DjokovicPlava", swatch: "#6b52b8" },
   { name: "Black", file: "DjokovicCrna", swatch: "#1a1a1a" },
 ];
 
