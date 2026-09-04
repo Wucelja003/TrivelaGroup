@@ -9,6 +9,7 @@ import { useCases, useCollections } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import DropHero from "../Components/DropHero";
 import CustomCase from "../Components/CustomCase";
+import DjokovicCase from "../Components/DjokovicCase";
 import PlayerMarquee, { type PlayerItem } from "../Components/PlayerMarquee";
 import "./Shop.css";
 
@@ -369,6 +370,9 @@ export default function Shop() {
           <PlayerMarquee items={dropPlayers} />
         </div>
       </section>
+
+      {/* Izdvojena maskica sa izborom boje — Novak Đoković */}
+      <DjokovicCase />
 
       <section id="drop-grid" className="min-h-screen px-5 pb-16 pt-16 sm:px-8 sm:pb-20 sm:pt-20">
       <div className="mx-auto max-w-7xl">
