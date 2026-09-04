@@ -113,7 +113,7 @@ export default function PlayersShowcase() {
             Trusted by
           </span>
           <h2 className="mx-auto mt-5 max-w-4xl bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.28))] sm:text-5xl lg:text-6xl">
-            Players who trusted our work
+            Players who trust our work
           </h2>
         </div>
 

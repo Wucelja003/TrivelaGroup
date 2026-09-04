@@ -163,7 +163,7 @@ export default function WhatWeDo() {
           </span>
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
             Different skills, one vision —{" "}
-            <span className="text-zelena">making you unmissable.</span>
+            <span className="text-zelena">where athletes become brands</span>
           </h2>
         </div>
 

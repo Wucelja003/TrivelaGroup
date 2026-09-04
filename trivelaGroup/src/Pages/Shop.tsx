@@ -15,11 +15,21 @@ import "./Shop.css";
 /* Pet igraca za "Players who trusted our work".
    Imena/uloge su placeholder gde nisu poznata — slobodno menjaj. */
 const dropPlayers: PlayerItem[] = [
-  { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "Basketball Player · Olimpia Milano" },
-  { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Đžanan Musa", role: "Basketball Player · Dubai Basketball" },
-  { img: "/TrivelaGroupPhotos/lucic.jpg", name: "Vladimir Lučić", role: "Basketball player · Club Name" },
-  { img: "/TrivelaGroupPhotos/petko_lagalaxy.jpg", name: "Player Name", role: "Footballer · Club Name" },
-  { img: "/TrivelaGroupPhotos/TracyLessorPhoto.JPG", name: "Tracy Lessort", role: "Basketball player · Club Name" },
+  { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Dzanan Musa", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/VladimirLucicPhoto.jpg", name: "Vladimir Lučić", role: "Football player" },
+  { img: "/TrivelaGroupPhotos/monekePhoto2.jpg", name: "Chima Moneke", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/TracyLessorPhoto.JPG", name: "Traicy Lessort", role: "Mathias Lessort's wife" },
+  { img: "/TrivelaGroupPhotos/CabocloPhoto.jpg", name: "Bruno Caboclo", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/VeljkoMilosavljevic.JPG", name: "Veljko Milosavljevic", role: "Football Player" },
+  { img: "/TrivelaGroupPhotos/YagoPhoto.jpg", name: "Yago dos Santos", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/RodrigaoPhoto.jpg", name: "Rodrigao", role: "Football Player" },
+  { img: "/TrivelaGroupPhotos/NunnalyPhoto.jpg", name: "James Nunnally", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/NatchoPhoto.jpg", name: "Bibars Natcho", role: "Football Player" },
+  { img: "/TrivelaGroupPhotos/MatheusSaldanhaPhoto.jpg", name: "Matheus Saldanha", role: "Football Player" },
+  { img: "/TrivelaGroupPhotos/LessortPhoto.jpg", name: "Mathias Lessort", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maskimovic", role: "Football Player" },
+
 ];
 
 type SortKey = "az" | "za" | "price-asc" | "price-desc";
@@ -360,7 +370,7 @@ export default function Shop() {
               Trusted by the best
             </span>
             <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#06294d] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
-              Players who trusted
+              People who trusted
               <br />
               our work
             </h2>
