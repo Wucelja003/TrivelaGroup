@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { PHONE_MODELS } from "../data/phoneModels";
 import {
   submitCustomRequest,
   uploadCustomImage,
@@ -22,7 +21,7 @@ export default function CustomCase() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [phoneModel, setPhoneModel] = useState<string>(PHONE_MODELS[0]);
+  const [phoneModel, setPhoneModel] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -57,6 +56,7 @@ export default function CustomCase() {
     if (!imageUrl) return setError("Dodaj svoju sliku za masku.");
     if (!fullName.trim()) return setError("Ime je obavezno.");
     if (!emailOk(email)) return setError("Unesi ispravan email.");
+    if (!phoneModel.trim()) return setError("Unesi model telefona.");
 
     setStatus("sending");
     setError(null);
@@ -210,17 +210,12 @@ export default function CustomCase() {
               </div>
               <div>
                 <label className={labelCls}>Phone model</label>
-                <select
+                <input
                   value={phoneModel}
                   onChange={(e) => setPhoneModel(e.target.value)}
                   className={inputCls}
-                >
-                  {PHONE_MODELS.map((m) => (
-                    <option key={m} value={m}>
-                      {m}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="e.g. iPhone 15 Pro, Galaxy S24…"
+                />
               </div>
             </div>
 
