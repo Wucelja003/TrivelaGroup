@@ -63,95 +63,35 @@ const PILLARS: Pillar[] = [
 /* --- Klijenti (PLACEHOLDER — vidi napomenu na vrhu) --- */
 interface Client {
   name: string;
-  mark: ReactNode;
+  /* ime fajla u /public/logosBusiness (bez .png) */
+  file: string;
+  /* boja SAMOG logotipa: "light" (belo/svetlo) ide na tamnu plocicu, a
+     "dark"/sareni na belu — da se svaki vidi. */
+  tone: "light" | "dark";
 }
 const CLIENTS: Client[] = [
-  { name: "Aurora Studios", mark: <path d="M4 20l8-14 8 14M8 20l4-7 4 7" /> },
-  { name: "Vertex Tech", mark: <path d="M4 18h16M9 18l3-10 3 10M12 4v4" /> },
+  { name: "Concierge of Football", file: "ConciergeOfFootball", tone: "dark" },
+  { name: "Liga Pub", file: "LigaPub", tone: "dark" },
+  { name: "M55 Performance Center", file: "M55_PerformanceCenter", tone: "dark" },
+  { name: "Rising Stars Camp", file: "RisingStars_BasketballCamp", tone: "dark" },
+  { name: "Sava Jerkić Camp", file: "SavaJerkic_BasketballCamp", tone: "dark" },
+  { name: "Skills Academy", file: "SkillsAcademyCH", tone: "dark" },
+  { name: "Vila Vrt", file: "VilaVrt", tone: "dark" },
+  { name: "Fantazi Masteri", file: "FantaziMasteri", tone: "light" },
+  { name: "Ide Trojka", file: "IdeTrojka", tone: "light" },
   {
-    name: "Kompas Logistics",
-    mark: (
-      <>
-        <circle cx="12" cy="12" r="8" />
-        <path d="M8.5 15.5L14 10l1.5 5.5-5.5-1.5z" />
-      </>
-    ),
-  },
-  { name: "Lumen Media", mark: <path d="M4 12h4l3-8 4 16 3-8h2" /> },
-  {
-    name: "Bella Foods",
-    mark: (
-      <>
-        <path d="M12 4c4 0 6 3 6 7s-3 9-6 9-6-5-6-9 2-7 6-7z" />
-        <path d="M12 4v16" />
-      </>
-    ),
-  },
-  {
-    name: "Fjord Apparel",
-    mark: <path d="M9 4l3 3 3-3 4 4-3 3v9H8v-9L5 8z" />,
-  },
-  {
-    name: "Orion Bank",
-    mark: (
-      <>
-        <path d="M4 10l8-5 8 5" />
-        <path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 20h16" />
-      </>
-    ),
-  },
-  {
-    name: "Nimbus Cloud",
-    mark: <path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4A3.5 3.5 0 0 1 16 18z" />,
-  },
-  {
-    name: "Verde Organics",
-    mark: (
-      <>
-        <path d="M12 20c-5 0-8-3-8-8 5 0 8 3 8 8z" />
-        <path d="M12 20c5 0 8-3 8-8-5 0-8 3-8 8z" />
-      </>
-    ),
-  },
-  {
-    name: "Atria Group",
-    mark: (
-      <>
-        <path d="M12 4l8 16H4z" />
-        <path d="M12 11l4.5 9h-9z" />
-      </>
-    ),
-  },
-  {
-    name: "Delta Motors",
-    mark: (
-      <>
-        <path d="M4 15l2-5h12l2 5" />
-        <circle cx="8" cy="16" r="1.6" />
-        <circle cx="16" cy="16" r="1.6" />
-      </>
-    ),
-  },
-  {
-    name: "Pulse Fitness",
-    mark: <path d="M3 13h4l2-5 3 9 2-7 2 3h4" />,
+    name: "Restoran Savić",
+    file: "restoran-savic_logo_transparent",
+    tone: "light",
   },
 ];
 
 function ClientTile({ c }: { c: Client }) {
   return (
     <div className="biz-item">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.6}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        {c.mark}
-      </svg>
+      <span className={`biz-logo biz-logo--${c.tone}`}>
+        <img src={`/logosBusiness/${c.file}.png`} alt={c.name} loading="lazy" />
+      </span>
       <span className="biz-item-name">{c.name}</span>
     </div>
   );
