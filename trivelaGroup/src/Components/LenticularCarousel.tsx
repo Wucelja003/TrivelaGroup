@@ -43,7 +43,9 @@ export interface LenticularCarouselProps {
   inactiveScale?: number;
   inactiveDim?: number;
   speed?: number;
-  trigger?: "hover" | "focus";
+  /** "hover" = flip na prelazak misem; "focus" = centralna otkrivena;
+      "none" = bez ikakve hover animacije, slike se samo listaju. */
+  trigger?: "hover" | "focus" | "none";
   showLabels?: boolean;
   labelColor?: string;
   showControls?: boolean;
@@ -410,7 +412,7 @@ interface DeckProps {
   minDim: number;
   grip: number;
   hoverable: boolean;
-  trigger: "hover" | "focus";
+  trigger: "hover" | "focus" | "none";
   loop: boolean;
   dragging: boolean;
   drag: React.RefObject<{ dx: number }>;
@@ -606,11 +608,15 @@ const Deck = ({
     }
 
     const reach = Math.ceil(viewport / (2 * span)) + 1;
-    const cursor = dragging || !hoverable ? -1 : hot.current;
+    // trigger "none" -> nijedna karta nikad nije "hovered": bez flip/turn/lift.
+    const cursor =
+      trigger === "none" || dragging || !hoverable ? -1 : hot.current;
     const arc = clamp(travel, 0.05, 1);
     const margin = (1 - arc) / 2;
     const dial = clamp((graze.current - margin) / arc, 0, 1);
-    const steady = trigger === "focus" || !hoverable;
+    // "none" ostaje ne-steady da ni centralna karta ne bude flipovana.
+    const steady =
+      trigger === "focus" || (!hoverable && trigger !== "none");
 
     for (let i = 0; i < count; i += 1) {
       const card = cards.current[i];

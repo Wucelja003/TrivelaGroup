@@ -10,11 +10,12 @@ import LenticularCarousel, {
 import "./Gallery.css";
 
 /*
- * Galerija — "lenticular" carousel (R3F/three): pređeš preko slike i ona se
- * prevrne uz naziv. Iznad su filter tabovi po kategorijama.
+ * Galerija — široki "lenticular" carousel (R3F/three) koji se lepo lista
+ * (drag / strelice / scroll). Hover flip je isključen — slike se samo
+ * prelistavaju, bez ikakve hover animacije. Iznad su filter tabovi.
  *
- * Svaka kategorija nosi svoj oblik kartice (prirodne veličine slika) — Match
- * Day su portret 9:16, Verifications su landscape (~2:1).
+ * Svaka kategorija nosi svoj oblik kartice (prirodne veličine slika) —
+ * Matchdays su portret 9:16, Verifications su landscape (~2:1).
  */
 interface CatShape {
   aspect: string;
@@ -65,6 +66,9 @@ export default function Gallery() {
           <h1 className="bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-5xl font-extrabold leading-none tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.3))] sm:text-6xl lg:text-7xl">
             Trivela Gallery
           </h1>
+          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.3em] text-white/50 sm:text-base">
+            Drag or use the arrows to browse
+          </p>
         </div>
 
         {/* Filter tabovi po kategorijama */}
@@ -106,6 +110,7 @@ export default function Gallery() {
             sweep={0.7}
             foil={0.55}
             tilt={16}
+            trigger="none"
             loop
             className={shape.height}
           />
