@@ -237,8 +237,8 @@ export default function Home() {
       <WhoWeAre />
       <WhatWeDo />
       <PlayersShowcase />
-      <Pricing />
       <SeeOurWork />
+      <Pricing />
     </>
   );
 }
