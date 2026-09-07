@@ -21,7 +21,7 @@ const ITEMS = [
   { label: "Trivela Group", to: "/" },
   { label: "What we do", to: "/#what-we-do" },
   { label: "Who we are", to: "/#who-we-are" },
-  { label: "Trivela History", to: "/history" },
+  { label: "About Us", to: "/history" },
   { label: "Gallery", to: "/gallery" },
   { label: "Trivela Drop", to: "/drop" },
   { label: "Trivela Business", to: "/business" },

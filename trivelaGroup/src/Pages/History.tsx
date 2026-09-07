@@ -9,7 +9,7 @@ import {
 import "./History.css";
 
 /*
- * Trivela History — priča u dva poglavlja.
+ * About Us — priča u dva poglavlja (ruta ostaje /history).
  *  (01) How did Trivela Group begin?  -> vertikalna vremenska linija; zelena
  *       kičma se puni dok skrolujes (useScroll), milestone tačke svetle.
  *  (02) Why Trivela?                  -> editorial sa dva crtana SVG motiva:
@@ -139,8 +139,8 @@ export default function History() {
             className="mt-6 text-6xl font-bold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            <span className="text-white">Trivela</span>{" "}
-            <span className={`pb-[0.12em] ${GRAD}`}>History</span>
+            <span className="text-white">About</span>{" "}
+            <span className={`pb-[0.12em] ${GRAD}`}>Us</span>
           </motion.h1>
           <motion.p
             variants={fadeUp}

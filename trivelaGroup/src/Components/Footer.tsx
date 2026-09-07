@@ -19,7 +19,7 @@ const socials = [
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/#what-we-do", label: "What we do" },
-  { to: "/history", label: "Trivela History" },
+  { to: "/history", label: "About Us" },
   { to: "/gallery", label: "Gallery" },
   { to: "/drop", label: "Trivela Drop" },
   { to: "/business", label: "Trivela Business" },
