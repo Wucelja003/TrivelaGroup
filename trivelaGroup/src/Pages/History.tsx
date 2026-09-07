@@ -34,37 +34,12 @@ const container: Variants = {
 const GRAD =
   "bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text text-transparent";
 
-interface Milestone {
-  tag: string;
-  title: string;
-  body: string;
-}
-const MILESTONES: Milestone[] = [
-  {
-    tag: "October 2019",
-    title: "The first post",
-    body: "One of our founders began creating sports-focused digital content through an Instagram platform.",
-  },
-  {
-    tag: "The rise",
-    title: "A recognized name",
-    body: "As the platform grew, so did the brand behind it — becoming one of Serbia's most recognized sports media brands, with a particularly strong presence within the Partizan community.",
-  },
-  {
-    tag: "The clubs",
-    title: "Trusted by the black & whites",
-    body: "That growth opened the door to collaborations with Partizan Basketball, Partizan Handball, and professional footballers and basketballers of the club — followed by partnerships with athletes from Red Star Belgrade.",
-  },
-  {
-    tag: "The craft",
-    title: "A designer joins",
-    body: "A graphic designer joined the team, bringing a new creative dimension. What started as a collaboration evolved into a long-term partnership.",
-  },
-  {
-    tag: "Today",
-    title: "Trivela Group",
-    body: "Several years later, that partnership became the foundation of the creative agency known today as Trivela Group.",
-  },
+/* Klijentov tekst, doslovno — svaki pasus je jedan korak na vremenskoj liniji */
+const ORIGIN_STEPS: string[] = [
+  "The story of Trivela Group goes back to October 2019, when one of its founders began creating sports-focused digital content through an Instagram platform.",
+  "As the platform grew, so did the brand behind it. It soon established itself as one of Serbia’s most recognized sports media brands, building a particularly strong presence within the Partizan community.",
+  "This growth opened the door to collaborations with Partizan Basketball Club, Partizan Handball Club, and a number of professional football and basketball players representing the black and whites — followed by partnerships with athletes from Red Star Belgrade.",
+  "The next chapter began when a graphic designer joined the team, bringing a new creative dimension to the project. What started as a collaboration evolved into a long-term partnership and, several years later, into the foundation of the creative agency known today as Trivela Group.",
 ];
 
 /* Kriva "trivele" — putanja lopte savijene spoljnim delom stopala. */
@@ -219,17 +194,14 @@ export default function History() {
               whileInView="show"
               viewport={{ once: true, margin: "-100px" }}
             >
-              {MILESTONES.map((m) => (
-                <motion.div key={m.title} variants={fadeUp} className="hx-mile">
+              {ORIGIN_STEPS.map((body, i) => (
+                <motion.div key={i} variants={fadeUp} className="hx-mile">
                   <span className="hx-node" aria-hidden="true" />
                   <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-zelena">
-                    {m.tag}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-2 text-xl font-bold text-white sm:text-2xl">
-                    {m.title}
-                  </h3>
-                  <p className="mt-3 max-w-2xl leading-relaxed text-white/65">
-                    {m.body}
+                  <p className="mt-3 max-w-2xl text-lg leading-relaxed text-white/75">
+                    {body}
                   </p>
                 </motion.div>
               ))}
@@ -274,10 +246,11 @@ export default function History() {
             </motion.h2>
             <motion.p
               variants={fadeUp}
-              className="mx-auto mt-6 max-w-xl leading-relaxed text-white/65"
+              className="mx-auto mt-6 max-w-2xl leading-relaxed text-white/65"
             >
-              Now an established name in Belgrade and across Serbia, our identity
-              was built around one simple idea shared by its founders.
+              While Trivela Group is now an established name in Belgrade and
+              across Serbia, its identity was built around a simple idea shared
+              by its founders.
             </motion.p>
           </motion.div>
 
@@ -290,17 +263,18 @@ export default function History() {
             className="mt-20 grid items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16"
           >
             <motion.div variants={fadeUp}>
-              <h3 className="text-2xl font-bold text-white sm:text-3xl">
-                A move not everyone can master
-              </h3>
-              <p className="mt-5 leading-relaxed text-white/70">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zelena">
+                The name
+              </span>
+              <p className="mt-5 text-lg leading-relaxed text-white/75">
                 The name{" "}
                 <span className="font-semibold text-zelena">Trivela</span> was
-                inspired by one of football's most distinctive and spectacular
+                inspired by one of football’s most distinctive and spectacular
                 techniques — an outside-of-the-foot strike associated with
-                creativity, confidence and exceptional ability.
+                creativity, confidence and exceptional ability. A move not
+                everyone can master.
               </p>
-              <p className="mt-4 leading-relaxed text-white/55">
+              <p className="mt-4 leading-relaxed text-white/60">
                 That philosophy remains at the heart of our identity today.
               </p>
             </motion.div>
@@ -342,17 +316,15 @@ export default function History() {
               </div>
             </motion.div>
             <motion.div variants={fadeUp} className="order-1 lg:order-2">
-              <h3 className="text-2xl font-bold text-white sm:text-3xl">
-                Always pointing up
-              </h3>
-              <p className="mt-5 leading-relaxed text-white/70">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zelena">
+                The arrow
+              </span>
+              <p className="mt-5 text-lg leading-relaxed text-white/75">
                 The upward-facing arrow embedded within the Trivela Group logo
                 represents our ambition and forward-thinking mindset: to help
-                talented young athletes grow into elite professionals.
-              </p>
-              <p className="mt-4 leading-relaxed text-white/55">
-                We build powerful personal brands that resonate across Serbian,
-                European and global markets.
+                talented young athletes grow into elite professionals and build
+                powerful personal brands that resonate across Serbian, European
+                and global markets.
               </p>
             </motion.div>
           </motion.div>
