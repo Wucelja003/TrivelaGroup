@@ -122,41 +122,6 @@ function TrivelaCurve() {
   );
 }
 
-/* Strelica nagore — motiv iz Trivela logoa (ambicija, napred i navise). */
-function UpArrow() {
-  return (
-    <svg
-      viewBox="0 0 120 200"
-      className="hx-draw w-full max-w-[130px]"
-      aria-hidden="true"
-    >
-      <motion.path
-        d="M60 186 L60 42"
-        fill="none"
-        stroke="url(#hx-grad)"
-        strokeWidth={6}
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
-      />
-      <motion.path
-        d="M28 76 L60 42 L92 76"
-        fill="none"
-        stroke="url(#hx-grad)"
-        strokeWidth={6}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.6, delay: 0.7, ease: "backOut" }}
-      />
-    </svg>
-  );
-}
-
 export default function History() {
   const timelineRef = useRef<HTMLDivElement>(null);
   /* Zelena kičma se puni tacno onoliko koliko si prosao kroz vremensku liniju */
@@ -359,7 +324,22 @@ export default function History() {
               variants={fadeUp}
               className="order-2 flex justify-center rounded-3xl border border-white/10 bg-white/[0.03] p-10 lg:order-1"
             >
-              <UpArrow />
+              <div className="relative flex items-center justify-center py-4">
+                {/* Zeleni odsjaj iza logoa */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -inset-8 rounded-full"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(150,255,0,0.2), transparent 70%)",
+                  }}
+                />
+                <img
+                  src="/Logo_Trivela-2.svg"
+                  alt="Trivela Group logo"
+                  className="relative w-36 sm:w-44"
+                />
+              </div>
             </motion.div>
             <motion.div variants={fadeUp} className="order-1 lg:order-2">
               <h3 className="text-2xl font-bold text-white sm:text-3xl">
