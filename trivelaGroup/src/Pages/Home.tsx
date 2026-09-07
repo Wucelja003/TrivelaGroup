@@ -9,6 +9,7 @@ import Typewriter from "../Components/Typewriter";
 import HeroVideo from "../Components/HeroVideo";
 import RotatingCards from "../Components/RotatingCards";
 import Introduce from "../Components/Introduce";
+import Journey from "../Components/Journey";
 import WhoWeAre from "../Components/WhoWeAre";
 import WhatWeDo from "../Components/WhatWeDo";
 import SeeOurWork from "../Components/SeeOurWork";
@@ -234,6 +235,7 @@ export default function Home() {
       </section>
 
       <Introduce />
+      <Journey />
       <WhoWeAre />
       <WhatWeDo />
       <PlayersShowcase />
