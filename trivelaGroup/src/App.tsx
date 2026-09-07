@@ -29,6 +29,7 @@ const Gallery = lazy(() => import("./Pages/Gallery"));
 const GetInTouch = lazy(() => import("./Pages/GetInTouch"));
 const Admin = lazy(() => import("./Pages/Admin"));
 const Business = lazy(() => import("./Pages/Business"));
+const History = lazy(() => import("./Pages/History"));
 import Footer from "./Components/Footer";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -121,6 +122,7 @@ export default function App() {
               <Route path="/shop/:id" element={<ProductRedirect />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/history" element={<History />} />
               <Route path="/getInTouch" element={<GetInTouch />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>

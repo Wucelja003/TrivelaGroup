@@ -1,0 +1,92 @@
+/* ===== Trivela History — priča u dva poglavlja =====
+   Nase boje: teget podloga, zelena akcenat. */
+
+.hx-page {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-teget, #000b38);
+}
+
+/* Suptilni zeleni oblaci u pozadini (isti jezik kao Introduce) */
+.hx-glow {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(10px);
+}
+
+/* ===== Vremenska linija ===== */
+.hx-timeline {
+  position: relative;
+}
+
+/* Staticka nit + zeleni deo koji se PUNI dok skrolujes kroz sekciju */
+.hx-spine,
+.hx-spine-fill {
+  position: absolute;
+  left: 20px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 2px;
+}
+.hx-spine {
+  background: rgba(255, 255, 255, 0.12);
+}
+.hx-spine-fill {
+  background: linear-gradient(180deg, #d6ff9e 0%, #96ff00 45%, #6fd000 100%);
+  transform-origin: top center;
+  box-shadow: 0 0 16px rgba(150, 255, 0, 0.5);
+  will-change: transform;
+}
+
+.hx-mile {
+  position: relative;
+  padding-left: 64px;
+}
+.hx-mile + .hx-mile {
+  margin-top: 3.25rem;
+}
+
+/* Tacka na niti */
+.hx-node {
+  position: absolute;
+  left: 12px;
+  top: 4px;
+  display: grid;
+  place-items: center;
+  height: 18px;
+  width: 18px;
+  border-radius: 999px;
+  background: #08183a;
+  border: 2px solid #96ff00;
+  box-shadow:
+    0 0 0 4px rgba(150, 255, 0, 0.1),
+    0 0 18px rgba(150, 255, 0, 0.5);
+}
+.hx-node::after {
+  content: "";
+  height: 6px;
+  width: 6px;
+  border-radius: 999px;
+  background: #96ff00;
+}
+
+/* Crtani SVG motivi (kriva trivele, strelica) — zeleni sjaj */
+.hx-draw {
+  filter: drop-shadow(0 0 10px rgba(150, 255, 0, 0.4));
+}
+
+@media (min-width: 640px) {
+  .hx-spine,
+  .hx-spine-fill {
+    left: 26px;
+  }
+  .hx-node {
+    left: 18px;
+  }
+  .hx-mile {
+    padding-left: 76px;
+  }
+}
