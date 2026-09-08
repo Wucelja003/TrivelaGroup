@@ -88,7 +88,7 @@ function normalize(row: ProductRow): CaseItem {
     collection: (c?.name ?? "World Cup") as CollectionName,
     price: Number(row.price),
     badge: row.badge ?? "",
-    color: row.color ?? "#000b38",
+    color: row.color ?? "#01072d",
     image: row.image_url ?? undefined,
   };
 }

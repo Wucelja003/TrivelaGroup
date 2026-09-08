@@ -87,11 +87,11 @@
   box-shadow: none;
 }
 .tg-nav--light .fm-toggle--flat {
-  color: #06294d;
+  color: #08226c;
 }
 .tg-nav--light .fm-toggle--flat:hover,
 .tg-nav--light .fm-toggle--flat[aria-expanded="true"] {
-  background-color: #06294d;
+  background-color: #08226c;
   color: #ffffff;
   box-shadow: none;
 }
@@ -99,21 +99,21 @@
 /* Svetla tema: puna bela plocica sa tamnoplavim linijama, a na hover se
    izvrne (tamnoplav krug, bele linije). Zeleni krug ovde ne ide. */
 .tg-nav--light .fm-toggle {
-  border-color: rgba(6, 41, 77, 0.25);
+  border-color: rgba(8, 34, 108, 0.25);
   background: #ffffff;
-  color: #06294d;
+  color: #08226c;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: 0 4px 18px rgba(6, 41, 77, 0.1);
+  box-shadow: 0 4px 18px rgba(8, 34, 108, 0.1);
 }
 .tg-nav--light .fm-toggle::before {
-  background: #06294d;
+  background: #08226c;
 }
 .tg-nav--light .fm-toggle:hover,
 .tg-nav--light .fm-toggle[aria-expanded="true"] {
-  border-color: #06294d;
+  border-color: #08226c;
   color: #ffffff;
-  box-shadow: 0 6px 24px rgba(6, 41, 77, 0.3);
+  box-shadow: 0 6px 24px rgba(8, 34, 108, 0.3);
 }
 
 .fm-icon {

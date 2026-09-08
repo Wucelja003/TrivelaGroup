@@ -125,7 +125,7 @@ function OrderRow({ item }: { item: CartItem }) {
           <div
             className="flex h-full w-full items-center justify-center text-sm font-bold text-white"
             style={{
-              background: `radial-gradient(circle at 50% 35%, ${item.color}55, #000b38 78%)`,
+              background: `radial-gradient(circle at 50% 35%, ${item.color}55, #01072d 78%)`,
             }}
           >
             {item.badge}

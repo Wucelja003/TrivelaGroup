@@ -12,7 +12,7 @@ function CaseCard({ item }: { item: CaseItem }) {
       <div
         className="absolute inset-0 flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-110"
         style={{
-          background: `radial-gradient(circle at 50% 35%, ${item.color}45, #000b38 72%)`,
+          background: `radial-gradient(circle at 50% 35%, ${item.color}45, #01072d 72%)`,
         }}
       >
         {item.image ? (

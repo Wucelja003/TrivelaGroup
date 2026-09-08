@@ -17,14 +17,14 @@
 /* Trivela Drop — bela strana: zelena bi na njoj bila neupotrebljiva
    (#96ff00 na beloj daje ~1.6:1), pa akcenat postaje tamno plava. */
 :root[data-page="drop"] .tg-footer {
-  --f-ink: #06294d;
-  --f-muted: rgba(6, 41, 77, 0.7);
-  --f-faint: rgba(6, 41, 77, 0.45);
-  --f-accent: rgba(6, 41, 77, 0.72);
-  --f-accent-h: #06294d;
-  --f-rule: rgba(6, 41, 77, 0.14);
+  --f-ink: #08226c;
+  --f-muted: rgba(8, 34, 108, 0.7);
+  --f-faint: rgba(8, 34, 108, 0.45);
+  --f-accent: rgba(8, 34, 108, 0.72);
+  --f-accent-h: #08226c;
+  --f-rule: rgba(8, 34, 108, 0.14);
   --f-glow: rgba(124, 196, 255, 0.22);
-  --f-edge: rgba(6, 41, 77, 0.18);
+  --f-edge: rgba(8, 34, 108, 0.18);
 }
 
 .tg-footer .f-ink {

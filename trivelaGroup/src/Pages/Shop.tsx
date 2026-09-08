@@ -132,7 +132,7 @@ function PhoneCase({ item }: { item: CaseItem }) {
     <div
       className="flex h-full items-center justify-center p-7"
       style={{
-        background: `radial-gradient(circle at 50% 30%, ${item.color}3a, #06294d 74%)`,
+        background: `radial-gradient(circle at 50% 30%, ${item.color}3a, #08226c 74%)`,
       }}
     >
       <div
@@ -369,7 +369,7 @@ export default function Shop() {
             <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-mastilo">
               Trusted by the best
             </span>
-            <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#06294d] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
+            <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#08226c] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
               People who trusted
               <br />
               our work

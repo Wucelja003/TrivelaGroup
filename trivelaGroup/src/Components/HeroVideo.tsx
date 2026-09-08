@@ -15,7 +15,7 @@ export default function HeroVideo() {
       <div className="hero-video">
         <MeshGradient
           className="hero-mesh"
-          colors={["#000b38", "#01123f", "#96ff00", "#01123f", "#000b38"]}
+          colors={["#01072d", "#01123f", "#96ff00", "#01123f", "#01072d"]}
           distortion={0.9}
           swirl={0.22}
           grainMixer={0.12}

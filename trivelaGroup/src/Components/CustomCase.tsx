@@ -122,7 +122,7 @@ export default function CustomCase() {
           </span>
           <h2 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight text-mastilo sm:text-5xl lg:text-6xl">
             Create your{" "}
-            <span className="bg-gradient-to-r from-[#1c6bb8] to-[#06294d] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#1c6bb8] to-[#08226c] bg-clip-text text-transparent">
               custom case
             </span>
           </h2>
@@ -134,7 +134,7 @@ export default function CustomCase() {
 
         <form
           onSubmit={submit}
-          className="grid gap-8 rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-[0_40px_100px_-24px_rgba(6,41,77,0.35)] backdrop-blur-xl sm:p-10 lg:grid-cols-[0.85fr_1.15fr]"
+          className="grid gap-8 rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-[0_40px_100px_-24px_rgba(8,34,108,0.35)] backdrop-blur-xl sm:p-10 lg:grid-cols-[0.85fr_1.15fr]"
         >
           {/* Slika */}
           <div>
@@ -142,7 +142,7 @@ export default function CustomCase() {
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="group relative flex aspect-[9/16] w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-mastilo/25 bg-gradient-to-br from-[#eaf3ff] to-white shadow-[inset_0_2px_20px_rgba(6,41,77,0.06)] transition-all hover:border-ledena hover:shadow-[0_0_30px_rgba(124,196,255,0.3)]"
+              className="group relative flex aspect-[9/16] w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-mastilo/25 bg-gradient-to-br from-[#eaf3ff] to-white shadow-[inset_0_2px_20px_rgba(8,34,108,0.06)] transition-all hover:border-ledena hover:shadow-[0_0_30px_rgba(124,196,255,0.3)]"
             >
               {imageUrl ? (
                 <img
@@ -286,7 +286,7 @@ export default function CustomCase() {
             <button
               type="submit"
               disabled={status === "sending" || uploading}
-              className="mt-1 inline-flex items-center justify-center gap-2 self-start rounded-full bg-gradient-to-r from-[#06294d] to-[#14589b] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_16px_36px_-8px_rgba(6,41,77,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_44px_-8px_rgba(124,196,255,0.6)] disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-1 inline-flex items-center justify-center gap-2 self-start rounded-full bg-gradient-to-r from-[#08226c] to-[#14589b] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_16px_36px_-8px_rgba(8,34,108,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_44px_-8px_rgba(124,196,255,0.6)] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === "sending" ? "Sending…" : "Send my request"}
               <span aria-hidden="true">→</span>

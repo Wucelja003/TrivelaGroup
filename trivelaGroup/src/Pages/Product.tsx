@@ -65,7 +65,7 @@ function CaseVisual({ item, big = false }: { item: CaseItem; big?: boolean }) {
     <div
       className="flex h-full items-center justify-center p-8"
       style={{
-        background: `radial-gradient(circle at 50% 30%, ${item.color}3a, #06294d 74%)`,
+        background: `radial-gradient(circle at 50% 30%, ${item.color}3a, #08226c 74%)`,
       }}
     >
       <div
@@ -299,7 +299,7 @@ export default function Product() {
                 {/* Podloga je BELA — ostala je tamna (#050f33) iz stare teme,
                     pa se tamnoplav tekst modela na njoj nije video. */}
                 {open && (
-                  <ul className="prod-dropdown absolute z-20 mt-2 max-h-64 w-full overflow-auto rounded-xl border border-mastilo/15 bg-white p-1.5 shadow-[0_18px_44px_rgba(6,41,77,0.18)]">
+                  <ul className="prod-dropdown absolute z-20 mt-2 max-h-64 w-full overflow-auto rounded-xl border border-mastilo/15 bg-white p-1.5 shadow-[0_18px_44px_rgba(8,34,108,0.18)]">
                     {MODELS.map((m) => {
                       const active = m === model;
                       return (

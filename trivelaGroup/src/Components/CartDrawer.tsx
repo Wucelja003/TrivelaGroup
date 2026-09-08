@@ -69,7 +69,7 @@ function ItemVisual({ item }: { item: CartItem }) {
     <div
       className="flex h-full items-center justify-center"
       style={{
-        background: `radial-gradient(circle at 50% 35%, ${item.color}55, #06294d 78%)`,
+        background: `radial-gradient(circle at 50% 35%, ${item.color}55, #08226c 78%)`,
       }}
     >
       <span className="text-2xl font-bold tracking-tight text-white drop-shadow">
@@ -174,7 +174,7 @@ export default function CartDrawer() {
       <aside
         role="dialog"
         aria-label="Shopping cart"
-        className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-mastilo/12 bg-white shadow-[-8px_0_60px_rgba(6,41,77,0.18)] transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-mastilo/12 bg-white shadow-[-8px_0_60px_rgba(8,34,108,0.18)] transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -244,7 +244,7 @@ export default function CartDrawer() {
               <button
                 type="button"
                 onClick={goToCheckout}
-                className="group flex w-full items-center justify-center gap-2 rounded-full bg-mastilo py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(6,41,77,0.28)] transition-all duration-200 hover:shadow-[0_14px_38px_rgba(6,41,77,0.45)]"
+                className="group flex w-full items-center justify-center gap-2 rounded-full bg-mastilo py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(8,34,108,0.28)] transition-all duration-200 hover:shadow-[0_14px_38px_rgba(8,34,108,0.45)]"
               >
                 Checkout
                 <span className="transition-transform duration-200 group-hover:translate-x-0.5">

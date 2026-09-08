@@ -80,30 +80,30 @@
    Staklo preko bele postane mutno, a belo dugme "Trivela Drop" nestane —
    zato ovde idu pune boje umesto providnih. */
 .tg-nav--light .tg-cluster {
-  border-color: rgba(6, 41, 77, 0.25);
+  border-color: rgba(8, 34, 108, 0.25);
   background: #ffffff;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: 0 4px 18px rgba(6, 41, 77, 0.1);
+  box-shadow: 0 4px 18px rgba(8, 34, 108, 0.1);
 }
 .tg-nav--light .tg-cluster:hover {
-  border-color: rgba(6, 41, 77, 0.55);
-  box-shadow: 0 8px 28px rgba(6, 41, 77, 0.2);
+  border-color: rgba(8, 34, 108, 0.55);
+  box-shadow: 0 8px 28px rgba(8, 34, 108, 0.2);
 }
 .tg-nav--light .tg-cluster-div {
-  background: rgba(6, 41, 77, 0.15);
+  background: rgba(8, 34, 108, 0.15);
 }
 .tg-nav--light .tg-seg {
-  color: #06294d;
+  color: #08226c;
 }
 .tg-nav--light .tg-seg:hover {
-  background-color: #06294d;
+  background-color: #08226c;
   color: #ffffff;
 }
 .tg-nav--light .tg-cart-badge {
-  background: #06294d;
+  background: #08226c;
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(6, 41, 77, 0.4);
+  box-shadow: 0 2px 8px rgba(8, 34, 108, 0.4);
 }
 
 /* Na beloj strani "Trivela Business" je tamno siv — zelen bi se stopio sa
@@ -137,7 +137,7 @@
   border-radius: 999px;
   padding: 0 5px;
   background: #7cc4ff;
-  color: #06294d;
+  color: #08226c;
   font-size: 10px;
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(124, 196, 255, 0.5);
@@ -219,7 +219,7 @@
 
 /* --- Trivela Drop: belo + svetlo plava --- */
 .tg-btn--drop {
-  color: #06294d;
+  color: #08226c;
   background-image: linear-gradient(
     270deg,
     #7cc4ff 0%,
