@@ -55,7 +55,7 @@ const plans: Plan[] = [
     name: "Elite",
     badge: null,
     tagline: "Complete brand partnership.",
-    cta: "Talk to us",
+    cta: "Choose Elite",
     lead: "Everything in Premium, plus:",
     features: [
       "Dedicated account manager",
