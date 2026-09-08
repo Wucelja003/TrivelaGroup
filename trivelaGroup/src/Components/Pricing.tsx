@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 /*
- * "Packages" — tri paketa (Standard / Premium / Elite) u stilu ponuda agencija.
- * Levo su tri izbora, desno se panel menja prema izabranom.
+ * "Packages" — tri paketa (Standard / Premium / Elite). Levo su tri izbora,
+ * desno se panel menja prema izabranom. Tekst je klijentov (finalan), bez cene.
  *
  * Adaptirano iz react-bits Pricing13: bez "use client", bez lucide-react
- * (inline Check SVG), i prebojeno u Trivela temu (tamno + zeleni akcenat).
- *
- * NAPOMENA: cene i tekst su PLACEHOLDER — klijent ih menja.
+ * (inline Check SVG), prebojeno u Trivela temu (tamno + zeleni akcenat).
  */
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -18,10 +16,6 @@ interface Plan {
   name: string;
   badge: string | null;
   tagline: string;
-  price: number;
-  scope: string;
-  support: string;
-  delivery: string;
   cta: string;
   lead: string;
   features: string[];
@@ -31,16 +25,13 @@ const plans: Plan[] = [
   {
     name: "Standard",
     badge: null,
-    tagline: "For brands taking the first step.",
-    price: 490,
-    scope: "Social media",
-    support: "Email support",
-    delivery: "Monthly",
+    tagline: "Everything you need to look the part.",
     cta: "Choose Standard",
     lead: "What's included:",
     features: [
-      "Social media management (2 platforms)",
-      "8 content pieces / month",
+      "Social media management",
+      "Photo editing",
+      "Matchday design",
       "Monthly performance report",
       "Basic PR outreach",
       "Community management",
@@ -48,38 +39,29 @@ const plans: Plan[] = [
   },
   {
     name: "Premium",
-    badge: "Recommended",
-    tagline: "For brands ready to grow fast.",
-    price: 990,
-    scope: "Full digital",
-    support: "Priority support",
-    delivery: "Bi-weekly",
+    badge: null,
+    tagline: "For athletes ready to become a brand.",
     cta: "Choose Premium",
     lead: "Everything in Standard, plus:",
     features: [
-      "Social media management (4 platforms)",
-      "20 content pieces / month",
+      "Social media management (more platforms)",
       "Video production & editing",
       "PR & media relations",
       "Paid ads management",
+      "Interviews & Media",
     ],
   },
   {
     name: "Elite",
     badge: null,
-    tagline: "A full-service brand partnership.",
-    price: 1900,
-    scope: "360° strategy",
-    support: "Dedicated team",
-    delivery: "On demand",
+    tagline: "Complete brand partnership.",
     cta: "Talk to us",
     lead: "Everything in Premium, plus:",
     features: [
       "Dedicated account manager",
-      "Unlimited content",
       "Brand strategy & consulting",
       "Influencer partnerships",
-      "24/7 support",
+      "Priority support",
     ],
   },
 ];
@@ -130,12 +112,14 @@ export default function Pricing() {
             Packages
           </span>
           <h2 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Work with us,{" "}
-            <span className="text-zelena">your way.</span>
+            Built around <span className="text-zelena">your game.</span>
           </h2>
           <p className="mt-4 text-base leading-relaxed text-white/60 sm:text-lg">
-            Pick the package that fits where your brand is now — and see exactly
-            what comes with each step.
+            Every athlete is different. So is the way we work.
+          </p>
+          <p className="mt-3 text-base leading-relaxed text-white/60 sm:text-lg">
+            Choose the level of support that fits your career, your ambitions
+            and the brand you want to build.
           </p>
         </motion.div>
 
@@ -199,24 +183,11 @@ export default function Pricing() {
                           {option.tagline}
                         </span>
                       </span>
-                      <span className="text-right">
-                        <span className="text-2xl font-semibold tracking-tight tabular-nums text-white">
-                          €{option.price}
-                        </span>
-                        <span className="block text-xs text-white/45">/mo</span>
-                      </span>
                     </span>
                   </motion.button>
                 );
               })}
             </div>
-            <motion.p
-              variants={item}
-              className="mt-6 text-sm leading-relaxed text-white/45"
-            >
-              Every package includes a kickoff strategy call and a shared content
-              calendar. Custom quotes available on request.
-            </motion.p>
           </div>
 
           {/* Desno — detalji izabranog */}
@@ -246,29 +217,6 @@ export default function Pricing() {
                   {plan.tagline}
                 </p>
 
-                <div className="mt-6 flex items-baseline gap-1">
-                  <span className="text-xl font-medium text-white/50">€</span>
-                  <span className="text-5xl font-semibold tracking-tight tabular-nums text-white sm:text-6xl">
-                    {plan.price}
-                  </span>
-                  <span className="ml-1 text-sm text-white/50">/ month</span>
-                </div>
-
-                <dl className="mt-8 grid grid-cols-3 gap-4 border-y border-white/10 py-5">
-                  {[
-                    { label: "Scope", value: plan.scope },
-                    { label: "Support", value: plan.support },
-                    { label: "Delivery", value: plan.delivery },
-                  ].map(({ label, value }) => (
-                    <div key={label}>
-                      <dt className="text-xs text-white/45">{label}</dt>
-                      <dd className="mt-1 text-sm font-medium text-white">
-                        {value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-
                 <p className="mt-8 text-sm font-medium text-white">
                   {plan.lead}
                 </p>
@@ -290,9 +238,6 @@ export default function Pricing() {
                 >
                   {plan.cta}
                 </Link>
-                <p className="mt-3 text-center text-xs text-white/45">
-                  No long-term contract. Cancel anytime.
-                </p>
               </motion.div>
             </AnimatePresence>
           </motion.div>
