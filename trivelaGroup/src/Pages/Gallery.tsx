@@ -13,52 +13,47 @@ import "./Gallery.css";
 
 /* Kategorije koje umesto slika prikazuju Instagram embed-ove (post/reel). */
 const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
+  // Namerno izmesano (round-robin po igracu) da ne idu svi jednog igraca
+  // uzastopno. Fiksan redosled — stabilan, ne random na svako ucitavanje.
   Posts: [
-    // Vasilije Kostov
-    "https://www.instagram.com/p/DbGIx96jOOx/",
-    "https://www.instagram.com/p/DYrR4-hjNKn/",
-    "https://www.instagram.com/p/DVEyoGxDFPG/",
-    "https://www.instagram.com/p/DT2drs4jE7h/",
-    "https://www.instagram.com/p/DSK1Sn2jIAu/",
-    "https://www.instagram.com/p/DQCrLu1DDZc/",
-    "https://www.instagram.com/p/DPcStsqDCoI/",
-    "https://www.instagram.com/p/DPV9TSrDGog/",
-    "https://www.instagram.com/p/C7w6_JeMq1b/",
-    // Ognjen Ugrešić
-    "https://www.instagram.com/p/Dc0i9OtghXI/",
-    "https://www.instagram.com/p/DcogICpgoD_/",
-    "https://www.instagram.com/p/DbOp-m9gmX3/",
-    "https://www.instagram.com/p/DX7gipCAg46/",
-    "https://www.instagram.com/p/DXUSFLljNOM/",
-    "https://www.instagram.com/p/DWkLrJtDBAz/",
-    "https://www.instagram.com/p/DSxn3XrE-vp/",
-    "https://www.instagram.com/p/DSOHPs1jGsp/",
-    "https://www.instagram.com/p/DRp6-ZRjNzd/",
-    // Veljko Milosavljević
-    "https://www.instagram.com/p/Dcnrms6jPfY/",
-    "https://www.instagram.com/p/DZSUopfDEt5/",
-    "https://www.instagram.com/p/DWjsYfADI8V/",
-    "https://www.instagram.com/p/DQSHJBIjHd7/",
-    "https://www.instagram.com/p/DP0jx8ADAp5/",
-    "https://www.instagram.com/p/DOjXop7jJwY/",
-    // Aleksa Damjanović
-    "https://www.instagram.com/p/Db1ATQ7DITN/",
-    "https://www.instagram.com/p/Dbl5v3ojAI-/",
-    "https://www.instagram.com/p/DaXmkPijDEe/",
-    "https://www.instagram.com/p/DaJCN5rDP4w/",
-    "https://www.instagram.com/p/DB10TaqRTMs/",
-    "https://www.instagram.com/p/C7xGhUVMQNc/",
-    // Đorđe Ranković
-    "https://www.instagram.com/p/Db31m43jAsB/",
-    "https://www.instagram.com/p/DaJDZKcDHqv/",
-    "https://www.instagram.com/p/DVvbHvkjMok/",
-    "https://www.instagram.com/p/DTkesgjjPWQ/",
-    "https://www.instagram.com/p/DPyvyFxjMGS/",
-    // Dimitrije Šarić
-    "https://www.instagram.com/p/DbRXNh8kahn/",
-    "https://www.instagram.com/p/DcZVdF_EUji/",
-    // Nikola Štulić
-    "https://www.instagram.com/p/DM0dFKqsTzL/",
+    "https://www.instagram.com/p/DbGIx96jOOx/", // Kostov
+    "https://www.instagram.com/p/Dc0i9OtghXI/", // Ugrešić
+    "https://www.instagram.com/p/Dcnrms6jPfY/", // Milosavljević
+    "https://www.instagram.com/p/Db1ATQ7DITN/", // Damjanović
+    "https://www.instagram.com/p/Db31m43jAsB/", // Ranković
+    "https://www.instagram.com/p/DbRXNh8kahn/", // Šarić
+    "https://www.instagram.com/p/DM0dFKqsTzL/", // Štulić
+    "https://www.instagram.com/p/DYrR4-hjNKn/", // Kostov
+    "https://www.instagram.com/p/DcogICpgoD_/", // Ugrešić
+    "https://www.instagram.com/p/DZSUopfDEt5/", // Milosavljević
+    "https://www.instagram.com/p/Dbl5v3ojAI-/", // Damjanović
+    "https://www.instagram.com/p/DaJDZKcDHqv/", // Ranković
+    "https://www.instagram.com/p/DcZVdF_EUji/", // Šarić
+    "https://www.instagram.com/p/DVEyoGxDFPG/", // Kostov
+    "https://www.instagram.com/p/DbOp-m9gmX3/", // Ugrešić
+    "https://www.instagram.com/p/DWjsYfADI8V/", // Milosavljević
+    "https://www.instagram.com/p/DaXmkPijDEe/", // Damjanović
+    "https://www.instagram.com/p/DVvbHvkjMok/", // Ranković
+    "https://www.instagram.com/p/DT2drs4jE7h/", // Kostov
+    "https://www.instagram.com/p/DX7gipCAg46/", // Ugrešić
+    "https://www.instagram.com/p/DQSHJBIjHd7/", // Milosavljević
+    "https://www.instagram.com/p/DaJCN5rDP4w/", // Damjanović
+    "https://www.instagram.com/p/DTkesgjjPWQ/", // Ranković
+    "https://www.instagram.com/p/DSK1Sn2jIAu/", // Kostov
+    "https://www.instagram.com/p/DXUSFLljNOM/", // Ugrešić
+    "https://www.instagram.com/p/DP0jx8ADAp5/", // Milosavljević
+    "https://www.instagram.com/p/DB10TaqRTMs/", // Damjanović
+    "https://www.instagram.com/p/DPyvyFxjMGS/", // Ranković
+    "https://www.instagram.com/p/DQCrLu1DDZc/", // Kostov
+    "https://www.instagram.com/p/DWkLrJtDBAz/", // Ugrešić
+    "https://www.instagram.com/p/DOjXop7jJwY/", // Milosavljević
+    "https://www.instagram.com/p/C7xGhUVMQNc/", // Damjanović
+    "https://www.instagram.com/p/DPcStsqDCoI/", // Kostov
+    "https://www.instagram.com/p/DSxn3XrE-vp/", // Ugrešić
+    "https://www.instagram.com/p/DPV9TSrDGog/", // Kostov
+    "https://www.instagram.com/p/DSOHPs1jGsp/", // Ugrešić
+    "https://www.instagram.com/p/C7w6_JeMq1b/", // Kostov
+    "https://www.instagram.com/p/DRp6-ZRjNzd/", // Ugrešić
   ],
 };
 
