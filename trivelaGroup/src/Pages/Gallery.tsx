@@ -7,7 +7,16 @@ import {
 import LenticularCarousel, {
   type LenticularCarouselItem,
 } from "../Components/LenticularCarousel";
+import InstagramEmbeds from "../Components/InstagramEmbeds";
 import "./Gallery.css";
+
+/* Kategorije koje umesto slika prikazuju Instagram embed-ove (post/reel). */
+const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
+  Posts: [
+    "https://www.instagram.com/reel/DcowZWVoeqa/",
+    "https://www.instagram.com/p/DcoF5SjiPE2/",
+  ],
+};
 
 /*
  * Galerija — široki "lenticular" carousel (R3F/three) koji se lepo lista
@@ -57,6 +66,7 @@ export default function Gallery() {
   );
 
   const shape = CAT_SHAPE[active] ?? DEFAULT_SHAPE;
+  const embeds = GALLERY_EMBEDS[active] ?? [];
 
   return (
     <section className="min-h-screen bg-teget pb-24 pt-40 sm:pt-48">
@@ -95,10 +105,12 @@ export default function Gallery() {
         )}
       </div>
 
-      {/* Carousel — preko cele širine strane. `key` re-inicijalizuje pri
-          promeni kategorije da se novi set slika rasporedi. */}
+      {/* Prikaz zavisi od kategorije: Instagram embed-ovi (Posts), carousel
+          slika, ili "coming soon". `key` re-inicijalizuje pri promeni taba. */}
       <div className="w-full px-2 sm:px-6">
-        {items.length > 0 ? (
+        {embeds.length > 0 ? (
+          <InstagramEmbeds key={active} permalinks={embeds} />
+        ) : items.length > 0 ? (
           <LenticularCarousel
             key={active}
             items={items}
