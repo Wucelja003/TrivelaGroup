@@ -54,6 +54,9 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
     "https://www.instagram.com/p/DVvbHvkjMok/",
     "https://www.instagram.com/p/DTkesgjjPWQ/",
     "https://www.instagram.com/p/DPyvyFxjMGS/",
+    // Dimitrije Šarić
+    "https://www.instagram.com/p/DbRXNh8kahn/",
+    "https://www.instagram.com/p/DcZVdF_EUji/",
   ],
 };
 
