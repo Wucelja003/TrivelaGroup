@@ -48,6 +48,12 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
     "https://www.instagram.com/p/DaJCN5rDP4w/",
     "https://www.instagram.com/p/DB10TaqRTMs/",
     "https://www.instagram.com/p/C7xGhUVMQNc/",
+    // Đorđe Ranković
+    "https://www.instagram.com/p/Db31m43jAsB/",
+    "https://www.instagram.com/p/DaJDZKcDHqv/",
+    "https://www.instagram.com/p/DVvbHvkjMok/",
+    "https://www.instagram.com/p/DTkesgjjPWQ/",
+    "https://www.instagram.com/p/DPyvyFxjMGS/",
   ],
 };
 
