@@ -14,8 +14,19 @@ import "./Gallery.css";
 /* Kategorije koje umesto slika prikazuju Instagram embed-ove (post/reel). */
 const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
   Posts: [
+    // Trivela Group
     "https://www.instagram.com/reel/DcowZWVoeqa/",
     "https://www.instagram.com/p/DcoF5SjiPE2/",
+    // Vasilije Kostov
+    "https://www.instagram.com/p/DbGIx96jOOx/",
+    "https://www.instagram.com/p/DYrR4-hjNKn/",
+    "https://www.instagram.com/p/DVEyoGxDFPG/",
+    "https://www.instagram.com/p/DT2drs4jE7h/",
+    "https://www.instagram.com/p/DSK1Sn2jIAu/",
+    "https://www.instagram.com/p/DQCrLu1DDZc/",
+    "https://www.instagram.com/p/DPcStsqDCoI/",
+    "https://www.instagram.com/p/DPV9TSrDGog/",
+    "https://www.instagram.com/p/C7w6_JeMq1b/",
   ],
 };
 
