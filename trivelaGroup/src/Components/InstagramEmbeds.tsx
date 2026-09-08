@@ -2,9 +2,14 @@ import { useEffect, useRef } from "react";
 
 /*
  * InstagramEmbeds — zvanicni Instagram embed-ovi (post/reel) u HORIZONTALNOJ
- * traci koja se lista (strelice / swipe / scroll), isto kao ostatak galerije,
- * a ne jedan ispod drugog. Svaki blockquote Instagram-ov embed.js zameni
- * iframe-om; skripta se ucitava jednom, process() se pozove kad su u DOM-u.
+ * traci koja se lista (strelice / swipe / scroll), kao ostatak galerije.
+ *
+ * LAZY: embed se ucitava TEK kad kartica dodje blizu vidokruga (Instagram
+ * gusi kad se povuce 10+ iframe-ova odjednom — zato se prva dva prikazu a
+ * ostali ostanu beli). Ako embed ipak ne prodje (Safari "Prevent Cross-Site
+ * Tracking", ad-blocker, mreza), umesto belog boksa ide tamna "View on
+ * Instagram" kartica. Sadrzaj kartica gradimo imperativno (DOM), da React
+ * re-render ne pregazi iframe koji je IG ubacio.
  */
 
 declare global {
@@ -15,7 +20,8 @@ declare global {
 
 const IG_SCRIPT_SRC = "https://www.instagram.com/embed.js";
 const IG_SCRIPT_ID = "instagram-embed-script";
-const CARD = 340; // px — Instagram embed min-width je 326
+const CARD = 340; // Instagram embed min-width je 326
+const CHECK_MS = 6000; // koliko cekamo da se embed ucita pre fallback-a
 
 function Chevron({ dir }: { dir: "left" | "right" }) {
   return (
@@ -39,46 +45,139 @@ function Chevron({ dir }: { dir: "left" | "right" }) {
   );
 }
 
+function buildPlaceholder(): HTMLElement {
+  const d = document.createElement("div");
+  d.dataset.role = "placeholder";
+  d.style.cssText = [
+    "display:flex",
+    "align-items:center",
+    "justify-content:center",
+    "width:100%",
+    "height:520px",
+    "border-radius:16px",
+    "background:rgba(255,255,255,0.03)",
+    "border:1px solid rgba(255,255,255,0.08)",
+    "color:rgba(255,255,255,0.35)",
+    "font-size:13px",
+  ].join(";");
+  d.textContent = "Loading…";
+  return d;
+}
+
+function buildBlockquote(url: string): HTMLElement {
+  const bq = document.createElement("blockquote");
+  bq.className = "instagram-media";
+  bq.setAttribute(
+    "data-instgrm-permalink",
+    `${url}?utm_source=ig_embed&utm_campaign=loading`
+  );
+  bq.setAttribute("data-instgrm-version", "14");
+  bq.style.cssText = [
+    "background:#FFF",
+    "border:0",
+    "border-radius:8px",
+    "margin:0",
+    `max-width:${CARD}px`,
+    "min-width:326px",
+    "min-height:420px",
+    "width:100%",
+  ].join(";");
+  return bq;
+}
+
+function buildFallback(url: string): HTMLAnchorElement {
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noreferrer";
+  a.style.cssText = [
+    "display:flex",
+    "flex-direction:column",
+    "align-items:center",
+    "justify-content:center",
+    "gap:16px",
+    "width:100%",
+    "height:520px",
+    "border-radius:16px",
+    "background:linear-gradient(160deg,#12203f,#0a1428)",
+    "border:1px solid rgba(255,255,255,0.1)",
+    "color:#fff",
+    "text-decoration:none",
+    "text-align:center",
+    "padding:24px",
+  ].join(";");
+  a.innerHTML = `
+    <span style="display:flex;align-items:center;justify-content:center;height:64px;width:64px;border-radius:18px;background:rgba(150,255,0,0.12);border:1px solid rgba(150,255,0,0.35)">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#96ff00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#96ff00" stroke="none"/>
+      </svg>
+    </span>
+    <span style="font-weight:700;font-size:16px">View this post on Instagram</span>
+    <span style="opacity:.55;font-size:13px">Tap to open</span>`;
+  return a;
+}
+
 export default function InstagramEmbeds({
   permalinks,
 }: {
   permalinks: string[];
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const process = () => window.instgrm?.Embeds?.process();
 
-    if (window.instgrm?.Embeds) {
-      process();
-      return;
-    }
-
+    // Ucitaj IG skriptu jednom.
     let script = document.getElementById(
       IG_SCRIPT_ID
     ) as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement("script");
-      script.id = IG_SCRIPT_ID;
-      script.src = IG_SCRIPT_SRC;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-    script.addEventListener("load", process);
-
-    // Osigurac ako je skripta vec u kesu (bez novog "load" dogadjaja).
-    const poll = window.setInterval(() => {
-      if (window.instgrm?.Embeds) {
-        window.clearInterval(poll);
-        process();
+    if (!window.instgrm?.Embeds) {
+      if (!script) {
+        script = document.createElement("script");
+        script.id = IG_SCRIPT_ID;
+        script.src = IG_SCRIPT_SRC;
+        script.async = true;
+        document.body.appendChild(script);
       }
-    }, 300);
-    const stop = window.setTimeout(() => window.clearInterval(poll), 8000);
+      script.addEventListener("load", process);
+    }
+
+    // Pocetni placeholder u svakoj kartici.
+    cardRefs.current.forEach((el) => {
+      if (el && !el.firstChild) el.appendChild(buildPlaceholder());
+    });
+
+    const timers: number[] = [];
+
+    const activate = (el: HTMLDivElement, url: string) => {
+      if (el.dataset.state) return;
+      el.dataset.state = "loading";
+      el.replaceChildren(buildBlockquote(url));
+      process();
+      // Fallback samo ako IG uopste ne napravi iframe (skripta/host blokiran).
+      timers.push(
+        window.setTimeout(() => {
+          if (!el.querySelector("iframe")) el.replaceChildren(buildFallback(url));
+        }, CHECK_MS)
+      );
+    };
+
+    // STEPENASTO: ubacuj jedan po jedan (ne svih 11 odjednom) — tako Instagram
+    // ne gusi zahteve i svi se ucitaju, nezavisno od scroll-a/vidljivosti.
+    let i = 0;
+    const pump = () => {
+      if (i >= cardRefs.current.length) return;
+      const idx = i++;
+      const el = cardRefs.current[idx];
+      if (el) activate(el, permalinks[idx]);
+      timers.push(window.setTimeout(pump, 550));
+    };
+    pump();
 
     return () => {
+      timers.forEach((t) => window.clearTimeout(t));
       script?.removeEventListener("load", process);
-      window.clearInterval(poll);
-      window.clearTimeout(stop);
     };
   }, [permalinks]);
 
@@ -111,28 +210,16 @@ export default function InstagramEmbeds({
         ref={trackRef}
         className="flex snap-x snap-mandatory items-start gap-5 overflow-x-auto scroll-smooth px-12 py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {permalinks.map((url) => (
+        {permalinks.map((url, i) => (
           <div
             key={url}
+            data-idx={i}
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
             className="shrink-0 snap-center"
             style={{ width: CARD }}
-          >
-            <blockquote
-              className="instagram-media"
-              data-instgrm-permalink={`${url}?utm_source=ig_embed&utm_campaign=loading`}
-              data-instgrm-version="14"
-              style={{
-                background: "#FFF",
-                border: 0,
-                borderRadius: 8,
-                margin: 0,
-                maxWidth: CARD,
-                minWidth: 326,
-                minHeight: 420,
-                width: "100%",
-              }}
-            />
-          </div>
+          />
         ))}
       </div>
     </div>
