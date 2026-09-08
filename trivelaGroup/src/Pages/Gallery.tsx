@@ -57,6 +57,8 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
     // Dimitrije Šarić
     "https://www.instagram.com/p/DbRXNh8kahn/",
     "https://www.instagram.com/p/DcZVdF_EUji/",
+    // Nikola Štulić
+    "https://www.instagram.com/p/DM0dFKqsTzL/",
   ],
 };
 
