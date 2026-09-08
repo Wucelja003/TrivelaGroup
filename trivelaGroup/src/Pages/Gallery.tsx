@@ -41,6 +41,13 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
     "https://www.instagram.com/p/DQSHJBIjHd7/",
     "https://www.instagram.com/p/DP0jx8ADAp5/",
     "https://www.instagram.com/p/DOjXop7jJwY/",
+    // Aleksa Damjanović
+    "https://www.instagram.com/p/Db1ATQ7DITN/",
+    "https://www.instagram.com/p/Dbl5v3ojAI-/",
+    "https://www.instagram.com/p/DaXmkPijDEe/",
+    "https://www.instagram.com/p/DaJCN5rDP4w/",
+    "https://www.instagram.com/p/DB10TaqRTMs/",
+    "https://www.instagram.com/p/C7xGhUVMQNc/",
   ],
 };
 
