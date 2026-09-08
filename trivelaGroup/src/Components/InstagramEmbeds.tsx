@@ -173,20 +173,36 @@ export default function InstagramEmbeds({
       );
     };
 
-    // STEPENASTO: ubacuj jedan po jedan (ne sve odjednom) — tako Instagram ne
-    // gusi zahteve i svi se ucitaju, nezavisno od scroll-a/vidljivosti.
-    let i = 0;
-    const pump = () => {
-      if (i >= cardRefs.current.length) return;
-      const idx = i++;
-      const el = cardRefs.current[idx];
-      if (el) activate(el, permalinks[idx]);
-      timers.push(window.setTimeout(pump, 450));
+    /* LAZY na skrol: ucitava se samo ono sto je u vidokrugu trake (+ jedan
+       ekran bafera). Sa mnogo postova (30+) Instagram gusi ako se svi povuku
+       odjednom — ovako uvek radi jer nikad ne krene vise od par u isti mah.
+       Dok listas (strelice / swipe / scroll) sledeci se aktiviraju. */
+    const track = trackRef.current;
+    const activateVisible = () => {
+      if (!track) return;
+      const trackLeft = track.getBoundingClientRect().left;
+      const limit = track.clientWidth * 2; // vidokrug + ~1 ekran unapred
+      cardRefs.current.forEach((el, idx) => {
+        if (!el || el.dataset.state) return;
+        const left = el.getBoundingClientRect().left - trackLeft;
+        if (left <= limit) activate(el, permalinks[idx]);
+      });
     };
-    pump();
+
+    activateVisible();
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(activateVisible);
+    };
+    track?.addEventListener("scroll", onScroll, { passive: true });
+    // Osigurac: jos jedan prolaz kad se layout smiri.
+    timers.push(window.setTimeout(activateVisible, 400));
 
     return () => {
       timers.forEach((t) => window.clearTimeout(t));
+      cancelAnimationFrame(raf);
+      track?.removeEventListener("scroll", onScroll);
       script?.removeEventListener("load", process);
     };
   }, [permalinks]);
