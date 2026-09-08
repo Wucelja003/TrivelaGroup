@@ -8,6 +8,7 @@ import LenticularCarousel, {
   type LenticularCarouselItem,
 } from "../Components/LenticularCarousel";
 import InstagramEmbeds from "../Components/InstagramEmbeds";
+import ReelStrip, { type ReelItem } from "../Components/ReelStrip";
 import "./Gallery.css";
 
 /* Kategorije koje umesto slika prikazuju Instagram embed-ove (post/reel). */
@@ -16,6 +17,28 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
     "https://www.instagram.com/reel/DcowZWVoeqa/",
     "https://www.instagram.com/p/DcoF5SjiPE2/",
   ],
+};
+
+/* Reels (video) iz public/trivelaReels — listaju se isto kao galerija slika,
+   samo su video, svaki u prirodnoj velicini (9:16, jedan landscape). */
+const REEL_FILES = [
+  "trivelaReelsMain",
+  "trivelaReels3",
+  "trivelaReels3-2",
+  "trivelaReelsPartizan",
+  "trivelaReelsFootball",
+  "trivelaReelsBcPartizan",
+  "trivelaReelsCases",
+  "trivelsReelsMoneke",
+  "trivelaReelsZoc",
+  "trivelaReelsStulic",
+  "trivelaReelsUgresic",
+  "trivelaReelsOsetkowski",
+  "trivelaReelsDress",
+  "trivelaReelsLandscape",
+];
+const GALLERY_REELS: Partial<Record<GalleryCategory, ReelItem[]>> = {
+  Reels: REEL_FILES.map((n) => ({ src: `/trivelaReels/${n}.mp4` })),
 };
 
 /*
@@ -67,6 +90,7 @@ export default function Gallery() {
 
   const shape = CAT_SHAPE[active] ?? DEFAULT_SHAPE;
   const embeds = GALLERY_EMBEDS[active] ?? [];
+  const reels = GALLERY_REELS[active] ?? [];
 
   return (
     <section className="min-h-screen bg-teget pb-24 pt-40 sm:pt-48">
@@ -110,6 +134,8 @@ export default function Gallery() {
       <div className="w-full px-2 sm:px-6">
         {embeds.length > 0 ? (
           <InstagramEmbeds key={active} permalinks={embeds} />
+        ) : reels.length > 0 ? (
+          <ReelStrip key={active} items={reels} />
         ) : items.length > 0 ? (
           <LenticularCarousel
             key={active}
