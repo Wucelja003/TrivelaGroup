@@ -155,12 +155,6 @@ export default function InstagramEmbeds({
       el.dataset.state = "loading";
       el.replaceChildren(buildBlockquote(url));
       process();
-      // Fallback samo ako IG uopste ne napravi iframe (skripta/host blokiran).
-      timers.push(
-        window.setTimeout(() => {
-          if (!el.querySelector("iframe")) el.replaceChildren(buildFallback(url));
-        }, CHECK_MS)
-      );
     };
 
     // STEPENASTO: ubacuj jedan po jedan (ne svih 11 odjednom) — tako Instagram
@@ -174,6 +168,28 @@ export default function InstagramEmbeds({
       timers.push(window.setTimeout(pump, 550));
     };
     pump();
+
+    // Dodatni process() prolazi — pokupe svaki blockquote koji je promasen.
+    [2000, 5000, 9000].forEach((t) =>
+      timers.push(window.setTimeout(process, t))
+    );
+
+    /* SWEEP posle CHECK_MS: karticu koja nema iframe ILI je iframe ostao
+       prazan (nizak, sadrzaj se nije iscrtao) zameni tamnom "View on
+       Instagram" karticom — da nikad ne ostane beli blok. Ucitani embed je
+       uvek visok (>450px), pa se pravi embed ne dira. */
+    const sweep = () => {
+      cardRefs.current.forEach((el, idx) => {
+        if (!el || el.dataset.state === "fallback") return;
+        const iframe = el.querySelector("iframe");
+        const h = iframe ? iframe.getBoundingClientRect().height : 0;
+        if (!iframe || h < 450) {
+          el.replaceChildren(buildFallback(permalinks[idx]));
+          el.dataset.state = "fallback";
+        }
+      });
+    };
+    timers.push(window.setTimeout(sweep, CHECK_MS + 5000));
 
     return () => {
       timers.forEach((t) => window.clearTimeout(t));
