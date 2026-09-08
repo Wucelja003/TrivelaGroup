@@ -155,41 +155,35 @@ export default function InstagramEmbeds({
       el.dataset.state = "loading";
       el.replaceChildren(buildBlockquote(url));
       process();
+      /* Provera PO KARTICI, CHECK_MS od NJENE aktivacije (ne fiksno od mount-a
+         — inace bi kod mnogo kartica poslednje dobile fallback pre nego sto
+         stignu da se ucitaju). Ako nema iframe ILI je ostao prazan (nizak),
+         zameni tamnom "View on Instagram" karticom — nikad beli blok. Ucitan
+         embed je uvek visok (>450px), pa se pravi embed ne dira. */
+      timers.push(
+        window.setTimeout(() => {
+          if (el.dataset.state === "fallback") return;
+          const iframe = el.querySelector("iframe");
+          const h = iframe ? iframe.getBoundingClientRect().height : 0;
+          if (!iframe || h < 450) {
+            el.replaceChildren(buildFallback(url));
+            el.dataset.state = "fallback";
+          }
+        }, CHECK_MS)
+      );
     };
 
-    // STEPENASTO: ubacuj jedan po jedan (ne svih 11 odjednom) — tako Instagram
-    // ne gusi zahteve i svi se ucitaju, nezavisno od scroll-a/vidljivosti.
+    // STEPENASTO: ubacuj jedan po jedan (ne sve odjednom) — tako Instagram ne
+    // gusi zahteve i svi se ucitaju, nezavisno od scroll-a/vidljivosti.
     let i = 0;
     const pump = () => {
       if (i >= cardRefs.current.length) return;
       const idx = i++;
       const el = cardRefs.current[idx];
       if (el) activate(el, permalinks[idx]);
-      timers.push(window.setTimeout(pump, 550));
+      timers.push(window.setTimeout(pump, 450));
     };
     pump();
-
-    // Dodatni process() prolazi — pokupe svaki blockquote koji je promasen.
-    [2000, 5000, 9000].forEach((t) =>
-      timers.push(window.setTimeout(process, t))
-    );
-
-    /* SWEEP posle CHECK_MS: karticu koja nema iframe ILI je iframe ostao
-       prazan (nizak, sadrzaj se nije iscrtao) zameni tamnom "View on
-       Instagram" karticom — da nikad ne ostane beli blok. Ucitani embed je
-       uvek visok (>450px), pa se pravi embed ne dira. */
-    const sweep = () => {
-      cardRefs.current.forEach((el, idx) => {
-        if (!el || el.dataset.state === "fallback") return;
-        const iframe = el.querySelector("iframe");
-        const h = iframe ? iframe.getBoundingClientRect().height : 0;
-        if (!iframe || h < 450) {
-          el.replaceChildren(buildFallback(permalinks[idx]));
-          el.dataset.state = "fallback";
-        }
-      });
-    };
-    timers.push(window.setTimeout(sweep, CHECK_MS + 5000));
 
     return () => {
       timers.forEach((t) => window.clearTimeout(t));
