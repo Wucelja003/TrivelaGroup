@@ -4,9 +4,10 @@
    providne sekcije da tekst ostane citak. */
 
 .biz {
-  --biz-green: #3ecf8e; /* smaragdna — akcenat i sjaj */
-  --biz-green-soft: #7ff0bb;
-  --biz-green-deep: #14532d; /* tamno zelena — dubina, senke */
+  /* Imena su ostala --biz-green* radi manjeg diff-a, ali vrednosti su ZLATNE */
+  --biz-green: #d4af37; /* zlatna — akcenat i sjaj */
+  --biz-green-soft: #f4e2a1;
+  --biz-green-deep: #5a4413; /* tamno zlatna/bronza — dubina, senke */
   --biz-gray: #545d67; /* siva iz dugmeta */
   position: relative;
   min-height: 100vh;
@@ -45,8 +46,8 @@
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(62, 207, 142, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(62, 207, 142, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 60% 55% at 50% 45%, #000 0%, transparent 75%);
   -webkit-mask-image: radial-gradient(
@@ -125,11 +126,11 @@
 }
 .biz-item:hover {
   color: #ffffff;
-  border-color: rgba(62, 207, 142, 0.55);
+  border-color: rgba(212, 175, 55, 0.55);
   background:
-    linear-gradient(180deg, rgba(62, 207, 142, 0.12), rgba(62, 207, 142, 0.04));
+    linear-gradient(180deg, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0.04));
   transform: translateY(-2px);
-  box-shadow: 0 14px 40px -12px rgba(62, 207, 142, 0.35);
+  box-shadow: 0 14px 40px -12px rgba(212, 175, 55, 0.35);
 }
 /* Kvadratna pločica ispod logotipa — daje mu kontrast bez obzira na boju
    samog logotipa. Sareni/tamni logotipi idu na svetlu, svetli/beli na crnu. */
@@ -161,13 +162,13 @@
 }
 .biz-item:hover .biz-logo--dark {
   box-shadow:
-    inset 0 0 0 1px rgba(62, 207, 142, 0.35),
-    0 8px 20px -8px rgba(62, 207, 142, 0.3);
+    inset 0 0 0 1px rgba(212, 175, 55, 0.35),
+    0 8px 20px -8px rgba(212, 175, 55, 0.3);
 }
 .biz-item:hover .biz-logo--light {
   box-shadow:
-    inset 0 0 0 1px rgba(62, 207, 142, 0.4),
-    0 8px 20px -8px rgba(62, 207, 142, 0.3);
+    inset 0 0 0 1px rgba(212, 175, 55, 0.4),
+    0 8px 20px -8px rgba(212, 175, 55, 0.3);
 }
 .biz-logo img {
   max-height: 100%;

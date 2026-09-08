@@ -177,9 +177,9 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(62,207,142,0.18),transparent_70%)]"
+          className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(212, 175, 55,0.18),transparent_70%)]"
         />
-        <div className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(62,207,142,0.22)]">
+        <div className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(212, 175, 55,0.22)]">
           {s.video ? (
             <>
               <video
@@ -197,7 +197,7 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
                 type="button"
                 onClick={toggleMute}
                 aria-label={muted ? "Unmute" : "Mute"}
-                className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-[#3ecf8e] hover:text-[#3ecf8e]"
+                className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-[#d4af37] hover:text-[#d4af37]"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -231,7 +231,7 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
             {s.name}
           </span>
           <span className="inline-flex items-center gap-2 text-sm text-white/60">
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#3ecf8e] shadow-[0_0_10px_#3ecf8e]" />
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#d4af37] shadow-[0_0_10px_#d4af37]" />
             {s.role}
           </span>
         </figcaption>
@@ -239,7 +239,7 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
 
       {/* Duza prica */}
       <motion.div variants={item} className={flip ? "lg:order-1" : ""}>
-        <span className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]">
+        <span className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]">
           {s.kicker}
         </span>
         <h3 className="mt-4 text-2xl font-extrabold leading-[1.12] tracking-tight sm:text-3xl">
@@ -268,11 +268,11 @@ function Emblem({ reduce }: { reduce: boolean | null }) {
     <div className="relative h-24 w-24">
       <div
         aria-hidden="true"
-        className="absolute -inset-6 rounded-full bg-[#3ecf8e]/25 blur-2xl"
+        className="absolute -inset-6 rounded-full bg-[#d4af37]/25 blur-2xl"
       />
       <motion.div
         aria-hidden="true"
-        className="absolute inset-0 rounded-full bg-[conic-gradient(from_140deg,#14532d,#3ecf8e,#7ff0bb,#545d67,#14532d)] blur-[5px]"
+        className="absolute inset-0 rounded-full bg-[conic-gradient(from_140deg,#5a4413,#d4af37,#f4e2a1,#545d67,#5a4413)] blur-[5px]"
         animate={reduce ? undefined : { rotate: 360 }}
         transition={{ rotate: { duration: 22, repeat: Infinity, ease: "linear" } }}
       />
@@ -280,7 +280,7 @@ function Emblem({ reduce }: { reduce: boolean | null }) {
         <img
           src="/Trivela_Logo_mark.svg"
           alt="Trivela"
-          className="h-9 w-9 [filter:drop-shadow(0_0_10px_rgba(62,207,142,0.6))]"
+          className="h-9 w-9 [filter:drop-shadow(0_0_10px_rgba(212, 175, 55,0.6))]"
         />
       </div>
     </div>
@@ -317,7 +317,7 @@ export default function Business() {
 
           <motion.span
             variants={item}
-            className="mt-7 text-[12px] font-semibold uppercase tracking-[0.35em] text-[#3ecf8e]"
+            className="mt-7 text-[12px] font-semibold uppercase tracking-[0.35em] text-[#d4af37]"
           >
             Trivela Business
           </motion.span>
@@ -328,7 +328,7 @@ export default function Business() {
           >
             Beyond the game
             <br />
-            <span className="bg-gradient-to-r from-[#7ff0bb] via-[#3ecf8e] to-[#2f8f5b] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#f4e2a1] via-[#d4af37] to-[#a8802a] bg-clip-text text-transparent">
               Built for business.
             </span>
           </motion.h1>
@@ -347,7 +347,7 @@ export default function Business() {
           >
             <Link
               to="/getInTouch"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f8f5b] to-[#3ecf8e] px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#06231a] shadow-[0_16px_40px_-10px_rgba(62,207,142,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(62,207,142,0.8)] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a8802a] to-[#d4af37] px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#2a1e02] shadow-[0_16px_40px_-10px_rgba(212, 175, 55,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(212, 175, 55,0.8)] sm:w-auto"
             >
               Start a project
               <span className="transition-transform duration-300 group-hover:translate-x-1">
@@ -357,7 +357,7 @@ export default function Business() {
             <button
               type="button"
               onClick={toClients}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white backdrop-blur transition-colors duration-300 hover:border-[#3ecf8e]/60 hover:bg-white/10 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white backdrop-blur transition-colors duration-300 hover:border-[#d4af37]/60 hover:bg-white/10 sm:w-auto"
             >
               See our clients
             </button>
@@ -377,7 +377,7 @@ export default function Business() {
           >
             <motion.span
               variants={item}
-              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]"
+              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]"
             >
               (01) — Beyond sport
             </motion.span>
@@ -408,9 +408,9 @@ export default function Business() {
               <motion.div
                 key={p.title}
                 variants={item}
-                className="group rounded-2xl border border-white/10 bg-white/[0.035] p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#3ecf8e]/45 hover:bg-[#3ecf8e]/[0.06] hover:shadow-[0_24px_60px_-24px_rgba(62,207,142,0.5)]"
+                className="group rounded-2xl border border-white/10 bg-white/[0.035] p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/45 hover:bg-[#d4af37]/[0.06] hover:shadow-[0_24px_60px_-24px_rgba(212, 175, 55,0.5)]"
               >
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#3ecf8e]/12 text-[#3ecf8e] ring-1 ring-inset ring-[#3ecf8e]/25">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#d4af37]/12 text-[#d4af37] ring-1 ring-inset ring-[#d4af37]/25">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -447,7 +447,7 @@ export default function Business() {
           >
             <motion.span
               variants={item}
-              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]"
+              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]"
             >
               (02) — Clients
             </motion.span>
@@ -456,7 +456,7 @@ export default function Business() {
               className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
             >
               Companies who{" "}
-              <span className="bg-gradient-to-r from-[#7ff0bb] to-[#3ecf8e] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#f4e2a1] to-[#d4af37] bg-clip-text text-transparent">
                 trust Trivela
               </span>
               .
@@ -491,7 +491,7 @@ export default function Business() {
           >
             <motion.span
               variants={item}
-              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#3ecf8e]"
+              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]"
             >
               (03) — Clients &amp; masterpieces
             </motion.span>
@@ -500,7 +500,7 @@ export default function Business() {
               className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
             >
               Masterpieces,{" "}
-              <span className="bg-gradient-to-r from-[#7ff0bb] to-[#3ecf8e] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#f4e2a1] to-[#d4af37] bg-clip-text text-transparent">
                 made together
               </span>
               .
@@ -529,11 +529,11 @@ export default function Business() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#1b2f26]/80 to-[#14171a]/80 px-6 py-16 text-center backdrop-blur-md sm:px-12 sm:py-20"
+          className="relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#2a2418]/80 to-[#14171a]/80 px-6 py-16 text-center backdrop-blur-md sm:px-12 sm:py-20"
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(62,207,142,0.35),transparent_70%)] blur-2xl"
+            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(212, 175, 55,0.35),transparent_70%)] blur-2xl"
           />
           <h2 className="relative text-3xl font-extrabold tracking-tight sm:text-4xl">
             Let's build your brand.
@@ -544,7 +544,7 @@ export default function Business() {
           </p>
           <Link
             to="/getInTouch"
-            className="group relative mt-9 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2f8f5b] to-[#3ecf8e] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#06231a] shadow-[0_16px_40px_-10px_rgba(62,207,142,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(62,207,142,0.85)]"
+            className="group relative mt-9 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a8802a] to-[#d4af37] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#2a1e02] shadow-[0_16px_40px_-10px_rgba(212, 175, 55,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(212, 175, 55,0.85)]"
           >
             Get in touch
             <span className="transition-transform duration-300 group-hover:translate-x-1">

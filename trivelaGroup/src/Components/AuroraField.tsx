@@ -120,12 +120,12 @@ const fragmentShader = /* glsl */ `
     float glowCore = pow(smoothstep(0.92, 0.06, length(p + vec2(0.0, 0.08))), 2.6);
     float vign = smoothstep(1.18, 0.24, length(p * vec2(0.86, 1.22)));
 
-    // NASE boje: siva podloga (kao Business dugme) + tamno zelene trake
+    // NASE boje: siva podloga (kao Business dugme) + zlatne/amber trake
     vec3 color = vec3(0.086, 0.098, 0.109);              // ~#161a1c ugljena siva
-    color += vec3(0.11, 0.42, 0.24) * aurora * 0.55 * vign;   // smaragdna traka
-    color += vec3(0.28, 0.62, 0.16) * aurora * 0.22 * vign;   // dodir zelene marke
-    color += vec3(0.10, 0.30, 0.22) * drift * 0.26 * vign;    // tamni teal preliv
-    color += vec3(0.55, 0.72, 0.60) * glowCore * 0.10;        // meko sivo-zeleno jezgro
+    color += vec3(0.55, 0.40, 0.10) * aurora * 0.55 * vign;   // zlatna traka
+    color += vec3(0.72, 0.54, 0.14) * aurora * 0.22 * vign;   // dodir svetlijeg zlata
+    color += vec3(0.30, 0.20, 0.06) * drift * 0.26 * vign;    // tamni bronzani preliv
+    color += vec3(0.78, 0.70, 0.48) * glowCore * 0.10;        // meko zlatno jezgro
     color *= 0.5 + vign * 0.7;
     color += (grain(gl_FragCoord.xy) - 0.5) * 0.018;
 
