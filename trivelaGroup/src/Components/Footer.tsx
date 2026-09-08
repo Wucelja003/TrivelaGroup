@@ -47,8 +47,8 @@ export default function Footer() {
           <div className="flex items-start gap-5">
             <Link to="/" className="flex shrink-0 items-center">
               <img
-                src="/Logo_Trivela-2.svg"
-                alt="Trivela Group"
+                src={onDrop ? "/dropLogo.png" : "/Logo_Trivela-2.svg"}
+                alt={onDrop ? "Trivela Drop" : "Trivela Group"}
                 className="f-logo h-16 w-16 object-contain"
               />
             </Link>

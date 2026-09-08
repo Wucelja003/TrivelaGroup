@@ -180,8 +180,8 @@ export default function LandingNav({
           className="pointer-events-auto flex shrink-0 items-center"
         >
           <img
-            src="/Logo_Trivela-2.svg"
-            alt="Trivela Group"
+            src={current === "drop" ? "/dropLogo.png" : "/Logo_Trivela-2.svg"}
+            alt={current === "drop" ? "Trivela Drop" : "Trivela Group"}
             className={`h-14 w-auto sm:h-16 ${
               light
                 ? ""
