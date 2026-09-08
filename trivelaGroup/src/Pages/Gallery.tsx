@@ -34,6 +34,13 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
     "https://www.instagram.com/p/DSxn3XrE-vp/",
     "https://www.instagram.com/p/DSOHPs1jGsp/",
     "https://www.instagram.com/p/DRp6-ZRjNzd/",
+    // Veljko Milosavljević
+    "https://www.instagram.com/p/Dcnrms6jPfY/",
+    "https://www.instagram.com/p/DZSUopfDEt5/",
+    "https://www.instagram.com/p/DWjsYfADI8V/",
+    "https://www.instagram.com/p/DQSHJBIjHd7/",
+    "https://www.instagram.com/p/DP0jx8ADAp5/",
+    "https://www.instagram.com/p/DOjXop7jJwY/",
   ],
 };
 
