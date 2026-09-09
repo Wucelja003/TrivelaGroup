@@ -38,7 +38,7 @@ const GRAD =
 const ORIGIN_STEPS: string[] = [
   "The story of Trivela Group goes back to October 2019, when one of its founders began creating sports-focused digital content through an Instagram platform.",
   "As the platform grew, so did the brand behind it. It soon established itself as one of Serbia’s most recognized sports media brands, building a particularly strong presence within the Partizan community.",
-  "This growth opened the door to collaborations with BC Partizan, HC Partizan, and a number of professional football and basketball players representing the black and whites — followed by partnerships with athletes from Crvena Zvezda Belgrade.",
+  "This growth opened the door to collaborations with Partizan BC , Partizan HC , and a number of professional football and basketball players representing the black and whites — followed by partnerships with athletes from Crvena Zvezda Belgrade.",
   "The next chapter began when a graphic designer joined the team, bringing a new creative dimension to the project. What started as a collaboration evolved into a long-term partnership and, several years later, into the foundation of the creative agency known today as Trivela Group.",
 ];
 
