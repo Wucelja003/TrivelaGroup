@@ -138,9 +138,6 @@ export default function Gallery() {
           <h1 className="bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-5xl font-extrabold leading-none tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.3))] sm:text-6xl lg:text-7xl">
             Trivela Gallery
           </h1>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.3em] text-white/50 sm:text-base">
-            Drag or use the arrows to browse
-          </p>
         </div>
 
         {/* Filter tabovi po kategorijama */}
