@@ -32,7 +32,7 @@ interface Pillar {
 }
 const PILLARS: Pillar[] = [
   {
-    title: "Marketing & Content",
+    title: "Social Media",
     copy: "Complete management of your brand’s digital presence: from day-to-day social media operations to premium content creation that reflects the quality and identity of your business. We build a consistent online image supported by a clear communication, content and advertising strategy.",
     icon: (
       <path d="M4 20V9m6 11V4m6 16v-7m6 7V8" />

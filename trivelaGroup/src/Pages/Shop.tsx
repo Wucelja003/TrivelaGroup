@@ -16,19 +16,19 @@ import "./Shop.css";
    Imena/uloge su placeholder gde nisu poznata — slobodno menjaj. */
 const dropPlayers: PlayerItem[] = [
   { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Dzanan Musa", role: "Basketball Player" },
+  { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Džanan Musa", role: "Basketball Player" },
   { img: "/TrivelaGroupPhotos/VladimirLucicPhoto.jpg", name: "Vladimir Lučić", role: "Football player" },
   { img: "/TrivelaGroupPhotos/monekePhoto2.jpg", name: "Chima Moneke", role: "Basketball Player" },
   { img: "/TrivelaGroupPhotos/TracyLessorPhoto.JPG", name: "Traicy Lessort", role: "Mathias Lessort's wife" },
   { img: "/TrivelaGroupPhotos/CabocloPhoto.jpg", name: "Bruno Caboclo", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/VeljkoMilosavljevic.JPG", name: "Veljko Milosavljevic", role: "Football Player" },
+  { img: "/TrivelaGroupPhotos/VeljkoMilosavljevic.JPG", name: "Veljko Milosavljević", role: "Football Player" },
   { img: "/TrivelaGroupPhotos/YagoPhoto.jpg", name: "Yago dos Santos", role: "Basketball Player" },
   { img: "/TrivelaGroupPhotos/RodrigaoPhoto.jpg", name: "Rodrigao", role: "Football Player" },
   { img: "/TrivelaGroupPhotos/NunnalyPhoto.jpg", name: "James Nunnally", role: "Basketball Player" },
   { img: "/TrivelaGroupPhotos/NatchoPhoto.jpg", name: "Bibars Natcho", role: "Football Player" },
   { img: "/TrivelaGroupPhotos/MatheusSaldanhaPhoto.jpg", name: "Matheus Saldanha", role: "Football Player" },
   { img: "/TrivelaGroupPhotos/LessortPhoto.jpg", name: "Mathias Lessort", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maskimovic", role: "Football Player" },
+  { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maskimović", role: "Football Player" },
 
 ];
 
