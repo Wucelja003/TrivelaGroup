@@ -72,8 +72,8 @@ export default function Intro() {
       )
       .to(
         rootRef.current,
-        { yPercent: -100, duration: 0.7, ease: "power4.inOut" },
-        "+=0.45"
+        { yPercent: -100, duration: 0.6, ease: "power4.inOut" },
+        "+=0.2"
       );
 
     /* Sigurnosni izlaz: ako rAF stane (npr. preview alat) ili GSAP zakaze,

@@ -144,6 +144,18 @@
   color: rgba(8, 34, 108, 0.7);
 }
 
+/* Lead recenice: teku u istom redu na sirem ekranu, a na telefonu svaka dobije
+   svoj red — tako "Trivela Group" ne ostaje sam u poslednjem redu. */
+.dh-lead-line {
+  display: inline;
+}
+
+@media (max-width: 640px) {
+  .dh-lead-line {
+    display: block;
+  }
+}
+
 .dh-actions {
   margin-top: 2.4rem;
 }

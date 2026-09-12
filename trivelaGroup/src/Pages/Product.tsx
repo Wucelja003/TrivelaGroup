@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { formatPrice, type CaseItem } from "../data/cases";
 import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
-import { PHONE_MODELS as MODELS } from "../data/phoneModels";
 import "./Product.css";
 
 /* Đoković maskica (Legends) ima vise varijacija boje — swatch-evi menjaju sliku.
@@ -14,26 +13,10 @@ const DJOKOVIC_COLORS = [
   { name: "Green", file: "DjokovicZelena", swatch: "#1f7a3d" },
   { name: "Light Green", file: "DjokovicSvetloZelena", swatch: "#a3e043" },
   { name: "Purple", file: "DjokovicPlava", swatch: "#6b52b8" },
-  { name: "Black", file: "DjokovicCrna", swatch: "#1a1a1a" },
+  { name: "Grey", file: "DjokovicCrna", swatch: "#5A5A5A " },
 ];
 
 /* ---------- Icons ---------- */
-function Chevron({ open = false }: { open?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={`h-4 w-4 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
-
 function Check({ className = "h-5 w-5" }: { className?: string }) {
   return (
     <svg
@@ -122,28 +105,15 @@ export default function Product() {
   const { cases, loading } = useCases();
   const item = cases.find((c) => c.id === id) ?? null;
 
-  const [model, setModel] = useState(MODELS[0]);
-  const [open, setOpen] = useState(false);
+  const [model, setModel] = useState("");
   const [added, setAdded] = useState(false);
   const [colorIdx, setColorIdx] = useState(0);
-  const ddRef = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
   const reduce = useReducedMotion();
 
   const isDjok = !!item && item.id === DJOKOVIC_SLUG;
   const djokColor = DJOKOVIC_COLORS[colorIdx];
   const djokImg = isDjok ? `/DjokovicCases/${djokColor.file}.PNG` : null;
-
-  // zatvori dropdown na klik van njega
-  useEffect(() => {
-    const onDown = (e: MouseEvent) => {
-      if (ddRef.current && !ddRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
-  }, []);
 
   const suggestions = useMemo(() => {
     if (!item) return [];
@@ -279,64 +249,37 @@ export default function Product() {
               </div>
             )}
 
-            {/* Model selector */}
+            {/* Model telefona — slobodan unos umesto padajuceg menija: klijent
+                sam upise tacno svoj telefon (npr. iPhone 18 Pro). */}
             <div className="mt-9 max-w-md">
-              <div className="mb-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-mastilo/65">
-                Select model
-              </div>
-              <div className="relative" ref={ddRef}>
-                <button
-                  type="button"
-                  onClick={() => setOpen((o) => !o)}
-                  className={`flex w-full items-center justify-between rounded-xl border bg-white px-5 py-4 text-left text-base text-mastilo transition-colors duration-200 ${
-                    open ? "border-ledena" : "border-mastilo/15 hover:border-mastilo/35"
-                  }`}
-                >
-                  {model}
-                  <Chevron open={open} />
-                </button>
-
-                {/* Podloga je BELA — ostala je tamna (#050f33) iz stare teme,
-                    pa se tamnoplav tekst modela na njoj nije video. */}
-                {open && (
-                  <ul className="prod-dropdown absolute z-20 mt-2 max-h-64 w-full overflow-auto rounded-xl border border-mastilo/15 bg-white p-1.5 shadow-[0_18px_44px_rgba(8,34,108,0.18)]">
-                    {MODELS.map((m) => {
-                      const active = m === model;
-                      return (
-                        <li key={m}>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setModel(m);
-                              setOpen(false);
-                            }}
-                            className={`flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-left text-sm transition-colors duration-150 ${
-                              active
-                                ? "bg-ledena/25 text-mastilo"
-                                : "text-mastilo/70 hover:bg-mastilo/5 hover:text-mastilo"
-                            }`}
-                          >
-                            {m}
-                            {active && <Check className="h-4 w-4" />}
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </div>
+              <label
+                htmlFor="phone-model"
+                className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.2em] text-mastilo/65"
+              >
+                Your phone model
+              </label>
+              <input
+                id="phone-model"
+                type="text"
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                placeholder="e.g. iPhone 18 Pro"
+                autoComplete="off"
+                className="w-full rounded-xl border border-mastilo/15 bg-white px-5 py-4 text-base text-mastilo outline-none transition-colors duration-200 placeholder:text-mastilo/35 hover:border-mastilo/35 focus:border-ledena"
+              />
             </div>
 
             {/* Add to cart */}
             <div className="mt-8 max-w-md">
               <button
                 type="button"
+                disabled={!model.trim()}
                 onClick={() => {
-                  if (!item) return;
+                  if (!item || !model.trim()) return;
                   addItem({
                     id: isDjok ? `${item.id}--${djokColor.file}` : item.id,
                     name: isDjok ? `${item.name} — ${djokColor.name}` : item.name,
-                    model,
+                    model: model.trim(),
                     price: item.price,
                     badge: item.badge,
                     color: isDjok ? djokColor.swatch : item.color,
@@ -345,7 +288,7 @@ export default function Product() {
                   setAdded(true);
                   setTimeout(() => setAdded(false), 1800);
                 }}
-                className={`group flex w-full items-center justify-center gap-3 rounded-full py-4.5 text-base font-semibold transition-all duration-300 ${
+                className={`group flex w-full items-center justify-center gap-3 rounded-full py-4.5 text-base font-semibold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none ${
                   added
                     ? "bg-mastilo text-white"
                     : "bg-ledena text-ledena-ink shadow-[0_10px_30px_rgba(124,196,255,0.3)] hover:shadow-[0_14px_40px_rgba(124,196,255,0.5)]"

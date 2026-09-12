@@ -82,9 +82,11 @@ function CartButton() {
 }
 
 interface Props {
-  /* Na landingu traka ceka sekvencu (intro -> hero -> traka). Na ostalim
-     stranama te sekvence nema, pa bi `onDone("hero")` cutao do sigurnosnog
-     tajmera i traka bi 11s stajala nevidljiva — zato ulazi odmah. */
+  /* Na landingu traka ulazi cim intro zavesa spadne (onDone("intro")) — vise
+     NE ceka celu hero sekvencu, pa se dugmad gore pojave odmah (uporedo sa
+     hero sadrzajem), a ne poslednja. Na ostalim stranama te sekvence nema,
+     pa bi onDone(...) cutao do sigurnosnog tajmera i traka bi stajala
+     nevidljiva — zato tamo (immediate) ulazi odmah. */
   immediate?: boolean;
   /* Korpa je obavezna na prodavnici; na landingu nema sta da radi. */
   cart?: boolean;
@@ -144,16 +146,17 @@ export default function LandingNav({
         return;
       }
 
-      const off = onDone("hero", play);
+      const off = onDone("intro", play);
 
       /* Nikad ne ostavljaj traku nevidljivu ako sekvenca zapne.
-         Zapocetu animaciju dovrsi, ne pregazi je. */
+         Zapocetu animaciju dovrsi, ne pregazi je. Intro sam sebe sklanja
+         najkasnije za ~3.8s (svoj fallback), pa je 5s ovde komotan backstop. */
       const safety = window.setTimeout(() => {
         off();
         if (tw) tw.progress(1);
         else
           gsap.set(targets, { autoAlpha: 1, y: 0, scale: 1, filter: "none" });
-      }, 11000);
+      }, 5000);
 
       return () => {
         off();

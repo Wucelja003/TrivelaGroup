@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
+import { useSearchParams } from "react-router-dom";
 import "./ContactForm.css";
 
 const SERVICES = [
@@ -12,6 +13,10 @@ const SERVICES = [
   "Influencer Marketing",
   "Event Management",
 ];
+
+/* Paketi iz "Packages" sekcije na pocetnoj. Klik na "Choose ..." dovede ovde
+   sa ?package=<ime>, pa se odgovarajuci predselektuje (moze da se menja). */
+const PACKAGES = ["Standard", "Premium", "Elite"];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -67,10 +72,17 @@ function Field({
 }
 
 export default function ContactForm() {
+  const [searchParams] = useSearchParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [services, setServices] = useState<string[]>([]);
+  /* Predizabran paket iz ?package= (case-insensitive). Ako nema/ne valja —
+     ostaje prazno; korisnik svejedno moze da izabere. */
+  const [pkg, setPkg] = useState<string>(() => {
+    const p = searchParams.get("package");
+    return (p && PACKAGES.find((x) => x.toLowerCase() === p.toLowerCase())) || "";
+  });
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<Status>("idle");
 
@@ -105,7 +117,7 @@ export default function ContactForm() {
     setStatus("sending");
     try {
       // TODO (backend): POST /api/contact
-      //   body: { name, email, company, services, message }
+      //   body: { name, email, company, package: pkg, services, message }
       await new Promise((res) => setTimeout(res, 1500)); // privremena simulacija
       setStatus("sent");
     } catch {
@@ -230,6 +242,34 @@ export default function ContactForm() {
             value={company}
             onChange={(e) => setCompany(e.target.value)}
           />
+
+          {/* Paket — jedan izbor. Predselektovan ako su dosli sa "Choose ..."
+              dugmeta; klik na vec izabran ga iskljucuje. */}
+          <div>
+            <div className="mb-5 text-[11px] uppercase tracking-[0.2em] text-neutral-500">
+              Which package are you interested in?
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {PACKAGES.map((p) => {
+                const selected = pkg === p;
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setPkg((prev) => (prev === p ? "" : p))}
+                    className={`rounded-full px-5 py-2.5 text-sm transition-all duration-200 ${
+                      selected
+                        ? "bg-zelena text-teget"
+                        : "border border-neutral-700 text-neutral-300 hover:border-neutral-400"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           {/* Chips */}
           <div>

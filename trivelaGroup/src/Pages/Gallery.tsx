@@ -61,18 +61,18 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
    samo su video, svaki u prirodnoj velicini (9:16, jedan landscape). */
 const REEL_FILES = [
   "trivelaReelsMain",
+  "trivelaReelsStulic",
+  "trivelaReelsUgresic",
+  "trivelsReelsMoneke",
+  "trivelaReelsDress",
   "trivelaReels3",
   "trivelaReels3-2",
   "trivelaReelsPartizan",
   "trivelaReelsFootball",
   "trivelaReelsBcPartizan",
   "trivelaReelsCases",
-  "trivelsReelsMoneke",
   "trivelaReelsZoc",
-  "trivelaReelsStulic",
-  "trivelaReelsUgresic",
   "trivelaReelsOsetkowski",
-  "trivelaReelsDress",
   "trivelaReelsLandscape",
 ];
 const GALLERY_REELS: Partial<Record<GalleryCategory, ReelItem[]>> = {

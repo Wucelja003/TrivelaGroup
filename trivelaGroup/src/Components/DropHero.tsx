@@ -189,8 +189,14 @@ export default function DropHero() {
           <br />
           <span className="dh-title-accent">colors</span>
         </h1>
+        {/* Dve recenice: na telefonu svaka ide u svoj red (da "Trivela Group"
+            ne ostane sam u redu), a na sirem ekranu teku zajedno. Brend drzi
+            nedeljivi razmak da se nikad ne prelomi. */}
         <p className="dh-lead dh-reveal">
-         Exclusive athlete-driven drops. Limited editions by Trivela Group.
+          <span className="dh-lead-line">Exclusive athlete-driven drops.</span>{" "}
+          <span className="dh-lead-line">
+            Limited editions by Trivela&nbsp;Group.
+          </span>
         </p>
         <div className="dh-actions dh-reveal">
           <button type="button" onClick={toCustom} className="dh-cta">

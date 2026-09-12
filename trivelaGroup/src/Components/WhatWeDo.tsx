@@ -152,6 +152,12 @@ function useReveal<T extends HTMLElement>() {
 
 export default function WhatWeDo() {
   const [gridRef, shown] = useReveal<HTMLDivElement>();
+  /* Na desktopu opis izlazi na hover. Na telefonu (bez hovera) se do njega
+     nije moglo — zato kartica moze i da se otvori tapom. Otvorena je jedna
+     u datom trenutku (tap na drugu zatvori prethodnu, tap na istu je zatvori). */
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const toggle = (i: number) =>
+    setOpenIndex((prev) => (prev === i ? null : i));
 
   return (
     <section id="what-we-do" className="py-20 sm:py-28">
@@ -172,7 +178,9 @@ export default function WhatWeDo() {
           ref={gridRef}
           className={`wwd-grid grid gap-6 md:grid-cols-3 ${shown ? "in" : ""}`}
         >
-          {services.map((s, i) => (
+          {services.map((s, i) => {
+            const open = openIndex === i;
+            return (
             <div
               key={s.title}
               /* Zaseban omotac nosi ulaznu animaciju: kartica ima svoj
@@ -181,40 +189,95 @@ export default function WhatWeDo() {
               className="wwd-card-wrap"
               style={{ "--i": i } as CSSProperties}
             >
+            {/* Kartica je i dugme (tap na telefonu otvara opis). Opis izlazi
+                na hover ILI kad je otvorena — zato svaki hover-efekat ima i
+                svoju "open" varijantu. */}
             <div
-              className="wwd-card group relative flex h-full flex-col overflow-hidden rounded-[18px] border border-white/10 bg-white/[0.03] p-8 transition-all duration-300 hover:-translate-y-1.5 hover:border-zelena/40 hover:bg-white/[0.05] hover:shadow-[0_0_34px_rgba(150,255,0,0.12)]"
+              role="button"
+              tabIndex={0}
+              aria-expanded={open}
+              onClick={() => toggle(i)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  toggle(i);
+                }
+              }}
+              className={`wwd-card group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[18px] border p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_34px_rgba(150,255,0,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zelena/60 ${
+                open
+                  ? "is-open border-zelena/40 bg-white/[0.05]"
+                  : "border-white/10 bg-white/[0.03] hover:border-zelena/40 hover:bg-white/[0.05]"
+              }`}
             >
               {/* Brojač + linija */}
               <div className="flex items-center justify-between gap-4">
-                <span className="text-sm font-semibold tracking-wider text-white/50 transition-colors duration-300 group-hover:text-zelena">
+                <span
+                  className={`text-sm font-semibold tracking-wider transition-colors duration-300 ${
+                    open ? "text-zelena" : "text-white/50 group-hover:text-zelena"
+                  }`}
+                >
                   {s.num}
                 </span>
-                <span className="h-px w-full max-w-20 bg-white/20 transition-colors duration-300 group-hover:bg-zelena/50" />
+                <span
+                  className={`h-px w-full max-w-20 transition-colors duration-300 ${
+                    open ? "bg-zelena/50" : "bg-white/20 group-hover:bg-zelena/50"
+                  }`}
+                />
               </div>
 
-              {/* Ikonica — klizi gore na hover */}
-              <div className="flex justify-center py-10 text-white/30 transition-all duration-300 ease-in-out group-hover:-translate-y-3 group-hover:text-zelena group-hover:[filter:drop-shadow(0_0_22px_rgba(150,255,0,0.45))]">
+              {/* Ikonica — klizi gore na hover / open */}
+              <div
+                className={`flex justify-center py-10 transition-all duration-300 ease-in-out ${
+                  open
+                    ? "-translate-y-3 text-zelena [filter:drop-shadow(0_0_22px_rgba(150,255,0,0.45))]"
+                    : "text-white/30 group-hover:-translate-y-3 group-hover:text-zelena group-hover:[filter:drop-shadow(0_0_22px_rgba(150,255,0,0.45))]"
+                }`}
+              >
                 {s.icon}
               </div>
 
-              <h3 className="text-2xl font-semibold text-white transition-colors duration-300 group-hover:text-zelena">
+              <h3
+                className={`text-2xl font-semibold transition-colors duration-300 ${
+                  open ? "text-zelena" : "text-white group-hover:text-zelena"
+                }`}
+              >
                 {s.title}
               </h3>
 
-              {/* Opis — izlazi na hover (0fr -> 1fr) */}
-              <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:mt-4 group-hover:grid-rows-[1fr]">
+              {/* Opis — izlazi na hover (desktop) ili na tap/open (telefon):
+                  0fr -> 1fr */}
+              <div
+                className={`grid transition-[grid-template-rows] duration-500 ease-out ${
+                  open
+                    ? "mt-4 grid-rows-[1fr]"
+                    : "grid-rows-[0fr] group-hover:mt-4 group-hover:grid-rows-[1fr]"
+                }`}
+              >
                 <div className="overflow-hidden">
-                  <p className="text-sm leading-relaxed text-white/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:delay-150">
+                  <p
+                    className={`text-sm leading-relaxed text-white/60 transition-opacity duration-300 ${
+                      open
+                        ? "opacity-100"
+                        : "opacity-0 group-hover:opacity-100 group-hover:delay-150"
+                    }`}
+                  >
                     {s.desc}
                   </p>
                 </div>
               </div>
 
               {/* Donja akcent linija */}
-              <span className="mt-6 h-0.5 w-10 bg-zelena/30 transition-all duration-300 group-hover:w-20 group-hover:bg-zelena" />
+              <span
+                className={`mt-6 h-0.5 transition-all duration-300 ${
+                  open
+                    ? "w-20 bg-zelena"
+                    : "w-10 bg-zelena/30 group-hover:w-20 group-hover:bg-zelena"
+                }`}
+              />
             </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

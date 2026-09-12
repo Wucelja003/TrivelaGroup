@@ -338,13 +338,11 @@
   color: var(--color-zelena, #96ff00);
 }
 
-/* Na uskim ekranima ostaje samo lokacija, mreze su ionako u meniju */
+/* Na telefonu se ceo blok sklanja (i lokacija i mreze) — apsolutno je
+   pozicioniran preko dna hero-a pa se na uskom ekranu sudarao sa sadrzajem
+   i nije se lepo video. Mreze su ionako u meniju/footeru. */
 @media (max-width: 480px) {
   .hero-corners {
-    justify-content: center;
-    padding-top: 1.75rem;
-  }
-  .hero-corner-socials {
     display: none;
   }
 }

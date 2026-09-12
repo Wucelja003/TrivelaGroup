@@ -232,8 +232,10 @@ export default function Pricing() {
                   ))}
                 </ul>
 
+                {/* Vodi na Get In Touch sa vec izabranim paketom (?package=).
+                    Forma ga procita i predselektuje — korisnik moze da menja. */}
                 <Link
-                  to="/getInTouch"
+                  to={`/getInTouch?package=${encodeURIComponent(plan.name)}`}
                   className="mt-8 block w-full rounded-full bg-zelena px-8 py-3.5 text-center text-sm font-bold uppercase tracking-[0.08em] text-[#00230a] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-8px_rgba(150,255,0,0.55)]"
                 >
                   {plan.cta}

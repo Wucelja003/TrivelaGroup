@@ -45,12 +45,26 @@
   animation-delay: calc(var(--i) * 0.25s);
 }
 
+/* Na telefonu (bez hovera) kartica se otvara tapom (.is-open) — tada ikona
+   "ozivi" isto kao na hover. */
+.wwd-card.is-open .wwd-icon .wwd-core {
+  animation: wwd-drift 2s ease-in-out infinite;
+}
+
+.wwd-card.is-open .wwd-icon .wwd-wave {
+  animation: wwd-pulse 1.8s ease-out infinite;
+  animation-delay: calc(var(--i) * 0.25s);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wwd-card:hover .wwd-icon .wwd-core,
-  .wwd-card:hover .wwd-icon .wwd-wave {
+  .wwd-card:hover .wwd-icon .wwd-wave,
+  .wwd-card.is-open .wwd-icon .wwd-core,
+  .wwd-card.is-open .wwd-icon .wwd-wave {
     animation: none;
   }
-  .wwd-card:hover .wwd-icon .wwd-wave {
+  .wwd-card:hover .wwd-icon .wwd-wave,
+  .wwd-card.is-open .wwd-icon .wwd-wave {
     opacity: 1;
   }
 }
