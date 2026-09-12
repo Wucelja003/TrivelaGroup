@@ -9,7 +9,6 @@ import {
   LuStickyNote,
   LuSend,
   LuLayoutGrid,
-  LuScanSearch,
   LuShoppingBag,
   LuTruck,
   LuCircleCheck,
@@ -18,6 +17,8 @@ import {
   LuX,
 } from "react-icons/lu";
 import Typewriter from "./Typewriter";
+import ShopClickDemo from "./ShopClickDemo";
+import CartOpenDemo from "./CartOpenDemo";
 
 /*
  * "How it works" za Trivela Drop — dva vodica u jednom: kako poslati zahtev za
@@ -73,8 +74,6 @@ type PanelKind =
   | "extras"
   | "send"
   | "browse"
-  | "open"
-  | "pickModel"
   | "cart"
   | "details"
   | "placed";
@@ -142,34 +141,18 @@ const CUSTOM_STEPS: Step[] = [
 const ORDER_STEPS: Step[] = [
   {
     icon: LuLayoutGrid,
-    title: "Browse the drop",
+    title: "Open a case and write your model",
     meta: "Start here",
-    label: "All cases",
-    copy: "Every case we have ready is on the Drop page. Filter by collection, or sort by name or price to get to yours faster.",
+    label: "From the grid",
+    copy: "Every case we have ready is on the Drop page. Tap one and it opens on its own page, with its price and collection — then write your phone model in full, Pro or Max included. Watch it happen below.",
     panel: "browse",
-  },
-  {
-    icon: LuScanSearch,
-    title: "Open the case you want",
-    meta: "Look closer",
-    label: "The case",
-    copy: "Tap a case to open it full size, with its price and collection. This is where you check the print before you commit to it.",
-    panel: "open",
-  },
-  {
-    icon: LuSmartphone,
-    title: "Pick your phone model",
-    meta: "Required",
-    label: "Your model",
-    copy: "Choose your model from the list. The Add to cart button stays off until you do — that is on purpose, because a case is cut for one model only.",
-    panel: "pickModel",
   },
   {
     icon: LuShoppingBag,
     title: "Add it to the cart",
     meta: "Collect",
     label: "Cart",
-    copy: "The cart opens from the side and keeps the model with each case, so two of the same print for two different phones stay apart.",
+    copy: "Add to cart, then the bag at the top of the page — the cart slides out from the side. It keeps the model with each case, so two of the same print for two different phones stay apart.",
     panel: "cart",
   },
   {
@@ -447,74 +430,10 @@ function Panel({ kind }: { kind: PanelKind }) {
     case "browse":
       return (
         <div className="flex flex-col gap-5">
-          <CaseStrip
-            images={[
-              "/dropHero/cr7.png",
-              "/dropHero/mbappe.png",
-              "/dropHero/vini.png",
-              "/dropHero/musa.png",
-            ]}
-            caption="Part of what is in the drop right now."
-          />
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-mastilo/12 bg-white p-4">
-              <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.16em] text-mastilo/50">
-                Filter by collection
-              </span>
-              <span className="text-[13px] text-mastilo/70">
-                Narrow the grid down to one collection at a time.
-              </span>
-            </div>
-            <div className="rounded-2xl border border-mastilo/12 bg-white p-4">
-              <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.16em] text-mastilo/50">
-                Sort
-              </span>
-              <span className="text-[13px] text-mastilo/70">
-                Name A–Z or Z–A, price low to high or high to low.
-              </span>
-            </div>
-          </div>
-          <Link
-            to="/drop#drop-grid"
-            className="inline-flex items-center justify-center gap-2 self-start rounded-full border border-mastilo/20 bg-white px-7 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-mastilo transition-all duration-300 hover:-translate-y-0.5 hover:border-mastilo/40"
-          >
-            Go to all cases
-            <LuArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      );
+          <ShopClickDemo />
 
-    case "open":
-      return (
-        <div className="flex flex-col gap-5">
-          <div className="flex items-center gap-5 rounded-2xl border border-mastilo/12 bg-white p-4 shadow-[0_8px_24px_rgba(8,34,108,0.07)]">
-            <div className="relative aspect-[9/16] w-[104px] shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-[#eaf3ff] to-white">
-              <img src="/dropHero/nole.png" alt="" className="h-full w-full object-cover" />
-            </div>
-            <div className="min-w-0">
-              <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-mastilo/50">
-                Legends
-              </span>
-              <span className="mt-1 block text-[22px] font-bold leading-tight text-mastilo">
-                Nole
-              </span>
-              <span className="mt-2 block text-[16px] font-semibold text-mastilo/80">
-                2.490 RSD
-              </span>
-            </div>
-          </div>
-          <Note>
-            The price on the case is the price you pay for it — shipping is counted separately at
-            the end.
-          </Note>
-        </div>
-      );
-
-    case "pickModel": {
-      return (
-        <div className="flex flex-col gap-5">
-          <FieldMock label="Your phone model" value="iPhone 18 Pro" />
-
+          {/* The model is typed, not picked off a list, so the rule that goes
+              with it belongs next to the demo that types it. */}
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl border border-mastilo/12 bg-[#f4f9ff] p-4">
               <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.16em] text-mastilo/40">
@@ -535,41 +454,28 @@ function Panel({ kind }: { kind: PanelKind }) {
           </div>
 
           <Note>
-            The button stays dead until the field has something in it — a case is cut for one
-            model, and the camera cut-out is what goes wrong otherwise.
+            The button stays dead until the model field has something in it — a case is cut for
+            one model, and the camera cut-out is what goes wrong otherwise. Filter by collection
+            or sort by price to get to yours faster.
           </Note>
+          <Link
+            to="/drop#drop-grid"
+            className="inline-flex items-center justify-center gap-2 self-start rounded-full border border-mastilo/20 bg-white px-7 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-mastilo transition-all duration-300 hover:-translate-y-0.5 hover:border-mastilo/40"
+          >
+            Go to all cases
+            <LuArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       );
-    }
 
     case "cart":
       return (
         <div className="flex flex-col gap-5">
-          <div className="overflow-hidden rounded-2xl border border-mastilo/12 bg-white shadow-[0_8px_24px_rgba(8,34,108,0.07)]">
-            {[
-              { img: "/dropHero/nole.png", name: "Nole", model: "iPhone 15 Pro", price: "2.490 RSD" },
-              { img: "/dropHero/messi.png", name: "Messi", model: "Samsung S24", price: "2.490 RSD" },
-            ].map((it) => (
-              <div
-                key={it.name}
-                className="flex items-center gap-3 border-b border-mastilo/10 px-4 py-3 last:border-b-0"
-              >
-                <div className="aspect-[9/16] w-9 shrink-0 overflow-hidden rounded-md bg-[#eaf3ff]">
-                  <img src={it.img} alt="" className="h-full w-full object-cover" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className="block truncate text-[14px] font-semibold text-mastilo">
-                    {it.name}
-                  </span>
-                  <span className="block text-[12px] text-mastilo/55">{it.model}</span>
-                </div>
-                <span className="shrink-0 text-[13px] font-semibold text-mastilo">{it.price}</span>
-              </div>
-            ))}
-          </div>
+          <CartOpenDemo />
           <Note>
             Same print, two different phones — the cart keeps them apart because the model rides
-            along with each case.
+            along with each case. The price on the case is what you pay for it; shipping is
+            counted separately at the end.
           </Note>
         </div>
       );
@@ -670,7 +576,7 @@ const FLOWS = [
     tab: "Order a case",
     eyebrow: "From the drop",
     heading: "How to order a case",
-    sub: "Six steps from the grid to a confirmed order.",
+    sub: "Four steps from the grid to a confirmed order.",
     steps: ORDER_STEPS,
   },
 ];
