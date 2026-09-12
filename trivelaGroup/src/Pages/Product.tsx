@@ -220,7 +220,7 @@ export default function Product() {
             {isDjok && (
               <div className="mt-9 max-w-md">
                 <div className="mb-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-mastilo/65">
-                  Colour —{" "}
+                  Color —{" "}
                   <span className="normal-case tracking-normal text-mastilo/45">
                     {djokColor.name}
                   </span>
