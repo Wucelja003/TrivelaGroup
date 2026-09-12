@@ -9,6 +9,7 @@ import { useCases, useCollections } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import DropHero from "../Components/DropHero";
 import CustomCase from "../Components/CustomCase";
+import TrivelaJourney from "../Components/TrivelaJourney";
 import PlayerMarquee, { type PlayerItem } from "../Components/PlayerMarquee";
 import "./Shop.css";
 
@@ -442,6 +443,7 @@ export default function Shop() {
         </div>
       </div>
       </section>
+      <TrivelaJourney />
       <CustomCase />
     </>
   );
