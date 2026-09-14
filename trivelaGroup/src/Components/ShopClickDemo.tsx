@@ -103,11 +103,15 @@ export default function ShopClickDemo() {
           cross-fade. An AnimatePresence with mode="wait" was doing this before
           and the exit never resolved, so the product page never arrived —
           nothing to choreograph here, so nothing to get stuck. */}
-      <div className="relative overflow-hidden rounded-2xl border border-mastilo/12 bg-white p-4 shadow-[0_8px_24px_rgba(8,34,108,0.07)]">
+      {/* Both views share ONE grid cell, so the box takes the height of the
+          taller of the two. This used to be an absolutely positioned overlay,
+          and on a phone the product view came out ~80px taller than the box —
+          overflow-hidden then cut its bottom off (model field and button). */}
+      <div className="grid overflow-hidden rounded-2xl border border-mastilo/12 bg-white p-4 shadow-[0_8px_24px_rgba(8,34,108,0.07)]">
         {/* ---------- the grid ---------- */}
         <motion.div
           ref={gridRef}
-          className="relative"
+          className="relative col-start-1 row-start-1"
           animate={{ opacity: showingProduct ? 0 : 1, x: showingProduct ? -24 : 0 }}
           transition={{ duration: 0.3, ease: EASE }}
           style={{ pointerEvents: showingProduct ? "none" : "auto" }}
@@ -120,12 +124,16 @@ export default function ShopClickDemo() {
             <span className="text-[10px] font-medium text-mastilo/35">4 products</span>
           </div>
 
-          <div className="grid grid-cols-4 gap-2.5">
+          {/* Four 53px cards on a phone were unreadable — three fit legibly and
+              the fourth drops out below sm. The pointer aims at index 1, which
+              stays on screen either way. */}
+          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
             {CASES.map((c, i) => {
               const aimed = phase !== "idle" && i === TARGET;
               return (
                 <div
                   key={c.id}
+                  className={i === 3 ? "hidden sm:block" : undefined}
                   ref={(el) => {
                     cardRefs.current[i] = el;
                   }}
@@ -170,7 +178,7 @@ export default function ShopClickDemo() {
 
         {/* ---------- where the click lands ---------- */}
         <motion.div
-          className="absolute inset-0 p-4"
+          className="col-start-1 row-start-1"
           initial={false}
           animate={{ opacity: showingProduct ? 1 : 0, x: showingProduct ? 0 : 24 }}
           transition={{ duration: 0.34, ease: EASE }}
@@ -186,7 +194,7 @@ export default function ShopClickDemo() {
           </div>
 
           <div className="flex gap-4">
-            <div className="aspect-[9/16] w-[110px] shrink-0 overflow-hidden rounded-xl border border-mastilo/12 bg-gradient-to-br from-[#eaf3ff] to-white">
+            <div className="aspect-[9/16] w-[92px] shrink-0 overflow-hidden rounded-xl border border-mastilo/12 bg-gradient-to-br from-[#eaf3ff] to-white sm:w-[110px]">
               <img src={target.img} alt={target.name} className="h-full w-full object-cover" />
             </div>
 
@@ -194,7 +202,7 @@ export default function ShopClickDemo() {
               <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-mastilo/50">
                 {target.collection}
               </span>
-              <span className="mt-1 block text-[22px] font-bold leading-tight text-mastilo">
+              <span className="mt-1 block text-[19px] font-bold leading-tight text-mastilo sm:text-[22px]">
                 {target.name}
               </span>
               <span className="mt-1.5 block text-[16px] font-bold text-mastilo/85">
@@ -218,7 +226,7 @@ export default function ShopClickDemo() {
         </motion.div>
       </div>
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col items-start gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
         <span className="text-[12px] text-mastilo/50">
           {showingProduct
             ? "That is the case's own page — price, collection, and the model field."

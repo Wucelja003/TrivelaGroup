@@ -443,8 +443,8 @@ export default function Shop() {
         </div>
       </div>
       </section>
-      <TrivelaJourney />
       <CustomCase />
+       <TrivelaJourney />
     </>
   );
 }

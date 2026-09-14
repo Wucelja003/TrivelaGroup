@@ -21,6 +21,11 @@ declare global {
 const IG_SCRIPT_SRC = "https://www.instagram.com/embed.js";
 const IG_SCRIPT_ID = "instagram-embed-script";
 const CARD = 340; // Instagram embed min-width je 326
+/* Kartica ima FIKSNU visinu, istu kao placeholder i fallback (520px).
+   Bez toga: placeholder je 520, a pravi IG embed se renderuje od ~430 do ~670 —
+   pa svaka zamena placeholder -> embed pomeri celu stranu, a kad embed naraste
+   iznad trake, traka postane i vertikalno skrolabilna i krade skrol prsta. */
+const CARD_H = 520;
 const CHECK_MS = 6000; // koliko cekamo da se embed ucita pre fallback-a
 
 function Chevron({ dir }: { dir: "left" | "right" }) {
@@ -219,7 +224,7 @@ export default function InstagramEmbeds({
         type="button"
         onClick={() => page(-1)}
         aria-label="Previous"
-        className="absolute left-1 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zelena text-teget shadow-[0_8px_24px_rgba(150,255,0,0.28)] transition-transform duration-150 active:scale-90 sm:left-2 sm:h-12 sm:w-12"
+        className="absolute left-1 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zelena text-teget shadow-[0_8px_24px_rgba(150,255,0,0.28)] transition-transform duration-150 active:scale-90 sm:left-2 sm:flex sm:h-12 sm:w-12"
       >
         <Chevron dir="left" />
       </button>
@@ -227,14 +232,19 @@ export default function InstagramEmbeds({
         type="button"
         onClick={() => page(1)}
         aria-label="Next"
-        className="absolute right-1 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zelena text-teget shadow-[0_8px_24px_rgba(150,255,0,0.28)] transition-transform duration-150 active:scale-90 sm:right-2 sm:h-12 sm:w-12"
+        className="absolute right-1 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zelena text-teget shadow-[0_8px_24px_rgba(150,255,0,0.28)] transition-transform duration-150 active:scale-90 sm:right-2 sm:flex sm:h-12 sm:w-12"
       >
         <Chevron dir="right" />
       </button>
 
       <div
         ref={trackRef}
-        className="flex snap-x snap-mandatory items-start gap-5 overflow-x-auto scroll-smooth px-12 py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        /* overflow-y-hidden je vazno: sa samo overflow-x-auto, overflow-y
+           izracuna se na "auto", pa traka moze i vertikalno da skroluje i na
+           telefonu pojede skrol prsta. Padding je mali na telefonu (strelice su
+           tamo sakrivene, prst svajpuje), a 48px na desktopu da oslobodi mesto
+           strelicama. */
+        className="flex snap-x snap-mandatory items-start gap-5 overflow-x-auto overflow-y-hidden scroll-smooth px-3 py-2 sm:px-12 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {permalinks.map((url, i) => (
           <div
@@ -243,8 +253,13 @@ export default function InstagramEmbeds({
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            className="shrink-0 snap-center"
-            style={{ width: CARD }}
+            className="shrink-0 snap-center overflow-hidden"
+            style={{
+              /* Na telefonu se skupi da stane u ekran (IG ne ide pod 326px),
+                 na sirem ekranu ostaje 340. */
+              width: `min(${CARD}px, calc(100vw - 1.5rem))`,
+              height: CARD_H,
+            }}
           />
         ))}
       </div>

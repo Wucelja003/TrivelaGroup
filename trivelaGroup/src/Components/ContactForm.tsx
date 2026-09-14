@@ -186,7 +186,7 @@ export default function ContactForm() {
                 href="mailto:hello@trivelagroup.com"
                 className="mt-2 inline-block text-base text-white transition-colors duration-200 hover:text-zelena"
               >
-                hello@trivelagroup.com
+              trivelabusiness@gmail.com
               </a>
             </div>
             <div>

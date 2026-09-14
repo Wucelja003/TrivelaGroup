@@ -573,7 +573,7 @@ const FLOWS = [
   },
   {
     key: "order" as const,
-    tab: "Order a case",
+    tab: "Regular Case",
     eyebrow: "From the drop",
     heading: "How to order a case",
     sub: "Four steps from the grid to a confirmed order.",

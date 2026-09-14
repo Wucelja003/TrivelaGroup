@@ -34,8 +34,11 @@ import Footer from "./Components/Footer";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 
-/* Sve strane nose istu traku: logo levo, dva dugmeta na sredini, korpa i
-   meni desno. Stari Header vise ne postoji. */
+/* Sve strane nose istu traku: logo levo, dva dugmeta na sredini, a desno
+   JEDNO od dva — korpa ILI meni, nikad oba:
+     - Trivela Drop (i strane proizvoda): korpa, bez menija — tu se kupuje.
+     - Svuda drugde: meni, bez korpe — nema šta da se doda u korpu.
+   Stari Header vise ne postoji. */
 const isDrop = (p: string) => p === "/drop" || p.startsWith("/drop/");
 const isBusiness = (p: string) => p === "/business";
 
@@ -61,16 +64,16 @@ function PageTheme() {
 function SiteNav() {
   const { pathname } = useLocation();
   if (isBare(pathname)) return null;
-  /* Landing ceka sekvencu (intro -> hero -> traka); svuda drugde ulazi odmah.
-     Drop je svetla tema, nema meni i drugo dugme vraca na Trivela Group. */
+  /* Landing ceka sekvencu (intro -> hero -> traka); svuda drugde ulazi odmah. */
   if (pathname === "/") return <LandingNav />;
-  /* Drop: svetla traka; dva dugmeta vode na Business + Group (Drop se krije) */
+  /* Drop: svetla traka; KORPA bez menija; dugmad vode na Business + Group */
   if (isDrop(pathname))
     return <LandingNav immediate cart light current="drop" menu={false} />;
-  /* Business: tamna traka; dva dugmeta vode na Drop + Group (Business se krije) */
+  /* Business: tamna traka; MENI bez korpe; dugmad vode na Drop + Group */
   if (isBusiness(pathname))
-    return <LandingNav immediate cart current="business" menu={false} />;
-  return <LandingNav immediate cart />;
+    return <LandingNav immediate current="business" />;
+  /* Ostale strane (gallery, about, get in touch, terms, checkout...): MENI */
+  return <LandingNav immediate />;
 }
 
 /* Footer stoji svuda osim na admin alatu */
