@@ -2,6 +2,7 @@ import { useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import AuroraField from "../Components/AuroraField";
+import BusinessReels from "../Components/BusinessReels";
 import "./Business.css";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -521,6 +522,9 @@ export default function Business() {
           </div>
         </div>
       </section>
+
+      {/* ===== OUR WORK (traka reels-a po klijentu) ===== */}
+      <BusinessReels />
 
       {/* ===== CTA ===== */}
       <section className="relative px-5 pb-32 pt-10 sm:px-8">
