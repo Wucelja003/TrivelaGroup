@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./Introduce.css";
-
-const stats = [
-  { value: "60+", label: "Athletes" },
-  { value: "100+", label: "Projects" },
-  { value: "3", label: "Core services" },
-];
 
 // Broji od 0 do ciljne vrednosti kad `start` postane true (čuva sufiks npr "+")
 function CountUp({ value, start }: { value: string; start: boolean }) {
@@ -40,6 +35,7 @@ function CountUp({ value, start }: { value: string; start: boolean }) {
 }
 
 function VideoShowcase() {
+  const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
 
@@ -74,7 +70,7 @@ function VideoShowcase() {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-zelena" />
           </span>
           <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/85">
-            Showreel
+            {t("home.introduce.showreel")}
           </span>
         </div>
 
@@ -85,7 +81,7 @@ function VideoShowcase() {
         <button
           type="button"
           onClick={toggleMute}
-          aria-label={muted ? "Unmute" : "Mute"}
+          aria-label={muted ? t("common.unmute") : t("common.mute")}
           className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-zelena hover:text-zelena"
         >
           <svg
@@ -109,17 +105,26 @@ function VideoShowcase() {
 
       {/* Caption under video */}
       <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-white/40">
-        Custom cases — in motion
+        {t("home.introduce.videoCaption")}
       </p>
     </div>
   );
 }
 
 export default function Introduce() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [statsShown, setStatsShown] = useState(false);
+
+  /* Pravi se u renderu jer t() je hook. Kljuc je vrednost (ne menja se
+     sa jezikom), labela je prevedena. */
+  const stats = [
+    { value: "60+", label: t("home.introduce.stats.athletes") },
+    { value: "100+", label: t("home.introduce.stats.projects") },
+    { value: "3", label: t("home.introduce.stats.services") },
+  ];
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -174,7 +179,7 @@ export default function Introduce() {
           className="h-10 w-auto [filter:drop-shadow(0_0_16px_rgba(150,255,0,0.4))] sm:h-11"
         />
         <span className="text-sm font-medium tracking-[0.14em] text-zelena sm:text-[15px]">
-          The story of Trivela
+          {t("home.introduce.kicker")}
         </span>
       </div>
 
@@ -185,17 +190,17 @@ export default function Introduce() {
           <div className="flex items-center gap-4">
             <span className="intro-hline" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zelena">
-              (01) — About us
+              {t("home.introduce.eyebrow")}
             </span>
           </div>
 
           {/* Headline */}
           <h2 className="mt-7 text-4xl font-bold leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-6xl">
-            What is{" "}
+            {t("home.introduce.titleBefore")}{" "}
             <span className="bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-transparent">
-              Trivela Group
+              {t("home.introduce.titleAccent")}
             </span>
-            <span className="text-zelena">?</span>
+            <span className="text-zelena">{t("home.introduce.titleAfter")}</span>
           </h2>
 
           {/* Text with vertical accent line */}
@@ -203,19 +208,15 @@ export default function Introduce() {
             <span className="intro-vline" />
             <div className="max-w-xl space-y-5">
               <p className="text-lg leading-relaxed text-white/80 sm:text-xl">
-                <span className="text-white">Trivela Group is a young,</span>{" "}
-              forward-thinking creative agency built by people who share a 
-              genuine passion for sports,marketing, design, and storytelling.
-              <br></br>
-              We specialize in Social Media Management, PR, creative content, and strategic marketing, 
-              helping athletes build powerful personal brands that go far beyond their performance on the field.
-
-
+                <span className="text-white">
+                  {t("home.introduce.leadStrong")}
+                </span>{" "}
+                {t("home.introduce.leadRest")}
+                <br />
+                {t("home.introduce.leadRest2")}
               </p>
               <p className="leading-relaxed text-white/55">
-                By combining creativity, strategy, and a deep understanding of the sports industry, 
-                we turn careers into stories, personalities into brands, and athletes into icons.
-                We don’t just manage presence. We build iconic athlete brands.
+                {t("home.introduce.body")}
               </p>
             </div>
           </div>
@@ -223,7 +224,7 @@ export default function Introduce() {
           {/* Stats */}
           <div ref={statsRef} className="mt-11 flex flex-wrap gap-x-12 gap-y-6">
             {stats.map((s) => (
-              <div key={s.label}>
+              <div key={s.value}>
                 <div className="text-3xl font-bold tracking-tight text-zelena sm:text-4xl">
                   <CountUp value={s.value} start={statsShown} />
                 </div>
@@ -238,7 +239,7 @@ export default function Introduce() {
             to="/gallery"
             className="btn-ripple btn-wind-green relative mt-11 inline-flex items-center gap-2 overflow-hidden rounded-full px-7 py-3.5 text-sm font-semibold"
           >
-            See our work
+            {t("home.introduce.seeWork")}
             <span aria-hidden="true" className="arrow">
               →
             </span>

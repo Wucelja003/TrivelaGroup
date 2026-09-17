@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   formatPrice,
   type CaseItem,
@@ -13,33 +14,38 @@ import TrivelaJourney from "../Components/TrivelaJourney";
 import PlayerMarquee, { type PlayerItem } from "../Components/PlayerMarquee";
 import "./Shop.css";
 
-/* Pet igraca za "Players who trusted our work".
-   Imena/uloge su placeholder gde nisu poznata — slobodno menjaj. */
-const dropPlayers: PlayerItem[] = [
-  { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Džanan Musa", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/VladimirLucicPhoto.jpg", name: "Vladimir Lučić", role: "Football player" },
-  { img: "/TrivelaGroupPhotos/monekePhoto2.jpg", name: "Chima Moneke", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/TracyLessorPhoto.JPG", name: "Traicy Lessort", role: "Mathias Lessort's wife" },
-  { img: "/TrivelaGroupPhotos/CabocloPhoto.jpg", name: "Bruno Caboclo", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/VeljkoMilosavljevic.JPG", name: "Veljko Milosavljević", role: "Football Player" },
-  { img: "/TrivelaGroupPhotos/YagoPhoto.jpg", name: "Yago dos Santos", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/RodrigaoPhoto.jpg", name: "Rodrigao", role: "Football Player" },
-  { img: "/TrivelaGroupPhotos/NunnalyPhoto.jpg", name: "James Nunnally", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/NatchoPhoto.jpg", name: "Bibars Natcho", role: "Football Player" },
-  { img: "/TrivelaGroupPhotos/MatheusSaldanhaPhoto.jpg", name: "Matheus Saldanha", role: "Football Player" },
-  { img: "/TrivelaGroupPhotos/LessortPhoto.jpg", name: "Mathias Lessort", role: "Basketball Player" },
-  { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maskimović", role: "Football Player" },
+/* Igraci za "People who trusted our work". Ime se ne prevodi; uloga je
+   kljuc u drop.shop.playerRoles i prevodi se u Shop komponenti. */
+type PlayerRole = "basketball" | "football" | "lessortWife";
 
+const DROP_PLAYERS: { img: string; name: string; role: PlayerRole }[] = [
+  { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "basketball" },
+  { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Džanan Musa", role: "basketball" },
+  { img: "/TrivelaGroupPhotos/VladimirLucicPhoto.jpg", name: "Vladimir Lučić", role: "football" },
+  { img: "/TrivelaGroupPhotos/monekePhoto2.jpg", name: "Chima Moneke", role: "basketball" },
+  { img: "/TrivelaGroupPhotos/TracyLessorPhoto.JPG", name: "Traicy Lessort", role: "lessortWife" },
+  { img: "/TrivelaGroupPhotos/CabocloPhoto.jpg", name: "Bruno Caboclo", role: "basketball" },
+  { img: "/TrivelaGroupPhotos/VeljkoMilosavljevic.JPG", name: "Veljko Milosavljević", role: "football" },
+  { img: "/TrivelaGroupPhotos/YagoPhoto.jpg", name: "Yago dos Santos", role: "basketball" },
+  { img: "/TrivelaGroupPhotos/RodrigaoPhoto.jpg", name: "Rodrigao", role: "football" },
+  { img: "/TrivelaGroupPhotos/NunnalyPhoto.jpg", name: "James Nunnally", role: "basketball" },
+  { img: "/TrivelaGroupPhotos/NatchoPhoto.jpg", name: "Bibars Natcho", role: "football" },
+  { img: "/TrivelaGroupPhotos/MatheusSaldanhaPhoto.jpg", name: "Matheus Saldanha", role: "football" },
+  { img: "/TrivelaGroupPhotos/LessortPhoto.jpg", name: "Mathias Lessort", role: "basketball" },
+  { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maskimović", role: "football" },
 ];
 
 type SortKey = "az" | "za" | "price-asc" | "price-desc";
 
-const sortOptions: { key: SortKey; label: string }[] = [
-  { key: "az", label: "Name: A – Z" },
-  { key: "za", label: "Name: Z – A" },
-  { key: "price-asc", label: "Price: low to high" },
-  { key: "price-desc", label: "Price: high to low" },
+/* Labela je kljuc u drop.shop.sort (vrednost sortiranja ostaje ista). */
+const sortOptions: {
+  key: SortKey;
+  label: "az" | "za" | "priceAsc" | "priceDesc";
+}[] = [
+  { key: "az", label: "az" },
+  { key: "za", label: "za" },
+  { key: "price-asc", label: "priceAsc" },
+  { key: "price-desc", label: "priceDesc" },
 ];
 
 /* ---------- Icons ---------- */
@@ -95,12 +101,13 @@ function Check({ className = "h-5 w-5" }: { className?: string }) {
 
 /* ---------- Add to cart button (lokalni feedback) ---------- */
 function AddToCart({ item }: { item: CaseItem }) {
+  const { t } = useTranslation();
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
   return (
     <button
       type="button"
-      aria-label={`Add ${item.name} to cart`}
+      aria-label={t("drop.shop.addToCart", { name: item.name })}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -236,11 +243,13 @@ function Sidebar({
   setCollectionsOpen: (v: boolean) => void;
   collectionList: CollectionName[];
 }) {
+  const { t } = useTranslation();
+  const sortLabel = t("drop.shop.sort", { returnObjects: true });
   return (
     <aside className="shop-side h-fit lg:sticky lg:top-24">
       {/* Sort */}
       <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-mastilo">
-        Sort by
+        {t("drop.shop.sortBy")}
       </div>
       <div className="mt-5 flex flex-col gap-1">
         {sortOptions.map((o) => {
@@ -268,7 +277,7 @@ function Sidebar({
                   active ? "text-mastilo" : "text-mastilo/70 group-hover/opt:text-mastilo/80"
                 }`}
               >
-                {o.label}
+                {sortLabel[o.label]}
               </span>
             </button>
           );
@@ -283,7 +292,7 @@ function Sidebar({
         onClick={() => setCollectionsOpen(!collectionsOpen)}
         className="flex w-full items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-mastilo"
       >
-        Collections
+        {t("drop.shop.collections")}
         <Chevron open={collectionsOpen} />
       </button>
 
@@ -328,6 +337,13 @@ function Sidebar({
 
 /* ---------- Page ---------- */
 export default function Shop() {
+  const { t } = useTranslation();
+  const roleLabel = t("drop.shop.playerRoles", { returnObjects: true });
+  const dropPlayers: PlayerItem[] = DROP_PLAYERS.map((p) => ({
+    img: p.img,
+    name: p.name,
+    role: roleLabel[p.role],
+  }));
   const { cases, loading, error, fallback } = useCases();
   const collectionList = useCollections();
   const [sort, setSort] = useState<SortKey>("az");
@@ -368,12 +384,12 @@ export default function Shop() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 text-center">
             <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-mastilo">
-              Trusted by the best
+              {t("drop.shop.trustedEyebrow")}
             </span>
             <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#08226c] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
-              People who trusted
+              {t("drop.shop.trustedTitle1")}
               <br />
-              our work
+              {t("drop.shop.trustedTitle2")}
             </h2>
           </div>
 
@@ -389,10 +405,11 @@ export default function Shop() {
             Trivela Drop
           </span>
           <h1 className="mt-3 text-4xl font-bold tracking-tight text-mastilo sm:text-5xl lg:text-6xl">
-            All cases
+            {t("drop.shop.allCases")}
           </h1>
           <p className="mt-3 text-mastilo/70">
-            {visible.length} {visible.length === 1 ? "product" : "products"}
+            {/* 1 proizvod · 2 proizvoda · 5 proizvoda — mnozina po jeziku */}
+            {t("drop.shop.productCount", { count: visible.length })}
           </p>
 
           {/* Vidi se samo u razvoju, kad Supabase ne odgovara.
@@ -424,7 +441,7 @@ export default function Shop() {
           >
             {error && (
               <div className="col-span-full rounded-2xl border border-red-500/30 bg-red-500/5 p-6 text-sm text-red-300">
-                Failed to load products: {error}
+                {t("drop.shop.loadFailed", { error })}
               </div>
             )}
             {loading &&

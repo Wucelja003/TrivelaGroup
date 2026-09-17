@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   galleryPhotos,
   GALLERY_CATEGORIES,
@@ -107,6 +108,11 @@ const CAT_SHAPE: Partial<Record<GalleryCategory, CatShape>> = {
 };
 
 export default function Gallery() {
+  const { t } = useTranslation();
+  /* Vrednost kategorije ("Reels"...) je kljuc stanja i podataka; prevodi se
+     samo ono sto se prikazuje. */
+  const catLabel = t("gallery.categories", { returnObjects: true });
+
   // Prikazujemo SVE kategorije kao tabove — i one prazne (Reels, Posts) da bi
   // se videlo da stižu. Prazna kategorija dobije "coming soon" prazno stanje.
   const available = GALLERY_CATEGORIES;
@@ -136,7 +142,7 @@ export default function Gallery() {
         {/* Header */}
         <div className="mb-10 text-center">
           <h1 className="bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-5xl font-extrabold leading-none tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.3))] sm:text-6xl lg:text-7xl">
-            Trivela Gallery
+            {t("gallery.title")}
           </h1>
         </div>
 
@@ -156,7 +162,7 @@ export default function Gallery() {
                       : "border-white/15 text-white/70 hover:border-white/40 hover:text-white"
                   }`}
                 >
-                  {c}
+                  {catLabel[c]}
                 </button>
               );
             })}
@@ -190,10 +196,10 @@ export default function Gallery() {
         ) : (
           <div className="flex h-64 flex-col items-center justify-center gap-2 text-center">
             <span className="text-lg font-bold uppercase tracking-[0.2em] text-zelena">
-              Coming soon
+              {t("gallery.comingSoon")}
             </span>
             <span className="text-sm text-white/45">
-              {active} are on the way — check back shortly.
+              {t("gallery.onTheWay", { category: catLabel[active] })}
             </span>
           </div>
         )}

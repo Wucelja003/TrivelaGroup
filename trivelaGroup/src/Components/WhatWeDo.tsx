@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import "./WhatWeDo.css";
 
+/* Naslov i opis su u prevodima pod home.whatWeDo.services.<id>. */
+type ServiceId = "social" | "pr" | "marketing";
+
 interface Service {
+  id: ServiceId;
   num: string;
-  title: string;
-  desc: string;
   icon: ReactNode;
 }
 
@@ -77,21 +80,18 @@ function LightbulbIcon() {
 
 const services: Service[] = [
   {
+    id: "social",
     num: "01.",
-    title: "Social Media",
-    desc: "Managing and elevating your digital presence across today’s most relevant social media platforms. Our services include full profile management, verification, content creation across posts, reels and stories, supported by high-end video production and premium visual design.",
     icon: <MegaphoneIcon />,
   },
   {
+    id: "pr",
     num: "02.",
-    title: "PR",
-    desc: "A dedicated PR Officer focused on building and protecting your public image through strategic media relations, tailored PR campaigns and carefully managed communication.",
     icon: <MicrophoneIcon />,
   },
   {
+    id: "marketing",
     num: "03.",
-    title: "Marketing",
-    desc: "A dedicated Marketing Manager focused on building and growing your personal brand, while managing sponsorship agreements and identifying new commercial and partnership opportunities.",
     icon: <LightbulbIcon />,
   },
 ];
@@ -151,6 +151,8 @@ function useReveal<T extends HTMLElement>() {
 }
 
 export default function WhatWeDo() {
+  const { t } = useTranslation();
+  const serviceText = t("home.whatWeDo.services", { returnObjects: true });
   const [gridRef, shown] = useReveal<HTMLDivElement>();
   /* Na desktopu opis izlazi na hover. Na telefonu (bez hovera) se do njega
      nije moglo — zato kartica moze i da se otvori tapom. Otvorena je jedna
@@ -165,11 +167,11 @@ export default function WhatWeDo() {
         {/* Header */}
         <div className="mb-14 max-w-2xl">
           <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] text-zelena">
-            What we do
+            {t("home.whatWeDo.eyebrow")}
           </span>
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Different skills, one vision —{" "}
-            <span className="text-zelena">where athletes become brands</span>
+            {t("home.whatWeDo.titleBefore")}{" "}
+            <span className="text-zelena">{t("home.whatWeDo.titleAccent")}</span>
           </h2>
         </div>
 
@@ -182,7 +184,7 @@ export default function WhatWeDo() {
             const open = openIndex === i;
             return (
             <div
-              key={s.title}
+              key={s.id}
               /* Zaseban omotac nosi ulaznu animaciju: kartica ima svoj
                  hover transform pa bi se dve animacije tukle oko istog
                  svojstva. */
@@ -241,7 +243,7 @@ export default function WhatWeDo() {
                   open ? "text-zelena" : "text-white group-hover:text-zelena"
                 }`}
               >
-                {s.title}
+                {serviceText[s.id].title}
               </h3>
 
               {/* Opis — izlazi na hover (desktop) ili na tap/open (telefon):
@@ -261,7 +263,7 @@ export default function WhatWeDo() {
                         : "opacity-0 group-hover:opacity-100 group-hover:delay-150"
                     }`}
                   >
-                    {s.desc}
+                    {serviceText[s.id].desc}
                   </p>
                 </div>
               </div>

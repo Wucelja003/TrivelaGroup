@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { formatPrice, type CaseItem } from "../data/cases";
 import { useCases } from "../data/useCases";
@@ -9,11 +10,17 @@ import "./Product.css";
 /* Đoković maskica (Legends) ima vise varijacija boje — swatch-evi menjaju sliku.
    Slike: /public/DjokovicCases (4:5). Vezano za slug proizvoda. */
 const DJOKOVIC_SLUG = "novak-djokovic";
-const DJOKOVIC_COLORS = [
-  { name: "Green", file: "DjokovicZelena", swatch: "#1f7a3d" },
-  { name: "Light Green", file: "DjokovicSvetloZelena", swatch: "#a3e043" },
-  { name: "Purple", file: "DjokovicPlava", swatch: "#6b52b8" },
-  { name: "Grey", file: "DjokovicCrna", swatch: "#5A5A5A " },
+/* Naziv boje je kljuc u drop.product.colors (prevodi se); `file` je stabilan
+   identifikator koji ide u ID stavke u korpi. */
+const DJOKOVIC_COLORS: {
+  key: "green" | "lightGreen" | "purple" | "grey";
+  file: string;
+  swatch: string;
+}[] = [
+  { key: "green", file: "DjokovicZelena", swatch: "#1f7a3d" },
+  { key: "lightGreen", file: "DjokovicSvetloZelena", swatch: "#a3e043" },
+  { key: "purple", file: "DjokovicPlava", swatch: "#6b52b8" },
+  { key: "grey", file: "DjokovicCrna", swatch: "#5A5A5A " },
 ];
 
 /* ---------- Icons ---------- */
@@ -101,6 +108,8 @@ function SuggestCard({ item }: { item: CaseItem }) {
 
 /* ---------- Page ---------- */
 export default function Product() {
+  const { t } = useTranslation();
+  const colorLabel = t("drop.product.colors", { returnObjects: true });
   const { id } = useParams();
   const { cases, loading } = useCases();
   const item = cases.find((c) => c.id === id) ?? null;
@@ -128,7 +137,7 @@ export default function Product() {
     return (
       <section className="flex min-h-[70vh] items-center justify-center px-6">
         <div className="text-sm uppercase tracking-[0.2em] text-mastilo/65">
-          Loading…
+          {t("common.loading")}
         </div>
       </section>
     );
@@ -137,15 +146,15 @@ export default function Product() {
   if (!item) {
     return (
       <section className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-3xl font-bold text-mastilo">Case not found</h1>
-        <p className="mt-3 text-mastilo/70">
-          The product you're looking for doesn't exist.
-        </p>
+        <h1 className="text-3xl font-bold text-mastilo">
+          {t("drop.product.notFoundTitle")}
+        </h1>
+        <p className="mt-3 text-mastilo/70">{t("drop.product.notFoundBody")}</p>
         <Link
           to="/drop"
           className="mt-8 rounded-full bg-mastilo px-8 py-3.5 font-semibold text-white transition-colors hover:bg-mastilo/85"
         >
-          Back to shop
+          {t("drop.product.backToShop")}
         </Link>
       </section>
     );
@@ -182,7 +191,7 @@ export default function Product() {
                   <motion.img
                     key={djokColor.file}
                     src={djokImg ?? undefined}
-                    alt={`${item.name} — ${djokColor.name}`}
+                    alt={`${item.name} — ${colorLabel[djokColor.key]}`}
                     initial={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: reduce ? 1 : 0.98 }}
@@ -199,7 +208,7 @@ export default function Product() {
           {/* Right — info */}
           <div className="prod-anim flex flex-col justify-center" style={{ animationDelay: "120ms" }}>
             <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-mastilo">
-              {item.collection} collection
+              {t("drop.product.collection", { name: item.collection })}
             </span>
 
             <h1 className="mt-4 text-5xl font-bold uppercase leading-[0.95] tracking-tight text-mastilo sm:text-6xl lg:text-7xl">
@@ -211,18 +220,16 @@ export default function Product() {
             </p>
 
             <p className="mt-6 max-w-md leading-relaxed text-mastilo/70">
-              Premium hard case with a soft-touch finish. Slim, drop-tested and
-              built to show your colors. Precise cutouts, wireless-charging
-              friendly.
+              {t("drop.product.description")}
             </p>
 
             {/* Izbor boje — samo za Đoković maskicu (vise varijacija) */}
             {isDjok && (
               <div className="mt-9 max-w-md">
                 <div className="mb-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-mastilo/65">
-                  Color —{" "}
+                  {t("drop.product.color")} —{" "}
                   <span className="normal-case tracking-normal text-mastilo/45">
-                    {djokColor.name}
+                    {colorLabel[djokColor.key]}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -233,9 +240,9 @@ export default function Product() {
                         key={c.file}
                         type="button"
                         onClick={() => setColorIdx(i)}
-                        aria-label={c.name}
+                        aria-label={colorLabel[c.key]}
                         aria-pressed={on}
-                        title={c.name}
+                        title={colorLabel[c.key]}
                         className={`h-9 w-9 rounded-full border transition-all duration-200 ${
                           on
                             ? "border-mastilo ring-2 ring-mastilo ring-offset-2 ring-offset-white"
@@ -256,14 +263,14 @@ export default function Product() {
                 htmlFor="phone-model"
                 className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.2em] text-mastilo/65"
               >
-                Your phone model
+                {t("drop.product.phoneModel")}
               </label>
               <input
                 id="phone-model"
                 type="text"
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
-                placeholder="e.g. iPhone 18 Pro"
+                placeholder={t("drop.product.phoneModelPlaceholder")}
                 autoComplete="off"
                 className="w-full rounded-xl border border-mastilo/15 bg-white px-5 py-4 text-base text-mastilo outline-none transition-colors duration-200 placeholder:text-mastilo/35 hover:border-mastilo/35 focus:border-ledena"
               />
@@ -278,7 +285,9 @@ export default function Product() {
                   if (!item || !model.trim()) return;
                   addItem({
                     id: isDjok ? `${item.id}--${djokColor.file}` : item.id,
-                    name: isDjok ? `${item.name} — ${djokColor.name}` : item.name,
+                    name: isDjok
+                      ? `${item.name} — ${colorLabel[djokColor.key]}`
+                      : item.name,
                     model: model.trim(),
                     price: item.price,
                     badge: item.badge,
@@ -297,11 +306,11 @@ export default function Product() {
               >
                 {added ? (
                   <>
-                    <Check /> Added to cart
+                    <Check /> {t("drop.product.added")}
                   </>
                 ) : (
                   <>
-                    Add to cart
+                    {t("drop.product.addToCart")}
                     <span className="transition-transform duration-200 group-hover:translate-x-1">
                       →
                     </span>
@@ -309,7 +318,7 @@ export default function Product() {
                 )}
               </button>
               <p className="mt-4 text-center text-xs text-mastilo/65">
-                In stock · Ships in 2–4 business days
+                {t("drop.product.stock")}
               </p>
             </div>
           </div>
@@ -319,13 +328,13 @@ export default function Product() {
         <div className="mt-24 sm:mt-32">
           <div className="mb-10 flex items-end justify-between">
             <h2 className="text-2xl font-bold tracking-tight text-mastilo sm:text-3xl">
-              You might also like
+              {t("drop.product.alsoLike")}
             </h2>
             <Link
               to="/drop"
               className="text-sm text-mastilo/70 transition-colors hover:text-mastilo"
             >
-              View all →
+              {t("drop.product.viewAll")} →
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-4">

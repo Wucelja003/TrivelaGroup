@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 /*
@@ -12,58 +13,21 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/* Tekst paketa (tagline, cta, lead, features) je u prevodima pod
+   home.pricing.plans.<id>. Ime paketa se NE prevodi — ide u ?package= link
+   ka kontakt formi, koja ga tako i prepoznaje. */
+type PlanId = "standard" | "premium" | "elite";
+
 interface Plan {
+  id: PlanId;
   name: string;
   badge: string | null;
-  tagline: string;
-  cta: string;
-  lead: string;
-  features: string[];
 }
 
 const plans: Plan[] = [
-  {
-    name: "Standard",
-    badge: null,
-    tagline: "Everything you need to look the part.",
-    cta: "Choose Standard",
-    lead: "What's included:",
-    features: [
-      "Social media management",
-      "Photo editing",
-      "Matchday design",
-      "Monthly performance report",
-      "Basic PR outreach",
-      "Community management",
-    ],
-  },
-  {
-    name: "Premium",
-    badge: null,
-    tagline: "For athletes ready to become a brand.",
-    cta: "Choose Premium",
-    lead: "Everything in Standard, plus:",
-    features: [
-      "Social media management (more platforms)",
-      "Video production & editing",
-      "PR & media relations",
-      "Paid ads management",
-      "Interviews & Media",
-    ],
-  },
-  {
-    name: "Elite",
-    badge: null,
-    tagline: "Complete brand partnership.",
-    cta: "Choose Elite",
-    lead: "Everything in Premium, plus:",
-    features: [
-      "Dedicated account manager",
-      "Brand strategy & consulting",
-      "Influencer partnerships",
-      "Priority support",
-    ],
-  },
+  { id: "standard", name: "Standard", badge: null },
+  { id: "premium", name: "Premium", badge: null },
+  { id: "elite", name: "Elite", badge: null },
 ];
 
 function Check({ className = "" }: { className?: string }) {
@@ -84,9 +48,12 @@ function Check({ className = "" }: { className?: string }) {
 }
 
 export default function Pricing() {
+  const { t } = useTranslation();
+  const planText = t("home.pricing.plans", { returnObjects: true });
   const [active, setActive] = useState(1);
   const reduceMotion = useReducedMotion();
   const plan = plans[active];
+  const planCopy = planText[plan.id];
   const shift = reduceMotion ? 0 : 18;
 
   const container = {
@@ -109,24 +76,28 @@ export default function Pricing() {
       >
         <motion.div variants={item} className="max-w-2xl">
           <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] text-zelena">
-            Packages
+            {t("home.pricing.eyebrow")}
           </span>
           <h2 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Built around <span className="text-zelena">your game.</span>
+            {t("home.pricing.titleBefore")}{" "}
+            <span className="text-zelena">{t("home.pricing.titleAccent")}</span>
           </h2>
           <p className="mt-4 text-base leading-relaxed text-white/60 sm:text-lg">
-            Every athlete is different. So is the way we work.
+            {t("home.pricing.intro1")}
           </p>
           <p className="mt-3 text-base leading-relaxed text-white/60 sm:text-lg">
-            Choose the level of support that fits your career, your ambitions
-            and the brand you want to build.
+            {t("home.pricing.intro2")}
           </p>
         </motion.div>
 
         <div className="mt-12 grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
           {/* Levo — izbor paketa */}
           <div>
-            <div className="space-y-3" role="group" aria-label="Select a package">
+            <div
+              className="space-y-3"
+              role="group"
+              aria-label={t("home.pricing.selectLabel")}
+            >
               {plans.map((option, index) => {
                 const selected = active === index;
                 return (
@@ -180,7 +151,7 @@ export default function Pricing() {
                           )}
                         </span>
                         <span className="mt-1 block text-sm leading-relaxed text-white/55">
-                          {option.tagline}
+                          {planText[option.id].tagline}
                         </span>
                       </span>
                     </span>
@@ -214,16 +185,16 @@ export default function Pricing() {
                   )}
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-white/60">
-                  {plan.tagline}
+                  {planCopy.tagline}
                 </p>
 
                 <p className="mt-8 text-sm font-medium text-white">
-                  {plan.lead}
+                  {planCopy.lead}
                 </p>
                 <ul className="mt-4 space-y-3">
-                  {plan.features.map((feature) => (
+                  {planCopy.features.map((feature, i) => (
                     <li
-                      key={feature}
+                      key={i}
                       className="flex items-start gap-3 text-sm leading-relaxed text-white/70"
                     >
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-zelena" />
@@ -238,7 +209,7 @@ export default function Pricing() {
                   to={`/getInTouch?package=${encodeURIComponent(plan.name)}`}
                   className="mt-8 block w-full rounded-full bg-zelena px-8 py-3.5 text-center text-sm font-bold uppercase tracking-[0.08em] text-[#00230a] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-8px_rgba(150,255,0,0.55)]"
                 >
-                  {plan.cta}
+                  {planCopy.cta}
                 </Link>
               </motion.div>
             </AnimatePresence>

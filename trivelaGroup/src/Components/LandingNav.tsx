@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { onDone } from "../lib/sequence";
 import { useCart } from "../context/CartContext";
@@ -40,12 +41,13 @@ const buildItems = (current: Brand): NavItem[] =>
    Kad je u grupi sa menijem, gubi svoj okvir; okvir nosi sama grupa. */
 function CartButton() {
   const cart = useCart();
+  const { t } = useTranslation();
   const bumped = cart.bumpKey > 0;
   return (
     <button
       type="button"
       onClick={cart.open}
-      aria-label={`Cart (${cart.count} items)`}
+      aria-label={t("nav.openCart", { n: cart.count })}
       className="tg-seg tg-seg--cart"
     >
       {bumped && (

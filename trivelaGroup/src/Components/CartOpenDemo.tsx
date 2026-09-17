@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, useReducedMotion } from "motion/react";
 import { LuRotateCw, LuTrash2, LuX } from "react-icons/lu";
 import DemoPointer from "./DemoPointer";
@@ -60,6 +61,7 @@ function Bag({ className = "h-[18px] w-[18px]" }: { className?: string }) {
 }
 
 export default function CartOpenDemo() {
+  const { t } = useTranslation();
   const reduce = useReducedMotion();
   const [phase, setPhase] = useState<Phase>(reduce ? "open" : "idle");
   const [run, setRun] = useState(0); // bumping this replays the whole thing
@@ -213,7 +215,7 @@ export default function CartOpenDemo() {
             <span className="mt-1 block text-[15px] font-bold text-mastilo/85">{ITEM.price}</span>
 
             <span className="mt-3 block text-[10px] font-semibold uppercase tracking-[0.16em] text-mastilo/45">
-              Your phone model
+              {t("drop.product.phoneModel")}
             </span>
             <div className="mt-1.5 rounded-lg border border-mastilo/15 bg-white px-3 py-2 text-[13px] font-medium text-mastilo">
               {ITEM.model}
@@ -233,7 +235,7 @@ export default function CartOpenDemo() {
               }}
               transition={{ duration: 0.22, ease: EASE }}
             >
-              {added ? "Added to cart" : "Add to cart"}
+              {added ? t("drop.product.added") : t("drop.product.addToCart")}
             </motion.span>
           </div>
         </div>
@@ -258,9 +260,11 @@ export default function CartOpenDemo() {
           <div className="flex items-center justify-between border-b border-mastilo/12 px-4 py-3">
             <div>
               <span className="block text-[12px] font-semibold uppercase tracking-[0.15em] text-mastilo">
-                Your cart
+                {t("drop.cart.title")}
               </span>
-              <span className="mt-0.5 block text-[11px] text-mastilo/55">1 item</span>
+              <span className="mt-0.5 block text-[11px] text-mastilo/55">
+                {t("drop.cart.count", { count: 1 })}
+              </span>
             </div>
             <span className="grid h-7 w-7 place-items-center rounded-full border border-mastilo/12 text-mastilo/60">
               <LuX className="h-3.5 w-3.5" />
@@ -301,7 +305,7 @@ export default function CartOpenDemo() {
           <div className="border-t border-mastilo/12 px-4 py-3.5">
             <div className="mb-3 flex items-center justify-between">
               <span className="text-[10px] uppercase tracking-[0.2em] text-mastilo/55">
-                Subtotal
+                {t("drop.cart.subtotal")}
               </span>
               <span className="text-[16px] font-bold text-mastilo">{ITEM.price}</span>
             </div>
@@ -318,7 +322,7 @@ export default function CartOpenDemo() {
               }}
               transition={{ duration: 0.22, ease: EASE }}
             >
-              Checkout <span aria-hidden>→</span>
+              {t("drop.cart.checkout")} <span aria-hidden>→</span>
             </motion.span>
           </div>
         </motion.aside>
@@ -334,17 +338,17 @@ export default function CartOpenDemo() {
       <div className="flex items-center justify-between gap-3">
         <span className="text-[12px] text-mastilo/50">
           {phase === "done"
-            ? "Checkout takes you to the next step — your delivery details."
+            ? t("drop.journey.cartDemo.captionDone")
             : open
-              ? "The cart slides in from the right — the model stays with the case."
-              : "Watch: Add to cart, then the bag up top."}
+              ? t("drop.journey.cartDemo.captionOpen")
+              : t("drop.journey.cartDemo.captionIdle")}
         </span>
         <button
           onClick={() => setRun((r) => r + 1)}
           className="inline-flex shrink-0 items-center gap-2 rounded-full border border-mastilo/15 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-mastilo transition-all duration-200 hover:-translate-y-0.5 hover:border-mastilo/35"
         >
           <LuRotateCw className="h-3.5 w-3.5" />
-          Replay
+          {t("drop.journey.replay")}
         </button>
       </div>
     </div>

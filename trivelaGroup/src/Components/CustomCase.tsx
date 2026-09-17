@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   submitCustomRequest,
   uploadCustomImage,
@@ -17,7 +18,22 @@ const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+/* Poznate greske se cuvaju kao KLJUC (prevode se pri renderu, pa prate jezik).
+   Sirova poruka sa servera (e.message) ostaje kakva jeste. */
+type ErrKey =
+  | "noImage"
+  | "noName"
+  | "badEmail"
+  | "noModel"
+  | "uploadFailed"
+  | "sendFailed";
+type FormError = { key: ErrKey } | { raw: string } | null;
+
 export default function CustomCase() {
+  const { t } = useTranslation();
+  const errText = t("drop.custom.errors", { returnObjects: true });
+  const ph = t("drop.custom.placeholders", { returnObjects: true });
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -32,8 +48,14 @@ export default function CustomCase() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FormError>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const errorText = !error
+    ? null
+    : "key" in error
+      ? errText[error.key]
+      : error.raw;
 
   const onFile = async (file: File | undefined) => {
     if (!file) return;
@@ -44,7 +66,7 @@ export default function CustomCase() {
       setImageUrl(url);
     } catch (e) {
       setError(
-        e instanceof Error ? e.message : "Slika nije otpremljena, probaj opet."
+        e instanceof Error ? { raw: e.message } : { key: "uploadFailed" }
       );
     } finally {
       setUploading(false);
@@ -53,10 +75,10 @@ export default function CustomCase() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageUrl) return setError("Dodaj svoju sliku za masku.");
-    if (!fullName.trim()) return setError("Ime je obavezno.");
-    if (!emailOk(email)) return setError("Unesi ispravan email.");
-    if (!phoneModel.trim()) return setError("Unesi model telefona.");
+    if (!imageUrl) return setError({ key: "noImage" });
+    if (!fullName.trim()) return setError({ key: "noName" });
+    if (!emailOk(email)) return setError({ key: "badEmail" });
+    if (!phoneModel.trim()) return setError({ key: "noModel" });
 
     setStatus("sending");
     setError(null);
@@ -78,7 +100,7 @@ export default function CustomCase() {
     } catch (err) {
       setStatus("error");
       setError(
-        err instanceof Error ? err.message : "Slanje nije uspelo, probaj opet."
+        err instanceof Error ? { raw: err.message } : { key: "sendFailed" }
       );
     }
   };
@@ -95,11 +117,9 @@ export default function CustomCase() {
             ✓
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-mastilo sm:text-4xl">
-            Request received.
+            {t("drop.custom.successTitle")}
           </h2>
-          <p className="mt-4 text-mastilo/70">
-            We'll review your idea and get back to you by email within 24 hours.
-          </p>
+          <p className="mt-4 text-mastilo/70">{t("drop.custom.successBody")}</p>
         </div>
       </section>
     );
@@ -118,17 +138,16 @@ export default function CustomCase() {
         {/* Header */}
         <div className="mb-12 text-center">
           <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-mastilo/60">
-            Made for you
+            {t("drop.custom.eyebrow")}
           </span>
           <h2 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight text-mastilo sm:text-5xl lg:text-6xl">
-            Create your{" "}
+            {t("drop.custom.titleBefore")}{" "}
             <span className="bg-gradient-to-r from-[#1c6bb8] to-[#08226c] bg-clip-text text-transparent">
-              custom case
+              {t("drop.custom.titleAccent")}
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-mastilo/65">
-            Upload your photo, pick your phone, tell us where to ship it — and
-            we'll craft a one-off case just for you.
+            {t("drop.custom.lead")}
           </p>
         </div>
 
@@ -138,7 +157,7 @@ export default function CustomCase() {
         >
           {/* Slika */}
           <div>
-            <span className={labelCls}>Your photo</span>
+            <span className={labelCls}>{t("drop.custom.photo")}</span>
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
@@ -152,7 +171,9 @@ export default function CustomCase() {
                 />
               ) : (
                 <span className="px-6 text-center text-sm text-mastilo/50">
-                  {uploading ? "Uploading…" : "Click to upload your image"}
+                  {uploading
+                    ? t("drop.custom.uploading")
+                    : t("drop.custom.clickToUpload")}
                 </span>
               )}
             </button>
@@ -162,7 +183,7 @@ export default function CustomCase() {
                 onClick={() => setImageUrl(null)}
                 className="mt-2 text-xs font-semibold text-mastilo/55 transition-colors hover:text-mastilo"
               >
-                Remove image
+                {t("drop.custom.removeImage")}
               </button>
             )}
             <input
@@ -178,59 +199,59 @@ export default function CustomCase() {
           <div className="flex flex-col gap-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className={labelCls}>Full name</label>
+                <label className={labelCls}>{t("drop.custom.fullName")}</label>
                 <input
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   className={inputCls}
-                  placeholder="Marko Marković"
+                  placeholder={ph.fullName}
                 />
               </div>
               <div>
-                <label className={labelCls}>Email</label>
+                <label className={labelCls}>{t("drop.custom.email")}</label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={inputCls}
-                  placeholder="you@email.com"
+                  placeholder={ph.email}
                 />
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className={labelCls}>Phone number</label>
+                <label className={labelCls}>{t("drop.custom.phone")}</label>
                 <input
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className={inputCls}
-                  placeholder="+381 …"
+                  placeholder={ph.phone}
                 />
               </div>
               <div>
-                <label className={labelCls}>Phone model</label>
+                <label className={labelCls}>{t("drop.custom.phoneModel")}</label>
                 <input
                   value={phoneModel}
                   onChange={(e) => setPhoneModel(e.target.value)}
                   className={inputCls}
-                  placeholder="e.g. iPhone 15 Pro, Galaxy S24…"
+                  placeholder={ph.phoneModel}
                 />
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-[1fr_1fr_0.6fr]">
               <div>
-                <label className={labelCls}>Address</label>
+                <label className={labelCls}>{t("drop.custom.address")}</label>
                 <input
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className={inputCls}
-                  placeholder="Street & number"
+                  placeholder={ph.address}
                 />
               </div>
               <div>
-                <label className={labelCls}>City</label>
+                <label className={labelCls}>{t("drop.custom.city")}</label>
                 <input
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
@@ -238,7 +259,7 @@ export default function CustomCase() {
                 />
               </div>
               <div>
-                <label className={labelCls}>Postal</label>
+                <label className={labelCls}>{t("drop.custom.postal")}</label>
                 <input
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
@@ -249,7 +270,7 @@ export default function CustomCase() {
 
             <div className="grid gap-4 sm:grid-cols-[1.4fr_0.6fr]">
               <div>
-                <label className={labelCls}>Country</label>
+                <label className={labelCls}>{t("drop.custom.country")}</label>
                 <input
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
@@ -257,7 +278,7 @@ export default function CustomCase() {
                 />
               </div>
               <div>
-                <label className={labelCls}>Quantity</label>
+                <label className={labelCls}>{t("drop.custom.quantity")}</label>
                 <input
                   type="number"
                   min={1}
@@ -271,24 +292,28 @@ export default function CustomCase() {
             </div>
 
             <div>
-              <label className={labelCls}>Your idea (optional)</label>
+              <label className={labelCls}>{t("drop.custom.idea")}</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
                 className={`${inputCls} resize-none`}
-                placeholder="Player, club, colours, text — anything you want on it."
+                placeholder={ph.idea}
               />
             </div>
 
-            {error && <p className="text-sm font-medium text-red-500">{error}</p>}
+            {errorText && (
+              <p className="text-sm font-medium text-red-500">{errorText}</p>
+            )}
 
             <button
               type="submit"
               disabled={status === "sending" || uploading}
               className="mt-1 inline-flex items-center justify-center gap-2 self-start rounded-full bg-gradient-to-r from-[#08226c] to-[#14589b] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_16px_36px_-8px_rgba(8,34,108,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_44px_-8px_rgba(124,196,255,0.6)] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {status === "sending" ? "Sending…" : "Send my request"}
+              {status === "sending"
+                ? t("drop.custom.sending")
+                : t("drop.custom.send")}
               <span aria-hidden="true">→</span>
             </button>
           </div>

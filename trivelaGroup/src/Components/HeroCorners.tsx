@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 /*
  * Donji uglovi hero-a: lokacija levo, drustvene mreze desno.
  * Stoji u toku (izmedju sadrzaja i trake sa karticama), a ne apsolutno —
@@ -9,12 +11,13 @@ const socials = [
 ];
 
 export default function HeroCorners() {
+  const { t } = useTranslation();
   return (
     <div className="hero-corners">
       {/* Lokacija — dva reda jedan ispod drugog, u levom uglu */}
       <div className="hero-corner-loc">
-        <span className="hero-corner-item">Based in:</span>
-        <span className="hero-corner-item">Belgrade, Serbia</span>
+        <span className="hero-corner-item">{t("common.basedIn")}</span>
+        <span className="hero-corner-item">{t("common.location")}</span>
       </div>
       <div className="hero-corner-socials flex items-center gap-5">
         {socials.map((s) => (

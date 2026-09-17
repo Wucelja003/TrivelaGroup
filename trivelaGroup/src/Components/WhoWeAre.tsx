@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import "./WhoWeAre.css";
 
 /*
@@ -10,18 +11,20 @@ import "./WhoWeAre.css";
  * Kartice ulaze iz dubine kad se doskroluje; brojevi se odbrojavaju (count-up).
  */
 
+/* Tekst (naslov + opis) je u prevodima pod home.whoWeAre.roles.<id>;
+   ovde ostaju samo broj ljudi i ikonica, koji se ne menjaju sa jezikom. */
+type RoleId = "social" | "pr" | "video" | "design";
+
 interface Role {
+  id: RoleId;
   count: number;
-  title: string;
-  copy: string;
   icon: ReactNode;
 }
 
 const ROLES: Role[] = [
   {
+    id: "social",
     count: 2,
-    title: "Social Media Managers",
-    copy: "Turning every moment into a story worth following.",
     icon: (
       <>
         <path d="M5 6h18v12H11l-4 4v-4H5z" />
@@ -30,9 +33,8 @@ const ROLES: Role[] = [
     ),
   },
   {
+    id: "pr",
     count: 1,
-    title: "PR & Marketing Manager",
-    copy: "Building reputations that go beyond the game.",
     icon: (
       <>
         <path d="M4 11l15-6v18l-15-6z" />
@@ -41,9 +43,8 @@ const ROLES: Role[] = [
     ),
   },
   {
+    id: "video",
     count: 3,
-    title: "Videographers",
-    copy: "Capturing the moments that define careers.",
     icon: (
       <>
         <rect x="3.5" y="7.5" width="13" height="13" rx="2.4" />
@@ -52,9 +53,8 @@ const ROLES: Role[] = [
     ),
   },
   {
+    id: "design",
     count: 6,
-    title: "Graphic Designers",
-    copy: "Giving every athlete a visual identity of their own.",
     icon: (
       <>
         <path d="M4 21l3.6-9.6L16 3l5 5-8.4 8.4L4 21z" />
@@ -88,6 +88,8 @@ function CountUp({ value, start }: { value: number; start: boolean }) {
 }
 
 export default function WhoWeAre() {
+  const { t } = useTranslation();
+  const roleText = t("home.whoWeAre.roles", { returnObjects: true });
   const gridRef = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
@@ -117,23 +119,15 @@ export default function WhoWeAre() {
         {/* Header */}
         <div className="mb-14 max-w-3xl">
           <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] text-zelena">
-            Who we are
+            {t("home.whoWeAre.eyebrow")}
           </span>
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Founded on a{" "}
-            <span className="text-zelena">shared vision.</span>
+            {t("home.whoWeAre.titleBefore")}{" "}
+            <span className="text-zelena">{t("home.whoWeAre.titleAccent")}</span>
           </h2>
           <div className="mt-6 space-y-4 text-lg leading-relaxed text-white/60">
-            <p>
-              Trivela was founded in September 2024 from a shared vision of two
-              people with years of experience across sports, marketing, media,
-              and graphic design.
-            </p>
-            <p>
-              As the agency grew, so did the team behind it. Today, Trivela Group
-              brings together more than 10 dedicated professionals, combining
-              their expertise to provide our clients with seamless, 24/7 support.
-            </p>
+            <p>{t("home.whoWeAre.p1")}</p>
+            <p>{t("home.whoWeAre.p2")}</p>
           </div>
         </div>
 
@@ -146,7 +140,7 @@ export default function WhoWeAre() {
         >
           {ROLES.map((r, i) => (
             <div
-              key={r.title}
+              key={r.id}
               className="wwa-card-wrap"
               style={{ "--i": i } as CSSProperties}
             >
@@ -172,8 +166,8 @@ export default function WhoWeAre() {
 
                 <span className="wwa-line" aria-hidden="true" />
 
-                <h3 className="wwa-role">{r.title}</h3>
-                <p className="wwa-desc">{r.copy}</p>
+                <h3 className="wwa-role">{roleText[r.id].title}</h3>
+                <p className="wwa-desc">{roleText[r.id].copy}</p>
               </div>
             </div>
           ))}

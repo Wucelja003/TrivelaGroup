@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { useLenis } from "lenis/react";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./DropHero.css";
@@ -99,6 +100,7 @@ function Tile({
 }
 
 export default function DropHero() {
+  const { t } = useTranslation();
   const rootRef = useRef<HTMLElement>(null);
   const lenis = useLenis();
 
@@ -185,22 +187,20 @@ export default function DropHero() {
       <div className="dh-content">
         <span className="dh-eyebrow dh-reveal">Trivela Drop</span>
         <h1 className="dh-title dh-reveal">
-          Carry your
+          {t("drop.hero.titleBefore")}
           <br />
-          <span className="dh-title-accent">colors</span>
+          <span className="dh-title-accent">{t("drop.hero.titleAccent")}</span>
         </h1>
         {/* Dve recenice: na telefonu svaka ide u svoj red (da "Trivela Group"
-            ne ostane sam u redu), a na sirem ekranu teku zajedno. Brend drzi
-            nedeljivi razmak da se nikad ne prelomi. */}
+            ne ostane sam u redu), a na sirem ekranu teku zajedno. Nedeljivi
+            razmak u "Trivela Group" je u samom prevodu. */}
         <p className="dh-lead dh-reveal">
-          <span className="dh-lead-line">Exclusive athlete-driven drops.</span>{" "}
-          <span className="dh-lead-line">
-            Limited editions by Trivela&nbsp;Group.
-          </span>
+          <span className="dh-lead-line">{t("drop.hero.lead1")}</span>{" "}
+          <span className="dh-lead-line">{t("drop.hero.lead2")}</span>
         </p>
         <div className="dh-actions dh-reveal">
           <button type="button" onClick={toCustom} className="dh-cta">
-            Create your custom case
+            {t("drop.hero.cta")}
             <span aria-hidden="true">↓</span>
           </button>
         </div>

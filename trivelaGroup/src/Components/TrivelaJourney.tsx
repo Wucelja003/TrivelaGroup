@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   LuImage,
@@ -31,6 +32,9 @@ import CartOpenDemo from "./CartOpenDemo";
  * Svaki panel pokazuje kako polje stvarno izgleda popunjeno, umesto da opisuje
  * recima sta treba upisati. Zato su primeri konkretni ("iPhone 15 Pro", ne
  * "model telefona") — covek prepise oblik, ne smisao.
+ *
+ * Tekst je u prevodima pod drop.journey.* — koraci pod steps.<panel>, jer
+ * svaki korak ima jedinstven panel.
  */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -78,99 +82,26 @@ type PanelKind =
   | "details"
   | "placed";
 
+/* Tekst koraka (naslov, meta, labela, opis) je u drop.journey.steps.<panel>. */
 type Step = {
   icon: typeof LuImage;
-  title: string;
-  meta: string;
-  label: string;
-  copy: string;
   panel: PanelKind;
 };
 
 const CUSTOM_STEPS: Step[] = [
-  {
-    icon: LuImage,
-    title: "Upload your picture",
-    meta: "Start here",
-    label: "The image",
-    copy: "The photo is the whole case, so it decides how the case turns out. Send the biggest version you have — straight from the camera roll, not a screenshot and not something saved off Instagram.",
-    panel: "image",
-  },
-  {
-    icon: LuSmartphone,
-    title: "Write your exact phone model",
-    meta: "Be precise",
-    label: "Phone model",
-    copy: "Write the full model, including Pro or Max. A 15 Pro case does not fit a 15, and the camera cut-out is the part that goes wrong.",
-    panel: "model",
-  },
-  {
-    icon: LuUser,
-    title: "Leave your name and contact",
-    meta: "So we can reply",
-    label: "Contact",
-    copy: "Full name, an email you actually read, and a phone number. We come back to you with the mock-up on the email, and the courier calls the number.",
-    panel: "contact",
-  },
-  {
-    icon: LuMapPin,
-    title: "Where it should arrive",
-    meta: "Delivery",
-    label: "Address",
-    copy: "Street with the number, city, postal code and country. Add the flat or floor in the notes if the building needs it — that is what saves a failed delivery.",
-    panel: "address",
-  },
-  {
-    icon: LuStickyNote,
-    title: "How many, and anything else",
-    meta: "Optional",
-    label: "Quantity & notes",
-    copy: "Say how many cases you want, and use the notes for anything the picture cannot say: a name to print, which part to keep in frame, a deadline you need it by.",
-    panel: "extras",
-  },
-  {
-    icon: LuSend,
-    title: "Send it and wait for the mock-up",
-    meta: "Then us",
-    label: "After you send",
-    copy: "We answer with a mock-up of how your case will look. Nothing is printed until you say yes to it.",
-    panel: "send",
-  },
+  { icon: LuImage, panel: "image" },
+  { icon: LuSmartphone, panel: "model" },
+  { icon: LuUser, panel: "contact" },
+  { icon: LuMapPin, panel: "address" },
+  { icon: LuStickyNote, panel: "extras" },
+  { icon: LuSend, panel: "send" },
 ];
 
 const ORDER_STEPS: Step[] = [
-  {
-    icon: LuLayoutGrid,
-    title: "Open a case and write your model",
-    meta: "Start here",
-    label: "From the grid",
-    copy: "Every case we have ready is on the Drop page. Tap one and it opens on its own page, with its price and collection — then write your phone model in full, Pro or Max included. Watch it happen below.",
-    panel: "browse",
-  },
-  {
-    icon: LuShoppingBag,
-    title: "Add it to the cart",
-    meta: "Collect",
-    label: "Cart",
-    copy: "Add to cart, then the bag at the top of the page — the cart slides out from the side. It keeps the model with each case, so two of the same print for two different phones stay apart.",
-    panel: "cart",
-  },
-  {
-    icon: LuTruck,
-    title: "Fill in the delivery details",
-    meta: "Checkout",
-    label: "Checkout",
-    copy: "Name, email, phone, address, city and postal code. Shipping is free over 6.000 RSD and 590 RSD under it — the total updates as you go.",
-    panel: "details",
-  },
-  {
-    icon: LuCircleCheck,
-    title: "Place the order",
-    meta: "Done",
-    label: "Confirmation",
-    copy: "You get an order number on screen and by email. Keep it — it is what we look you up by if you write to us.",
-    panel: "placed",
-  },
+  { icon: LuLayoutGrid, panel: "browse" },
+  { icon: LuShoppingBag, panel: "cart" },
+  { icon: LuTruck, panel: "details" },
+  { icon: LuCircleCheck, panel: "placed" },
 ];
 
 /* ---------- small pieces the panels are built from ---------- */
@@ -236,11 +167,12 @@ function FieldMock({
 }
 
 function DoDont({ good, bad }: { good: string[]; bad: string[] }) {
+  const { t } = useTranslation();
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       <div className="rounded-2xl border border-[#1c9d54]/25 bg-[#1c9d54]/[0.06] p-4">
         <span className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#127a3f]">
-          <LuCheck className="h-3.5 w-3.5" /> Send this
+          <LuCheck className="h-3.5 w-3.5" /> {t("drop.journey.sendThis")}
         </span>
         <ul className="flex flex-col gap-2">
           {good.map((g) => (
@@ -252,7 +184,7 @@ function DoDont({ good, bad }: { good: string[]; bad: string[] }) {
       </div>
       <div className="rounded-2xl border border-[#d13b3b]/25 bg-[#d13b3b]/[0.05] p-4">
         <span className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#b32c2c]">
-          <LuX className="h-3.5 w-3.5" /> Not this
+          <LuX className="h-3.5 w-3.5" /> {t("drop.journey.notThis")}
         </span>
         <ul className="flex flex-col gap-2">
           {bad.map((b) => (
@@ -285,50 +217,33 @@ function CaseStrip({ images, caption }: { images: string[]; caption: string }) {
   );
 }
 
+/* Primeri koji se ne prevode — oblik koji posetilac prepise. */
+const GOOD_MODELS = ["iPhone 18 Pro", "iPhone 17 Pro Max", "Samsung Galaxy S24 Ultra"];
+
 function Panel({ kind }: { kind: PanelKind }) {
+  // Hook mora ici pre switch-a (ne sme uslovno).
+  const { t } = useTranslation();
+  const p = t("drop.journey.panels", { returnObjects: true });
+
   switch (kind) {
     case "image":
       return (
         <div className="flex flex-col gap-5">
           <CaseStrip
             images={["/dropHero/messi.png", "/dropHero/nole.png", "/dropHero/haland.png"]}
-            caption="Cases we printed from photos customers sent in."
+            caption={p.image.caption}
           />
-          <DoDont
-            good={[
-              "The original photo, straight from your gallery",
-              "The face or subject fully in frame, not cropped at the edge",
-              "Good light — what looks dull on screen prints dull",
-            ]}
-            bad={[
-              "A screenshot of a photo",
-              "An image saved from Instagram or WhatsApp — both shrink it",
-              "A picture that is already blurry when you zoom in",
-            ]}
-          />
-          <Note>
-            Not sure whether yours is big enough? Send it anyway — we check it and tell you
-            before anything is printed.
-          </Note>
+          <DoDont good={p.image.good} bad={p.image.bad} />
+          <Note>{p.image.note}</Note>
         </div>
       );
 
     case "model": {
       return (
         <div className="flex flex-col gap-5">
-          <FieldMock
-            label="Phone model"
-            value="iPhone 18 Pro"
-            hint="Type it in full — the Pro and the Max are different cases."
-          />
-          <DoDont
-            good={["iPhone 18 Pro", "iPhone 17 Pro Max", "Samsung Galaxy S24 Ultra"]}
-            bad={["iPhone", "the new one", "18 pro maybe"]}
-          />
-          <Note>
-            Not sure your model is one we cut? Write it anyway — we tell you before anything is
-            printed.
-          </Note>
+          <FieldMock label={p.model.label} value="iPhone 18 Pro" hint={p.model.hint} />
+          <DoDont good={GOOD_MODELS} bad={p.model.bad} />
+          <Note>{p.model.note}</Note>
         </div>
       );
     }
@@ -338,38 +253,35 @@ function Panel({ kind }: { kind: PanelKind }) {
       const d = delaysFor(v);
       return (
         <div className="flex flex-col gap-4">
-          <FieldMock label="Full name" value={v[0]} after={d[0]} />
+          <FieldMock label={p.contact.name} value={v[0]} after={d[0]} />
           <FieldMock
-            label="Email"
+            label={p.contact.email}
             value={v[1]}
             after={d[1]}
-            hint="The mock-up goes here, so use one you check."
+            hint={p.contact.emailHint}
           />
           <FieldMock
-            label="Phone"
+            label={p.contact.phone}
             value={v[2]}
             after={d[2]}
-            hint="The courier calls this number."
+            hint={p.contact.phoneHint}
           />
         </div>
       );
     }
 
     case "address": {
-      const v = ["Bulevar Oslobođenja 12/4", "Novi Sad", "21000", "Serbia"];
+      const v = ["Bulevar Oslobođenja 12/4", "Novi Sad", "21000", p.address.countryValue];
       const d = delaysFor(v);
       return (
         <div className="flex flex-col gap-4">
-          <FieldMock label="Address" value={v[0]} after={d[0]} />
+          <FieldMock label={p.address.address} value={v[0]} after={d[0]} />
           <div className="grid gap-4 sm:grid-cols-2">
-            <FieldMock label="City" value={v[1]} after={d[1]} />
-            <FieldMock label="Postal code" value={v[2]} after={d[2]} />
+            <FieldMock label={p.address.city} value={v[1]} after={d[1]} />
+            <FieldMock label={p.address.postal} value={v[2]} after={d[2]} />
           </div>
-          <FieldMock label="Country" value={v[3]} after={d[3]} />
-          <Note>
-            Flat number, floor, or an intercom that does not work — put it in the notes on the
-            next step. That is what stops a delivery coming back to us.
-          </Note>
+          <FieldMock label={p.address.country} value={v[3]} after={d[3]} />
+          <Note>{p.address.note}</Note>
         </div>
       );
     }
@@ -377,22 +289,16 @@ function Panel({ kind }: { kind: PanelKind }) {
     case "extras":
       return (
         <div className="flex flex-col gap-5">
-          <FieldMock label="Quantity" value="2" hint="Same picture on two cases, or two models." />
+          <FieldMock label={p.extras.quantity} value="2" hint={p.extras.quantityHint} />
           <div>
             <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.16em] text-mastilo/50">
-              Notes
+              {p.extras.notes}
             </span>
             <div className="rounded-xl border border-mastilo/15 bg-white px-4 py-3 text-[14px] leading-relaxed text-mastilo shadow-[0_2px_10px_rgba(8,34,108,0.05)]">
-              <Typewriter
-                text="“Second case is for a Samsung S24. Please keep both of us in frame and print the name MARKO under the photo. Needed before the 20th if possible.”"
-                speed={16}
-              />
+              <Typewriter text={p.extras.notesValue} speed={16} />
             </div>
           </div>
-          <Note>
-            Anything the picture cannot say belongs here — a name to print, which part to keep,
-            a date you need it by.
-          </Note>
+          <Note>{p.extras.note}</Note>
         </div>
       );
 
@@ -400,20 +306,15 @@ function Panel({ kind }: { kind: PanelKind }) {
       return (
         <div className="flex flex-col gap-5">
           <ol className="flex flex-col">
-            {[
-              "Your request lands with us, picture and all",
-              "We come back on email with a mock-up of your case",
-              "You say yes — or ask for a change, as many times as it takes",
-              "Only then do we print it and send it out",
-            ].map((t, i) => (
+            {p.send.list.map((line, i) => (
               <li
-                key={t}
+                key={i}
                 className="flex items-center gap-3 border-b border-mastilo/10 py-3 last:border-b-0"
               >
                 <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#7cc4ff] to-[#14589b] text-[12px] font-bold text-white">
                   {i + 1}
                 </span>
-                <span className="text-[14px] leading-relaxed text-mastilo/80">{t}</span>
+                <span className="text-[14px] leading-relaxed text-mastilo/80">{line}</span>
               </li>
             ))}
           </ol>
@@ -421,7 +322,7 @@ function Panel({ kind }: { kind: PanelKind }) {
             href="#custom-case"
             className="inline-flex items-center justify-center gap-2 self-start rounded-full bg-gradient-to-r from-[#08226c] to-[#14589b] px-8 py-3.5 text-[13px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_16px_36px_-8px_rgba(8,34,108,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_44px_-8px_rgba(124,196,255,0.6)]"
           >
-            Send my request
+            {p.send.cta}
             <LuArrowRight className="h-4 w-4" />
           </a>
         </div>
@@ -437,32 +338,28 @@ function Panel({ kind }: { kind: PanelKind }) {
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl border border-mastilo/12 bg-[#f4f9ff] p-4">
               <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.16em] text-mastilo/40">
-                Field empty
+                {p.browse.fieldEmpty}
               </span>
               <span className="inline-flex w-full items-center justify-center rounded-full bg-mastilo/10 px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em] text-mastilo/35">
-                Add to cart
+                {t("drop.product.addToCart")}
               </span>
             </div>
             <div className="rounded-2xl border border-mastilo/12 bg-[#f4f9ff] p-4">
               <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.16em] text-mastilo/40">
-                Model written
+                {p.browse.modelWritten}
               </span>
               <span className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#08226c] to-[#14589b] px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em] text-white">
-                Add to cart
+                {t("drop.product.addToCart")}
               </span>
             </div>
           </div>
 
-          <Note>
-            The button stays dead until the model field has something in it — a case is cut for
-            one model, and the camera cut-out is what goes wrong otherwise. Filter by collection
-            or sort by price to get to yours faster.
-          </Note>
+          <Note>{p.browse.note}</Note>
           <Link
             to="/drop#drop-grid"
             className="inline-flex items-center justify-center gap-2 self-start rounded-full border border-mastilo/20 bg-white px-7 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-mastilo transition-all duration-300 hover:-translate-y-0.5 hover:border-mastilo/40"
           >
-            Go to all cases
+            {p.browse.goToAll}
             <LuArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -472,11 +369,7 @@ function Panel({ kind }: { kind: PanelKind }) {
       return (
         <div className="flex flex-col gap-5">
           <CartOpenDemo />
-          <Note>
-            Same print, two different phones — the cart keeps them apart because the model rides
-            along with each case. The price on the case is what you pay for it; shipping is
-            counted separately at the end.
-          </Note>
+          <Note>{p.cart.note}</Note>
         </div>
       );
 
@@ -493,38 +386,39 @@ function Panel({ kind }: { kind: PanelKind }) {
       // Seven fields typed one by one would be a long wait, so this one runs
       // with barely a gap between them — it reads as a form being filled in.
       const d = delaysFor(v, 90);
+      const rows: [string, string][] = [
+        [t("drop.checkout.subtotal"), "4.980 RSD"],
+        [t("drop.checkout.shippingLabel"), t("drop.checkout.free")],
+      ];
       return (
         <div className="flex flex-col gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <FieldMock label="First name" value={v[0]} after={d[0]} />
-            <FieldMock label="Last name" value={v[1]} after={d[1]} />
+            <FieldMock label={p.details.firstName} value={v[0]} after={d[0]} />
+            <FieldMock label={p.details.lastName} value={v[1]} after={d[1]} />
           </div>
-          <FieldMock label="Email" value={v[2]} after={d[2]} />
-          <FieldMock label="Phone" value={v[3]} after={d[3]} />
-          <FieldMock label="Address" value={v[4]} after={d[4]} />
+          <FieldMock label={p.details.email} value={v[2]} after={d[2]} />
+          <FieldMock label={p.details.phone} value={v[3]} after={d[3]} />
+          <FieldMock label={p.details.address} value={v[4]} after={d[4]} />
           <div className="grid gap-4 sm:grid-cols-2">
-            <FieldMock label="City" value={v[5]} after={d[5]} />
-            <FieldMock label="Postal code" value={v[6]} after={d[6]} />
+            <FieldMock label={p.details.city} value={v[5]} after={d[5]} />
+            <FieldMock label={p.details.postal} value={v[6]} after={d[6]} />
           </div>
 
           <div className="mt-1 rounded-2xl border border-mastilo/12 bg-white p-4">
-            {[
-              ["Subtotal", "4.980 RSD"],
-              ["Shipping", "Free"],
-            ].map(([k, v]) => (
-              <div key={k} className="flex items-center justify-between py-1.5 text-[13px]">
+            {rows.map(([k, val], i) => (
+              <div key={i} className="flex items-center justify-between py-1.5 text-[13px]">
                 <span className="text-mastilo/60">{k}</span>
-                <span className="font-semibold text-mastilo">{v}</span>
+                <span className="font-semibold text-mastilo">{val}</span>
               </div>
             ))}
             <div className="mt-2 flex items-center justify-between border-t border-mastilo/10 pt-3">
               <span className="text-[12px] font-bold uppercase tracking-[0.16em] text-mastilo/50">
-                Total
+                {t("drop.checkout.total")}
               </span>
               <span className="text-[18px] font-bold text-mastilo">4.980 RSD</span>
             </div>
             <span className="mt-2 block text-[12px] text-[#127a3f]">
-              Free shipping over 6.000 RSD — under that it is 590 RSD.
+              {p.details.freeNote}
             </span>
           </div>
         </div>
@@ -539,19 +433,16 @@ function Panel({ kind }: { kind: PanelKind }) {
           </span>
           <div>
             <span className="block text-[24px] font-bold leading-tight text-mastilo">
-              Order placed
+              {p.placed.title}
             </span>
             <span className="mt-2 block text-[14px] text-mastilo/60">
-              Your order number is
+              {p.placed.numberIs}
             </span>
             <span className="mt-1 block font-mono text-[20px] font-bold tracking-wider text-mastilo">
               TRV-8K21QP
             </span>
           </div>
-          <Note>
-            The same number goes to your email. Keep it — it is how we find your order if you
-            write to us.
-          </Note>
+          <Note>{p.placed.note}</Note>
         </div>
       );
 
@@ -563,30 +454,21 @@ function Panel({ kind }: { kind: PanelKind }) {
 /* ---------- the journey itself ---------- */
 
 const FLOWS = [
-  {
-    key: "custom" as const,
-    tab: "Custom case",
-    eyebrow: "Your picture, our case",
-    heading: "How to send a custom request",
-    sub: "What to write, field by field — so the first mock-up is already the right one.",
-    steps: CUSTOM_STEPS,
-  },
-  {
-    key: "order" as const,
-    tab: "Regular Case",
-    eyebrow: "From the drop",
-    heading: "How to order a case",
-    sub: "Four steps from the grid to a confirmed order.",
-    steps: ORDER_STEPS,
-  },
+  { key: "custom" as const, steps: CUSTOM_STEPS },
+  { key: "order" as const, steps: ORDER_STEPS },
 ];
 
 export default function TrivelaJourney() {
+  const { t } = useTranslation();
+  const flowText = t("drop.journey.flows", { returnObjects: true });
+  const stepText = t("drop.journey.steps", { returnObjects: true });
+
   const [flowKey, setFlowKey] = useState<"custom" | "order">("custom");
   const [active, setActive] = useState(0);
   const reduce = useReducedMotion();
 
   const flow = FLOWS.find((f) => f.key === flowKey)!;
+  const flowCopy = flowText[flowKey];
   const step = flow.steps[active];
 
   const switchFlow = (key: "custom" | "order") => {
@@ -604,19 +486,19 @@ export default function TrivelaJourney() {
         {/* Heading */}
         <div className="mb-10 text-center">
           <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-mastilo">
-            {flow.eyebrow}
+            {flowCopy.eyebrow}
           </span>
           <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#08226c] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
-            {flow.heading}
+            {flowCopy.heading}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15px] text-mastilo/60">{flow.sub}</p>
+          <p className="mx-auto mt-4 max-w-xl text-[15px] text-mastilo/60">{flowCopy.sub}</p>
         </div>
 
         {/* Which guide */}
         <div className="mb-12 flex justify-center">
           <div
             role="tablist"
-            aria-label="Guides"
+            aria-label={t("drop.journey.guides")}
             className="inline-flex gap-1 rounded-full border border-mastilo/12 bg-white p-1 shadow-[0_8px_24px_rgba(8,34,108,0.07)]"
           >
             {FLOWS.map((f) => {
@@ -639,7 +521,7 @@ export default function TrivelaJourney() {
                       aria-hidden
                     />
                   )}
-                  <span className="relative">{f.tab}</span>
+                  <span className="relative">{flowText[f.key].tab}</span>
                 </button>
               );
             })}
@@ -648,13 +530,14 @@ export default function TrivelaJourney() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(320px,0.95fr)_1.15fr] lg:items-start lg:gap-14">
           {/* Left — the steps */}
-          <div role="tablist" aria-label={flow.heading} className="flex flex-col gap-2">
+          <div role="tablist" aria-label={flowCopy.heading} className="flex flex-col gap-2">
             {flow.steps.map((s, i) => {
               const on = active === i;
               const Icon = s.icon;
+              const copy = stepText[s.panel];
               return (
                 <button
-                  key={s.title}
+                  key={s.panel}
                   role="tab"
                   aria-selected={on}
                   onClick={() => setActive(i)}
@@ -685,10 +568,10 @@ export default function TrivelaJourney() {
                             on ? "text-mastilo" : "text-mastilo/70"
                           }`}
                         >
-                          {s.title}
+                          {copy.title}
                         </span>
                         <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-mastilo/40">
-                          {s.meta}
+                          {copy.meta}
                         </span>
                       </span>
                       <AnimatePresence initial={false}>
@@ -706,7 +589,7 @@ export default function TrivelaJourney() {
                                   text is always in the DOM holding its space, so
                                   the card doesn't grow line by line while it
                                   runs. */}
-                              <Typewriter text={s.copy} speed={COPY_SPEED} />
+                              <Typewriter text={copy.copy} speed={COPY_SPEED} />
                             </span>
                           </motion.span>
                         )}
@@ -723,10 +606,13 @@ export default function TrivelaJourney() {
             <div className="rounded-3xl border border-mastilo/12 bg-white/70 p-2 backdrop-blur-sm">
               <div className="flex items-center justify-between px-4 py-3">
                 <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-mastilo">
-                  {step.label}
+                  {stepText[step.panel].label}
                 </span>
                 <span className="text-[11px] font-medium text-mastilo/45">
-                  Step {active + 1} of {flow.steps.length}
+                  {t("drop.journey.stepOf", {
+                    current: active + 1,
+                    total: flow.steps.length,
+                  })}
                 </span>
               </div>
               <div className="min-h-[420px] rounded-2xl border border-mastilo/10 bg-gradient-to-b from-[#fbfdff] to-white p-5 sm:p-7">
@@ -748,12 +634,12 @@ export default function TrivelaJourney() {
                 disabled={active === 0}
                 className="rounded-full border border-mastilo/15 bg-white px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em] text-mastilo transition-all duration-200 hover:border-mastilo/35 disabled:cursor-not-allowed disabled:opacity-35"
               >
-                Back
+                {t("drop.journey.back")}
               </button>
               <div className="flex gap-1.5" aria-hidden>
                 {flow.steps.map((s, i) => (
                   <span
-                    key={s.title}
+                    key={s.panel}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       i === active ? "w-6 bg-[color:var(--color-mastilo)]" : "w-1.5 bg-mastilo/20"
                     }`}
@@ -766,7 +652,7 @@ export default function TrivelaJourney() {
                 disabled={active === flow.steps.length - 1}
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#08226c] to-[#14589b] px-6 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_10px_26px_-8px_rgba(8,34,108,0.6)] transition-all duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:translate-y-0"
               >
-                Next
+                {t("drop.journey.next")}
                 <LuArrowRight className="h-3.5 w-3.5" />
               </button>
             </div>

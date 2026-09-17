@@ -18,6 +18,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import LandingNav from "./Components/LandingNav";
 import Intro from "./Components/Intro";
 import CartDrawer from "./Components/CartDrawer";
+import LanguageToggle from "./Components/LanguageToggle";
 import Home from "./Pages/Home";
 /* Sve strane osim landinga su lazy — svaka ide u svoj chunk, pa glavni bundle
    ostaje mali i pocetno ucitavanje je brzo. Kod strane se skida tek kad se ona
@@ -90,6 +91,13 @@ function SiteCart() {
   return <CartDrawer />;
 }
 
+/* Prekidac jezika (EN / SR) — svuda osim na admin alatu (interni alat). */
+function SiteLanguage() {
+  const { pathname } = useLocation();
+  if (isBare(pathname)) return null;
+  return <LanguageToggle />;
+}
+
 /* Prodavnica se preselila sa /shop na /drop (Trivela Drop). Stare rute
    ostaju kao preusmerenje da vec podeljene veze ne puknu. */
 function ProductRedirect() {
@@ -133,6 +141,7 @@ export default function App() {
             <SiteFooter />
             <SiteNav />
             <SiteCart />
+            <SiteLanguage />
           </ReactLenis>
         </BrowserRouter>
       </CartProvider>

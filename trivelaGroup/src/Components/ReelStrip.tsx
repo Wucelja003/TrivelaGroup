@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 /*
@@ -67,6 +68,7 @@ export default function ReelStrip({
      Opciono — Gallery ga ne koristi, pa tamo klik ostaje bez efekta. */
   zoom?: boolean;
 }) {
+  const { t } = useTranslation();
   const acc = ACCENT[accent];
   const reduce = useReducedMotion();
   const [focused, setFocused] = useState<ReelItem | null>(null);
@@ -131,7 +133,7 @@ export default function ReelStrip({
       <button
         type="button"
         onClick={() => page(-1)}
-        aria-label="Previous"
+        aria-label={t("common.previous")}
         className={`absolute left-1 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full ${acc.arrow} transition-transform duration-150 active:scale-90 sm:left-2 sm:h-12 sm:w-12`}
       >
         <Chevron dir="left" />
@@ -139,7 +141,7 @@ export default function ReelStrip({
       <button
         type="button"
         onClick={() => page(1)}
-        aria-label="Next"
+        aria-label={t("common.next")}
         className={`absolute right-1 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full ${acc.arrow} transition-transform duration-150 active:scale-90 sm:right-2 sm:h-12 sm:w-12`}
       >
         <Chevron dir="right" />
@@ -163,7 +165,11 @@ export default function ReelStrip({
                 onClick={zoom ? () => setFocused(it) : undefined}
                 role={zoom ? "button" : undefined}
                 tabIndex={zoom ? 0 : undefined}
-                aria-label={zoom ? `Open ${it.title ?? "clip"}` : undefined}
+                aria-label={
+                  zoom
+                    ? t("common.openClip", { name: it.title ?? t("common.clip") })
+                    : undefined
+                }
                 onKeyDown={
                   zoom
                     ? (e) => {
@@ -201,7 +207,7 @@ export default function ReelStrip({
                     e.stopPropagation();
                     toggleSound(it.src, i);
                   }}
-                  aria-label={soundOn ? "Mute" : "Unmute"}
+                  aria-label={soundOn ? t("common.mute") : t("common.unmute")}
                   className={`absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition-colors duration-200 ${acc.soundHover}`}
                 >
                 <svg
@@ -248,7 +254,7 @@ export default function ReelStrip({
             onClick={() => setFocused(null)}
             role="dialog"
             aria-modal="true"
-            aria-label={focused.title ?? "Clip"}
+            aria-label={focused.title ?? t("common.clip")}
           >
             <motion.figure
               className="relative flex max-h-full flex-col items-center"
@@ -284,7 +290,7 @@ export default function ReelStrip({
             <button
               type="button"
               onClick={() => setFocused(null)}
-              aria-label="Close"
+              aria-label={t("common.close")}
               className={`absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-md transition-colors duration-200 sm:right-6 sm:top-6 ${acc.soundHover}`}
             >
               <svg

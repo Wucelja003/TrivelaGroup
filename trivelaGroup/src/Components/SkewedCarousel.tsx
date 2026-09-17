@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { motion, type PanInfo, type Transition } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { cn } from "../lib/cn";
 
 /*
@@ -206,28 +207,33 @@ interface RailProps {
   onPick: (index: number) => void;
 }
 
-const Rail = ({ items, current, token, transition, onPick }: RailProps) => (
-  <div className="flex w-44 items-center gap-1.5 sm:w-56">
-    {items.map((item, index) => (
-      <button
-        key={`rail-${item.src}-${index}`}
-        type="button"
-        onClick={() => onPick(index)}
-        aria-label={`Show ${item.title}`}
-        aria-current={index === current}
-        className="relative h-0.5 flex-1 cursor-pointer rounded-full bg-current/20 transition-colors duration-200 before:absolute before:inset-x-0 before:-inset-y-2.5 before:content-[''] hover:bg-current/45"
-      >
-        {index === current && (
-          <motion.span
-            layoutId={token}
-            className="absolute inset-0 rounded-full bg-current"
-            transition={transition}
-          />
-        )}
-      </button>
-    ))}
-  </div>
-);
+const Rail = ({ items, current, token, transition, onPick }: RailProps) => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex w-44 items-center gap-1.5 sm:w-56">
+      {items.map((item, index) => (
+        <button
+          key={`rail-${item.src}-${index}`}
+          type="button"
+          onClick={() => onPick(index)}
+          aria-label={t("common.showSlide", {
+            name: item.title ?? t("common.slideN", { n: index + 1 }),
+          })}
+          aria-current={index === current}
+          className="relative h-0.5 flex-1 cursor-pointer rounded-full bg-current/20 transition-colors duration-200 before:absolute before:inset-x-0 before:-inset-y-2.5 before:content-[''] hover:bg-current/45"
+        >
+          {index === current && (
+            <motion.span
+              layoutId={token}
+              className="absolute inset-0 rounded-full bg-current"
+              transition={transition}
+            />
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 const Arrow = ({
   side,
@@ -237,17 +243,20 @@ const Arrow = ({
   side: "prev" | "next";
   disabled: boolean;
   onPress: () => void;
-}) => (
-  <button
-    type="button"
-    onClick={onPress}
-    disabled={disabled}
-    aria-label={side === "prev" ? "Previous slide" : "Next slide"}
-    className="cursor-pointer p-1 opacity-40 transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-15"
-  >
-    <ChevronGlyph side={side} size={16} strokeWidth={2.25} />
-  </button>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <button
+      type="button"
+      onClick={onPress}
+      disabled={disabled}
+      aria-label={side === "prev" ? t("common.prevSlide") : t("common.nextSlide")}
+      className="cursor-pointer p-1 opacity-40 transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-15"
+    >
+      <ChevronGlyph side={side} size={16} strokeWidth={2.25} />
+    </button>
+  );
+};
 
 const SkewedCarousel: React.FC<SkewedCarouselProps> = ({
   items = [],
@@ -271,6 +280,7 @@ const SkewedCarousel: React.FC<SkewedCarouselProps> = ({
   className,
   onIndexChange,
 }) => {
+  const { t } = useTranslation();
   const count = items.length;
   const token = useId();
   const [focused, setFocused] = useState(() =>
@@ -339,8 +349,8 @@ const SkewedCarousel: React.FC<SkewedCarouselProps> = ({
     <div
       tabIndex={0}
       role="group"
-      aria-roledescription="carousel"
-      aria-label="Image carousel"
+      aria-roledescription={t("common.carousel")}
+      aria-label={t("common.imageCarousel")}
       onKeyDown={onKeyDown}
       className={cn(
         "relative flex w-full select-none flex-col items-center overflow-hidden outline-none",

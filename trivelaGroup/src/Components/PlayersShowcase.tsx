@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import "./PlayersShowcase.css";
 
 /*
@@ -7,9 +8,12 @@ import "./PlayersShowcase.css";
  * idu ime i uloga. Jedna kartica moze da ima vise osoba (isti video).
  */
 
+/* Ime se ne prevodi; uloga je kljuc u home.players.roles. */
+type RoleKey = "moneke" | "footballer" | "placeholder";
+
 interface Person {
   name: string;
-  role: string;
+  role: RoleKey;
 }
 
 interface Player {
@@ -20,24 +24,26 @@ interface Player {
 const players: Player[] = [
   {
     video: "/videoTrivela-web/moneke_case.mp4",
-    people: [{ name: "Chima Moneke", role: "BC Player of Crvena Zvezda" }],
+    people: [{ name: "Chima Moneke", role: "moneke" }],
   },
   {
     video: "/videoTrivela-web/CaseVideo_2.mp4",
     people: [
-      { name: "Ognjen Ugrešić", role: "Football player" },
-      { name: "Veljko Milosavljević", role: "Football player" },
-      { name: "Vasilije Kostov", role: "Football player" },
+      { name: "Ognjen Ugrešić", role: "footballer" },
+      { name: "Veljko Milosavljević", role: "footballer" },
+      { name: "Vasilije Kostov", role: "footballer" },
     ],
   },
   {
     /* Placeholder — ime/uloga se jos ne znaju. */
     video: "/videoTrivela-web/zocCase.mp4",
-    people: [{ name: "Player Name", role: "Club / Role" }],
+    people: [{ name: "Player Name", role: "placeholder" }],
   },
 ];
 
 function PlayerCard({ player }: { player: Player }) {
+  const { t } = useTranslation();
+  const roles = t("home.players.roles", { returnObjects: true });
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const multi = player.people.length > 1;
@@ -66,7 +72,7 @@ function PlayerCard({ player }: { player: Player }) {
         <button
           type="button"
           onClick={toggleMute}
-          aria-label={muted ? "Unmute" : "Mute"}
+          aria-label={muted ? t("common.unmute") : t("common.mute")}
           className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-zelena hover:text-zelena"
         >
           <svg
@@ -94,7 +100,7 @@ function PlayerCard({ player }: { player: Player }) {
             <span className="pls-name">{p.name}</span>
             <span className="pls-role">
               <span className="pls-dot" />
-              {p.role}
+              {roles[p.role]}
             </span>
           </div>
         ))}
@@ -104,16 +110,17 @@ function PlayerCard({ player }: { player: Player }) {
 }
 
 export default function PlayersShowcase() {
+  const { t } = useTranslation();
   return (
     <section className="relative overflow-hidden py-24 sm:py-32">
       <div className="relative z-10">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-7xl px-5 text-center sm:mb-20 sm:px-8">
           <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zelena">
-            Trusted by
+            {t("home.players.eyebrow")}
           </span>
           <h2 className="mx-auto mt-5 max-w-4xl bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.28))] sm:text-5xl lg:text-6xl">
-            Players who trust our work
+            {t("home.players.title")}
           </h2>
         </div>
 

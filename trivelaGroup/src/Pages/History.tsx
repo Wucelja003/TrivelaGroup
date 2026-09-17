@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   motion,
   useScroll,
@@ -15,6 +16,8 @@ import "./History.css";
  *  (02) Why Trivela?                  -> editorial sa dva crtana SVG motiva:
  *       kriva "trivele" (spoljnjak) i strelica nagore iz logoa.
  * Boje su nase (teget + zelena), reveal na scroll preko motion whileInView.
+ *
+ * Sav tekst je u prevodima pod `about.*` (klijentov engleski tekst je izvor).
  */
 
 const fadeUp: Variants = {
@@ -33,14 +36,6 @@ const container: Variants = {
 
 const GRAD =
   "bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text text-transparent";
-
-/* Klijentov tekst, doslovno — svaki pasus je jedan korak na vremenskoj liniji */
-const ORIGIN_STEPS: string[] = [
-  "The story of Trivela Group goes back to October 2019, when one of its founders began creating sports-focused digital content through an Instagram platform.",
-  "As the platform grew, so did the brand behind it. It soon established itself as one of Serbia’s most recognized sports media brands, building a particularly strong presence within the Partizan community.",
-  "This growth opened the door to collaborations with Partizan BC , Partizan HC , and a number of professional football and basketball players representing the black and whites — followed by partnerships with athletes from Crvena Zvezda Belgrade.",
-  "The next chapter began when a graphic designer joined the team, bringing a new creative dimension to the project. What started as a collaboration evolved into a long-term partnership and, several years later, into the foundation of the creative agency known today as Trivela Group.",
-];
 
 /* Kriva "trivele" — putanja lopte savijene spoljnim delom stopala. */
 function TrivelaCurve() {
@@ -98,6 +93,8 @@ function TrivelaCurve() {
 }
 
 export default function History() {
+  const { t } = useTranslation();
+  const steps = t("about.origins.steps", { returnObjects: true });
   const timelineRef = useRef<HTMLDivElement>(null);
   /* Zelena kičma se puni tacno onoliko koliko si prosao kroz vremensku liniju */
   const { scrollYProgress } = useScroll({
@@ -132,23 +129,21 @@ export default function History() {
             variants={fadeUp}
             className="text-[11px] font-semibold uppercase tracking-[0.34em] text-zelena sm:text-xs"
           >
-            Est. 2019 — Belgrade, Serbia
+            {t("about.hero.kicker")}
           </motion.span>
           <motion.h1
             variants={fadeUp}
             className="mt-6 text-6xl font-bold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            <span className="text-white">About</span>{" "}
-            <span className={`pb-[0.12em] ${GRAD}`}>Us</span>
+            <span className="text-white">{t("about.hero.titleA")}</span>{" "}
+            <span className={`pb-[0.12em] ${GRAD}`}>{t("about.hero.titleB")}</span>
           </motion.h1>
           <motion.p
             variants={fadeUp}
             className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg"
           >
-            From a single Instagram page to a creative agency crafting iconic
-            athlete brands — this is how it happened, and why we're called
-            Trivela.
+            {t("about.hero.lead")}
           </motion.p>
         </motion.div>
       </section>
@@ -167,15 +162,15 @@ export default function History() {
               variants={fadeUp}
               className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zelena"
             >
-               Origins
+              {t("about.origins.eyebrow")}
             </motion.span>
             <motion.h2
               variants={fadeUp}
               className="mt-4 text-3xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              How did Trivela Group{" "}
-              <span className={GRAD}>begin?</span>
+              {t("about.origins.titleBefore")}{" "}
+              <span className={GRAD}>{t("about.origins.titleAccent")}</span>
             </motion.h2>
           </motion.div>
 
@@ -194,7 +189,7 @@ export default function History() {
               whileInView="show"
               viewport={{ once: true, margin: "-100px" }}
             >
-              {ORIGIN_STEPS.map((body, i) => (
+              {steps.map((body, i) => (
                 <motion.div key={i} variants={fadeUp} className="hx-mile">
                   <span className="hx-node" aria-hidden="true" />
                   <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-zelena">
@@ -235,22 +230,21 @@ export default function History() {
               variants={fadeUp}
               className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zelena"
             >
-              (02) — Identity
+              {t("about.why.eyebrow")}
             </motion.span>
             <motion.h2
               variants={fadeUp}
               className="mt-4 text-3xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Why <span className={GRAD}>Trivela?</span>
+              {t("about.why.titleBefore")}{" "}
+              <span className={GRAD}>{t("about.why.titleAccent")}</span>
             </motion.h2>
             <motion.p
               variants={fadeUp}
               className="mx-auto mt-6 max-w-2xl leading-relaxed text-white/65"
             >
-              While Trivela Group is now an established name in Belgrade and
-              across Serbia, its identity was built around a simple idea shared
-              by its founders.
+              {t("about.why.intro")}
             </motion.p>
           </motion.div>
 
@@ -264,18 +258,17 @@ export default function History() {
           >
             <motion.div variants={fadeUp}>
               <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zelena">
-                The name
+                {t("about.why.nameLabel")}
               </span>
               <p className="mt-5 text-lg leading-relaxed text-white/75">
-                The name{" "}
-                <span className="font-semibold text-zelena">Trivela</span> was
-                inspired by one of football’s most distinctive and spectacular
-                techniques — an outside-of-the-foot strike associated with
-                creativity, confidence and exceptional ability. A move not
-                everyone can master.
+                {t("about.why.nameBefore")}{" "}
+                <span className="font-semibold text-zelena">
+                  {t("about.why.nameAccent")}
+                </span>{" "}
+                {t("about.why.nameAfter")}
               </p>
               <p className="mt-4 leading-relaxed text-white/60">
-                That philosophy remains at the heart of our identity today.
+                {t("about.why.philosophy")}
               </p>
             </motion.div>
             <motion.div
@@ -310,21 +303,17 @@ export default function History() {
                 />
                 <img
                   src="/Logo_Trivela-2.svg"
-                  alt="Trivela Group logo"
+                  alt={t("about.why.logoAlt")}
                   className="relative w-36 sm:w-44"
                 />
               </div>
             </motion.div>
             <motion.div variants={fadeUp} className="order-1 lg:order-2">
               <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zelena">
-                The arrow
+                {t("about.why.arrowLabel")}
               </span>
               <p className="mt-5 text-lg leading-relaxed text-white/75">
-                The upward-facing arrow embedded within the Trivela Group logo
-                represents our ambition and forward-thinking mindset: to help
-                talented young athletes grow into elite professionals and build
-                powerful personal brands that resonate across Serbian, European
-                and global markets.
+                {t("about.why.arrowBody")}
               </p>
             </motion.div>
           </motion.div>
@@ -341,14 +330,14 @@ export default function History() {
               className="max-w-2xl text-2xl font-bold leading-snug text-white sm:text-3xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Careers into stories. Personalities into brands.{" "}
-              <span className={GRAD}>Athletes into icons.</span>
+              {t("about.closing.lineBefore")}{" "}
+              <span className={GRAD}>{t("about.closing.lineAccent")}</span>
             </p>
             <Link
               to="/getInTouch"
               className="inline-flex items-center gap-2 rounded-full bg-zelena px-8 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-teget shadow-[0_10px_30px_rgba(150,255,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_40px_rgba(150,255,0,0.5)]"
             >
-              Work with us
+              {t("about.closing.cta")}
               <span aria-hidden="true">→</span>
             </Link>
           </motion.div>

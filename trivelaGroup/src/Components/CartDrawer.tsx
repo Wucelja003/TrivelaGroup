@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCart, type CartItem } from "../context/CartContext";
 import { formatPrice } from "../data/cases";
 import "./CartDrawer.css";
@@ -81,6 +82,7 @@ function ItemVisual({ item }: { item: CartItem }) {
 
 /* ---------- Row ---------- */
 function CartRow({ item, index }: { item: CartItem; index: number }) {
+  const { t } = useTranslation();
   const { updateQty, removeItem } = useCart();
 
   return (
@@ -104,7 +106,7 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
           </div>
           <button
             type="button"
-            aria-label={`Remove ${item.name}`}
+            aria-label={t("drop.cart.remove", { name: item.name })}
             onClick={() => removeItem(item.id, item.model)}
             className="rounded-full p-1.5 text-mastilo/65 transition-colors hover:bg-mastilo/6 hover:text-red-400"
           >
@@ -117,7 +119,7 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
           <div className="inline-flex items-center overflow-hidden rounded-full border border-mastilo/20">
             <button
               type="button"
-              aria-label="Decrease"
+              aria-label={t("drop.cart.decrease")}
               onClick={() => updateQty(item.id, item.model, item.qty - 1)}
               className="flex h-8 w-8 items-center justify-center text-mastilo/70 transition-colors hover:bg-mastilo/6 hover:text-mastilo"
             >
@@ -128,7 +130,7 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
             </span>
             <button
               type="button"
-              aria-label="Increase"
+              aria-label={t("drop.cart.increase")}
               onClick={() => updateQty(item.id, item.model, item.qty + 1)}
               className="flex h-8 w-8 items-center justify-center text-mastilo/70 transition-colors hover:bg-mastilo/6 hover:text-mastilo"
             >
@@ -147,6 +149,7 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
 
 /* ---------- Drawer ---------- */
 export default function CartDrawer() {
+  const { t } = useTranslation();
   const { items, isOpen, close, subtotal, count, clear } = useCart();
   const navigate = useNavigate();
 
@@ -173,7 +176,7 @@ export default function CartDrawer() {
       {/* Panel */}
       <aside
         role="dialog"
-        aria-label="Shopping cart"
+        aria-label={t("drop.cart.dialog")}
         className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-mastilo/12 bg-white shadow-[-8px_0_60px_rgba(8,34,108,0.18)] transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
@@ -182,15 +185,16 @@ export default function CartDrawer() {
         <div className="flex items-center justify-between border-b border-mastilo/12 px-6 py-5">
           <div>
             <h2 className="text-lg font-semibold uppercase tracking-[0.15em] text-mastilo">
-              Your cart
+              {t("drop.cart.title")}
             </h2>
             <p className="mt-0.5 text-xs text-mastilo/65">
-              {count} {count === 1 ? "item" : "items"}
+              {/* Mnozina po jeziku: 1 artikal · 2 artikla · 5 artikala */}
+              {t("drop.cart.count", { count })}
             </p>
           </div>
           <button
             type="button"
-            aria-label="Close cart"
+            aria-label={t("drop.cart.close")}
             onClick={close}
             className="rounded-full border border-mastilo/12 p-2 text-mastilo/70 transition-colors hover:border-mastilo hover:text-mastilo"
           >
@@ -205,17 +209,17 @@ export default function CartDrawer() {
               <CartIcon />
             </div>
             <h3 className="mt-6 text-lg font-semibold text-mastilo">
-              Your cart is empty
+              {t("drop.cart.emptyTitle")}
             </h3>
             <p className="mt-2 max-w-xs text-sm text-mastilo/70">
-              Pick a case from the shop and it will show up here.
+              {t("drop.cart.emptyBody")}
             </p>
             <button
               type="button"
               onClick={close}
               className="mt-6 rounded-full bg-mastilo px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-mastilo/85"
             >
-              Continue shopping
+              {t("drop.cart.continue")}
             </button>
           </div>
         ) : (
@@ -234,7 +238,7 @@ export default function CartDrawer() {
             <div className="border-t border-mastilo/12 px-6 py-5">
               <div className="mb-4 flex items-center justify-between">
                 <span className="text-xs uppercase tracking-[0.2em] text-mastilo/70">
-                  Subtotal
+                  {t("drop.cart.subtotal")}
                 </span>
                 <span className="text-xl font-bold text-mastilo">
                   {formatPrice(subtotal)}
@@ -246,7 +250,7 @@ export default function CartDrawer() {
                 onClick={goToCheckout}
                 className="group flex w-full items-center justify-center gap-2 rounded-full bg-mastilo py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(8,34,108,0.28)] transition-all duration-200 hover:shadow-[0_14px_38px_rgba(8,34,108,0.45)]"
               >
-                Checkout
+                {t("drop.cart.checkout")}
                 <span className="transition-transform duration-200 group-hover:translate-x-0.5">
                   →
                 </span>
@@ -258,14 +262,14 @@ export default function CartDrawer() {
                   onClick={close}
                   className="transition-colors hover:text-mastilo"
                 >
-                  Continue shopping
+                  {t("drop.cart.continue")}
                 </button>
                 <button
                   type="button"
                   onClick={clear}
                   className="transition-colors hover:text-red-400"
                 >
-                  Clear cart
+                  {t("drop.cart.clear")}
                 </button>
               </div>
             </div>

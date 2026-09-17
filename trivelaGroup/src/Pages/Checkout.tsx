@@ -6,6 +6,7 @@ import {
   type FormEvent,
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCart, type CartItem } from "../context/CartContext";
 import { formatPrice } from "../data/cases";
 import { supabase } from "../lib/supabase";
@@ -23,6 +24,10 @@ type FieldKey =
   | "address"
   | "city"
   | "postal";
+
+/* U state-u se cuva KLJUC greske, ne gotov tekst — prevodi se pri renderu,
+   pa poruka prati jezik i ako ga korisnik promeni dok ispravlja polja. */
+type ErrKey = "required" | "email" | "phone" | "postal";
 
 type Status = "idle" | "placing" | "done";
 
@@ -44,16 +49,6 @@ const EMPTY: FormState = {
   address: "",
   city: "",
   postal: "",
-};
-
-const LABELS: Record<FieldKey, string> = {
-  firstName: "First name",
-  lastName: "Last name",
-  email: "Email",
-  phone: "Phone number",
-  address: "Address",
-  city: "City",
-  postal: "Postal code",
 };
 
 /* ---- Underline field with floating label ---- */
@@ -150,11 +145,14 @@ function OrderRow({ item }: { item: CartItem }) {
 
 /* ---- Page ---- */
 export default function Checkout() {
+  const { t } = useTranslation();
+  const label = t("drop.checkout.fields", { returnObjects: true });
+  const errText = t("drop.checkout.errors", { returnObjects: true });
   const { items, subtotal, clear } = useCart();
   const navigate = useNavigate();
 
   const [form, setForm] = useState<FormState>(EMPTY);
-  const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
+  const [errors, setErrors] = useState<Partial<Record<FieldKey, ErrKey>>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [order, setOrder] = useState<{
     number: string;
@@ -162,6 +160,12 @@ export default function Checkout() {
     total: number;
     email: string;
   } | null>(null);
+
+  /* Kljuc greske -> prevedena poruka (ili undefined ako nema greske) */
+  const err = (key: FieldKey) => {
+    const e = errors[key];
+    return e ? errText[e] : undefined;
+  };
 
   // Ako je korpa prazna i nema završene porudžbine → nazad na shop
   useEffect(() => {
@@ -185,14 +189,14 @@ export default function Checkout() {
   };
 
   const validate = (): boolean => {
-    const next: Partial<Record<FieldKey, string>> = {};
-    if (form.firstName.trim().length < 2) next.firstName = "Required";
-    if (form.lastName.trim().length < 2) next.lastName = "Required";
-    if (!EMAIL_RE.test(form.email)) next.email = "Invalid email";
-    if (!PHONE_RE.test(form.phone.trim())) next.phone = "Invalid phone number";
-    if (form.address.trim().length < 4) next.address = "Required";
-    if (form.city.trim().length < 2) next.city = "Required";
-    if (!POSTAL_RE.test(form.postal.trim())) next.postal = "Invalid postal code";
+    const next: Partial<Record<FieldKey, ErrKey>> = {};
+    if (form.firstName.trim().length < 2) next.firstName = "required";
+    if (form.lastName.trim().length < 2) next.lastName = "required";
+    if (!EMAIL_RE.test(form.email)) next.email = "email";
+    if (!PHONE_RE.test(form.phone.trim())) next.phone = "phone";
+    if (form.address.trim().length < 4) next.address = "required";
+    if (form.city.trim().length < 2) next.city = "required";
+    if (!POSTAL_RE.test(form.postal.trim())) next.postal = "postal";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -258,16 +262,20 @@ export default function Checkout() {
           </div>
 
           <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-zelena">
-            Order #{order.number}
+            {t("drop.checkout.orderNumber", { number: order.number })}
           </span>
           <h1 className="mt-4 text-4xl font-medium tracking-tight text-white sm:text-5xl">
-            Order placed.{" "}
-            <span className="text-neutral-500">Thanks, {form.firstName || "friend"}.</span>
+            {t("drop.checkout.placedTitle")}{" "}
+            <span className="text-neutral-500">
+              {t("drop.checkout.thanks", {
+                name: form.firstName || t("drop.checkout.friend"),
+              })}
+            </span>
           </h1>
           <p className="mx-auto mt-6 max-w-md text-base text-neutral-400">
-            We'll send a confirmation to{" "}
-            <span className="text-white/80">{order.email}</span> shortly. Delivery
-            typically takes 2–4 business days.
+            {t("drop.checkout.confirmBefore")}{" "}
+            <span className="text-white/80">{order.email}</span>
+            {t("drop.checkout.confirmAfter")}
           </p>
 
           {/* Order recap */}
@@ -279,7 +287,7 @@ export default function Checkout() {
             </ul>
             <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
               <span className="text-xs uppercase tracking-[0.2em] text-white/50">
-                Total
+                {t("drop.checkout.total")}
               </span>
               <span className="text-xl font-bold text-white">
                 {formatPrice(order.total)}
@@ -292,13 +300,13 @@ export default function Checkout() {
               to="/drop"
               className="rounded-full bg-zelena px-8 py-3.5 text-sm font-semibold text-teget transition-all hover:shadow-[0_14px_38px_rgba(150,255,0,0.45)]"
             >
-              Continue shopping
+              {t("drop.cart.continue")}
             </Link>
             <Link
               to="/"
               className="rounded-full border border-white/15 px-8 py-3.5 text-sm font-semibold text-white/80 transition-colors hover:border-zelena hover:text-zelena"
             >
-              Back home
+              {t("drop.checkout.backHome")}
             </Link>
           </div>
         </div>
@@ -311,7 +319,7 @@ export default function Checkout() {
     return (
       <section className="flex min-h-[70vh] items-center justify-center px-6">
         <div className="text-sm uppercase tracking-[0.2em] text-white/40">
-          Redirecting…
+          {t("drop.checkout.redirecting")}
         </div>
       </section>
     );
@@ -324,14 +332,13 @@ export default function Checkout() {
         {/* Header */}
         <div className="co-anim mb-14 max-w-2xl">
           <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-zelena">
-            (01) — Checkout
+            {t("drop.checkout.eyebrow")}
           </span>
           <h1 className="mt-4 text-5xl font-medium leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Almost yours.
+            {t("drop.checkout.title")}
           </h1>
           <p className="mt-6 max-w-md text-lg text-neutral-400">
-            A few details and your cases are on the way. We reply within 24
-            hours if anything's off.
+            {t("drop.checkout.lead")}
           </p>
         </div>
 
@@ -347,45 +354,45 @@ export default function Checkout() {
                 className="co-anim mb-6 text-[11px] uppercase tracking-[0.2em] text-neutral-500"
                 style={{ animationDelay: "80ms" }}
               >
-                Contact
+                {t("drop.checkout.contact")}
               </div>
               <div className="grid gap-10 sm:grid-cols-2">
                 <Field
                   id="firstName"
-                  label={LABELS.firstName}
+                  label={label.firstName}
                   value={form.firstName}
                   onChange={set("firstName")}
                   autoComplete="given-name"
-                  error={errors.firstName}
+                  error={err("firstName")}
                   animationDelay={120}
                 />
                 <Field
                   id="lastName"
-                  label={LABELS.lastName}
+                  label={label.lastName}
                   value={form.lastName}
                   onChange={set("lastName")}
                   autoComplete="family-name"
-                  error={errors.lastName}
+                  error={err("lastName")}
                   animationDelay={170}
                 />
                 <Field
                   id="email"
-                  label={LABELS.email}
+                  label={label.email}
                   type="email"
                   value={form.email}
                   onChange={set("email")}
                   autoComplete="email"
-                  error={errors.email}
+                  error={err("email")}
                   animationDelay={220}
                 />
                 <Field
                   id="phone"
-                  label={LABELS.phone}
+                  label={label.phone}
                   type="tel"
                   value={form.phone}
                   onChange={set("phone")}
                   autoComplete="tel"
-                  error={errors.phone}
+                  error={err("phone")}
                   animationDelay={270}
                 />
               </div>
@@ -396,35 +403,35 @@ export default function Checkout() {
                 className="co-anim mb-6 text-[11px] uppercase tracking-[0.2em] text-neutral-500"
                 style={{ animationDelay: "320ms" }}
               >
-                Shipping
+                {t("drop.checkout.shipping")}
               </div>
               <div className="grid gap-10">
                 <Field
                   id="address"
-                  label={LABELS.address}
+                  label={label.address}
                   value={form.address}
                   onChange={set("address")}
                   autoComplete="street-address"
-                  error={errors.address}
+                  error={err("address")}
                   animationDelay={360}
                 />
                 <div className="grid gap-10 sm:grid-cols-2">
                   <Field
                     id="city"
-                    label={LABELS.city}
+                    label={label.city}
                     value={form.city}
                     onChange={set("city")}
                     autoComplete="address-level2"
-                    error={errors.city}
+                    error={err("city")}
                     animationDelay={410}
                   />
                   <Field
                     id="postal"
-                    label={LABELS.postal}
+                    label={label.postal}
                     value={form.postal}
                     onChange={set("postal")}
                     autoComplete="postal-code"
-                    error={errors.postal}
+                    error={err("postal")}
                     animationDelay={460}
                   />
                 </div>
@@ -444,11 +451,11 @@ export default function Checkout() {
                 {status === "placing" ? (
                   <>
                     <span className="inline-block animate-spin">◐</span>
-                    Placing order…
+                    {t("drop.checkout.placing")}
                   </>
                 ) : (
                   <>
-                    Place order
+                    {t("drop.checkout.place")}
                     <span className="transition-transform duration-200 group-hover:translate-x-1">
                       →
                     </span>
@@ -456,8 +463,7 @@ export default function Checkout() {
                 )}
               </button>
               <p className="mt-4 max-w-md text-xs text-white/40">
-                By placing the order you agree to our terms. This is a demo —
-                no payment is processed yet.
+                {t("drop.checkout.terms")}
               </p>
             </div>
           </div>
@@ -467,10 +473,10 @@ export default function Checkout() {
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zelena">
-                  Your order
+                  {t("drop.checkout.yourOrder")}
                 </h2>
                 <span className="text-xs text-white/40">
-                  {items.length} {items.length === 1 ? "item" : "items"}
+                  {t("drop.cart.count", { count: items.length })}
                 </span>
               </div>
 
@@ -482,25 +488,27 @@ export default function Checkout() {
 
               <div className="mt-4 space-y-2 border-t border-white/10 pt-4 text-sm">
                 <div className="flex justify-between text-white/60">
-                  <span>Subtotal</span>
+                  <span>{t("drop.checkout.subtotal")}</span>
                   <span className="text-white">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-white/60">
-                  <span>Shipping</span>
+                  <span>{t("drop.checkout.shippingLabel")}</span>
                   <span className="text-white">
-                    {shipping === 0 ? "Free" : formatPrice(shipping)}
+                    {shipping === 0
+                      ? t("drop.checkout.free")
+                      : formatPrice(shipping)}
                   </span>
                 </div>
                 {shipping === 0 && (
                   <p className="text-[11px] uppercase tracking-[0.15em] text-zelena">
-                    Free shipping over 6.000 RSD ✓
+                    {t("drop.checkout.freeOver")}
                   </p>
                 )}
               </div>
 
               <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
                 <span className="text-xs uppercase tracking-[0.2em] text-white/50">
-                  Total
+                  {t("drop.checkout.total")}
                 </span>
                 <span className="text-2xl font-bold text-white">
                   {formatPrice(total)}
@@ -518,11 +526,11 @@ export default function Checkout() {
                 {status === "placing" ? (
                   <>
                     <span className="inline-block animate-spin">◐</span>
-                    Placing order…
+                    {t("drop.checkout.placing")}
                   </>
                 ) : (
                   <>
-                    Place order
+                    {t("drop.checkout.place")}
                     <span>→</span>
                   </>
                 )}

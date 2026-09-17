@@ -1,5 +1,6 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import AuroraField from "../Components/AuroraField";
 import BusinessReels from "../Components/BusinessReels";
@@ -26,22 +27,20 @@ const headline: Variants = {
 };
 
 
+/* Naslov i opis su u prevodima pod business.beyond.pillars.<id>. */
 interface Pillar {
-  title: string;
-  copy: string;
+  id: "social" | "pr" | "marketing";
   icon: ReactNode;
 }
 const PILLARS: Pillar[] = [
   {
-    title: "Social Media",
-    copy: "Complete management of your brand’s digital presence: from day-to-day social media operations to premium content creation that reflects the quality and identity of your business. We build a consistent online image supported by a clear communication, content and advertising strategy.",
+    id: "social",
     icon: (
       <path d="M4 20V9m6 11V4m6 16v-7m6 7V8" />
     ),
   },
   {
-    title: "PR & Media",
-    copy: "Developing tailored PR strategies and building strong media relationships to increase brand visibility, strengthen reputation and create meaningful exposure. Our approach also includes strategic PR activation, corporate social responsibility initiatives and adds making.",
+    id: "pr",
     icon: (
       <>
         <path d="M3 11l16-6v14L3 15z" />
@@ -50,8 +49,7 @@ const PILLARS: Pillar[] = [
     ),
   },
   {
-    title: "Marketing & Branding",
-    copy: "Building and strengthening the identity of your organization and the products, services and ideas behind it. From brand positioning and creative direction to sponsorship strategy and brand partnerships, we create opportunities that drive recognition, connection and long-term growth.",
+    id: "marketing",
     icon: (
       <>
         <circle cx="12" cy="12" r="8" />
@@ -116,40 +114,21 @@ function MarqueeRow({ variant }: { variant?: "b" }) {
 /* --- Spotlight: izdvojeni klijent (video/foto + dva podteksta) i duza prica.
    PLACEHOLDER tekst — restoran, ispravicemo posle. Ako `video` postoji renderuje
    se video, u suprotnom `image`. --- */
+/* Tekst (ime, uloga, kicker, naslov, prica, tagovi) je u prevodima pod
+   business.masterpieces.spotlights.<id>; ovde ostaje samo medij. */
 interface Spotlight {
+  id: "savic" | "opening";
   video?: string;
   image?: string;
-  name: string;
-  role: string;
-  kicker: string;
-  title: string;
-  story: string;
-  tags: string[];
 }
 const SPOTLIGHTS: Spotlight[] = [
-  {
-    video: "/videoTrivela-web/restaurant.mp4",
-    name: "Restaurant Savic",
-    role: "Brand & social film",
-    kicker: "Case 01",
-    title: "A table worth talking about.",
-    story:
-      "We gave Restaurant Savic more than a menu — we gave it a mood. From the plating to the lighting, we shot and cut the content that fills the room every night, and built the social presence that keeps the reservations coming. Proof that the same eye for a story works just as well in a kitchen as on a pitch.",
-    tags: ["Content", "Social", "Film"],
-  },
-  {
-    video: "/videoTrivela-web/restaurant_2.mp4",
-    name: "Restaurant Savic — Grand opening",
-    role: "Launch campaign",
-    kicker: "Case 02",
-    title: "Opening night, sold out.",
-    story:
-      "For the launch we ran the full campaign — teaser films, influencer seeding and a night the whole city wanted an invite to. The doors opened to a full house and a waiting list, and the footage lived on long after the last plate was cleared.",
-    tags: ["Launch", "Campaign", "Video"],
-  },
+  { id: "savic", video: "/videoTrivela-web/restaurant.mp4" },
+  { id: "opening", video: "/videoTrivela-web/restaurant_2.mp4" },
 ];
 
 function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
+  const { t } = useTranslation();
+  const copy = t("business.masterpieces.spotlights", { returnObjects: true })[s.id];
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
 
@@ -178,9 +157,9 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(212, 175, 55,0.18),transparent_70%)]"
+          className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(212,175,55,0.18),transparent_70%)]"
         />
-        <div className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(212, 175, 55,0.22)]">
+        <div className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(212,175,55,0.22)]">
           {s.video ? (
             <>
               <video
@@ -197,7 +176,7 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
               <button
                 type="button"
                 onClick={toggleMute}
-                aria-label={muted ? "Unmute" : "Mute"}
+                aria-label={muted ? t("common.unmute") : t("common.mute")}
                 className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-[#d4af37] hover:text-[#d4af37]"
               >
                 <svg
@@ -221,7 +200,7 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
           ) : (
             <img
               src={s.image}
-              alt={s.name}
+              alt={copy.name}
               loading="lazy"
               className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             />
@@ -229,11 +208,11 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
         </div>
         <figcaption className="mt-5 flex items-baseline justify-between gap-4">
           <span className="text-xl font-bold tracking-tight text-white">
-            {s.name}
+            {copy.name}
           </span>
           <span className="inline-flex items-center gap-2 text-sm text-white/60">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#d4af37] shadow-[0_0_10px_#d4af37]" />
-            {s.role}
+            {copy.role}
           </span>
         </figcaption>
       </motion.figure>
@@ -241,21 +220,22 @@ function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
       {/* Duza prica */}
       <motion.div variants={item} className={flip ? "lg:order-1" : ""}>
         <span className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]">
-          {s.kicker}
+          {copy.kicker}
         </span>
         <h3 className="mt-4 text-2xl font-extrabold leading-[1.12] tracking-tight sm:text-3xl">
-          {s.title}
+          {copy.title}
         </h3>
         <p className="mt-5 text-base leading-relaxed text-white/70 sm:text-lg">
-          {s.story}
+          {copy.story}
         </p>
         <div className="mt-7 flex flex-wrap gap-2.5">
-          {s.tags.map((t) => (
+          {/* `tag`, ne `t` — da ne zaseni funkciju za prevod */}
+          {copy.tags.map((tag) => (
             <span
-              key={t}
+              key={tag}
               className="rounded-full border border-white/12 bg-white/[0.04] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-white/70"
             >
-              {t}
+              {tag}
             </span>
           ))}
         </div>
@@ -281,7 +261,7 @@ function Emblem({ reduce }: { reduce: boolean | null }) {
         <img
           src="/Trivela_Logo_mark.svg"
           alt="Trivela"
-          className="h-9 w-9 [filter:drop-shadow(0_0_10px_rgba(212, 175, 55,0.6))]"
+          className="h-9 w-9 [filter:drop-shadow(0_0_10px_rgba(212,175,55,0.6))]"
         />
       </div>
     </div>
@@ -289,6 +269,8 @@ function Emblem({ reduce }: { reduce: boolean | null }) {
 }
 
 export default function Business() {
+  const { t } = useTranslation();
+  const pillarText = t("business.beyond.pillars", { returnObjects: true });
   const reduce = useReducedMotion();
 
   const toClients = () =>
@@ -327,10 +309,10 @@ export default function Business() {
             variants={headline}
             className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-6xl md:text-7xl"
           >
-            Beyond the game
+            {t("business.hero.title1")}
             <br />
             <span className="bg-gradient-to-r from-[#f4e2a1] via-[#d4af37] to-[#a8802a] bg-clip-text text-transparent">
-              Built for business.
+              {t("business.hero.title2")}
             </span>
           </motion.h1>
 
@@ -338,8 +320,7 @@ export default function Business() {
             variants={item}
             className="mt-6 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg"
           >
-            The same storytelling that turned athletes into icons — now working
-            for companies, founders and brands far outside sport.
+            {t("business.hero.lead")}
           </motion.p>
 
           <motion.div
@@ -348,9 +329,9 @@ export default function Business() {
           >
             <Link
               to="/getInTouch"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a8802a] to-[#d4af37] px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#2a1e02] shadow-[0_16px_40px_-10px_rgba(212, 175, 55,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(212, 175, 55,0.8)] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a8802a] to-[#d4af37] px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#2a1e02] shadow-[0_16px_40px_-10px_rgba(212,175,55,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(212,175,55,0.8)] sm:w-auto"
             >
-              Start a project
+              {t("business.hero.ctaPrimary")}
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
@@ -360,7 +341,7 @@ export default function Business() {
               onClick={toClients}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white backdrop-blur transition-colors duration-300 hover:border-[#d4af37]/60 hover:bg-white/10 sm:w-auto"
             >
-              See our clients
+              {t("business.hero.ctaSecondary")}
             </button>
           </motion.div>
         </motion.div>
@@ -380,21 +361,19 @@ export default function Business() {
               variants={item}
               className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]"
             >
-              (01) — Beyond sport
+              {t("business.beyond.eyebrow")}
             </motion.span>
             <motion.h2
               variants={headline}
               className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
             >
-              Not just athletes.
+              {t("business.beyond.title")}
             </motion.h2>
             <motion.p
               variants={item}
               className="mx-auto mt-5 max-w-xl text-white/65"
             >
-              We spent years making sportspeople unforgettable. That same craft —
-              marketing, PR and brand consulting — now powers companies in every
-              industry.
+              {t("business.beyond.lead")}
             </motion.p>
           </motion.div>
 
@@ -407,9 +386,9 @@ export default function Business() {
           >
             {PILLARS.map((p) => (
               <motion.div
-                key={p.title}
+                key={p.id}
                 variants={item}
-                className="group rounded-2xl border border-white/10 bg-white/[0.035] p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/45 hover:bg-[#d4af37]/[0.06] hover:shadow-[0_24px_60px_-24px_rgba(212, 175, 55,0.5)]"
+                className="group rounded-2xl border border-white/10 bg-white/[0.035] p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/45 hover:bg-[#d4af37]/[0.06] hover:shadow-[0_24px_60px_-24px_rgba(212,175,55,0.5)]"
               >
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#d4af37]/12 text-[#d4af37] ring-1 ring-inset ring-[#d4af37]/25">
                   <svg
@@ -425,10 +404,10 @@ export default function Business() {
                   </svg>
                 </span>
                 <h3 className="mt-5 text-xl font-bold tracking-tight">
-                  {p.title}
+                  {pillarText[p.id].title}
                 </h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-white/60">
-                  {p.copy}
+                  {pillarText[p.id].copy}
                 </p>
               </motion.div>
             ))}
@@ -450,23 +429,23 @@ export default function Business() {
               variants={item}
               className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]"
             >
-              (02) — Clients
+              {t("business.clients.eyebrow")}
             </motion.span>
             <motion.h2
               variants={headline}
               className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
             >
-              Companies who{" "}
+              {t("business.clients.titleBefore")}{" "}
               <span className="bg-gradient-to-r from-[#f4e2a1] to-[#d4af37] bg-clip-text text-transparent">
-                trust Trivela
+                {t("business.clients.titleAccent")}
               </span>
-              .
+              {t("business.clients.titleAfter")}
             </motion.h2>
             <motion.p
               variants={item}
               className="mx-auto mt-5 max-w-xl text-white/65"
             >
-              From startups to established names — inside sport and far beyond it.
+              {t("business.clients.lead")}
             </motion.p>
           </motion.div>
 
@@ -494,30 +473,29 @@ export default function Business() {
               variants={item}
               className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]"
             >
-              (03) — Clients &amp; masterpieces
+              {t("business.masterpieces.eyebrow")}
             </motion.span>
             <motion.h2
               variants={headline}
               className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
             >
-              Masterpieces,{" "}
+              {t("business.masterpieces.titleBefore")}{" "}
               <span className="bg-gradient-to-r from-[#f4e2a1] to-[#d4af37] bg-clip-text text-transparent">
-                made together
+                {t("business.masterpieces.titleAccent")}
               </span>
-              .
+              {t("business.masterpieces.titleAfter")}
             </motion.h2>
             <motion.p
               variants={item}
               className="mx-auto mt-5 max-w-xl text-white/65"
             >
-              Every brand we touch gets the same obsession we bring to an
-              athlete's name. A few of the stories we're proud of.
+              {t("business.masterpieces.lead")}
             </motion.p>
           </motion.div>
 
           <div className="mt-16 space-y-20 sm:mt-20 sm:space-y-28">
             {SPOTLIGHTS.map((s, i) => (
-              <SpotlightBlock key={s.name} s={s} flip={i % 2 === 1} />
+              <SpotlightBlock key={s.id} s={s} flip={i % 2 === 1} />
             ))}
           </div>
         </div>
@@ -537,20 +515,19 @@ export default function Business() {
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(212, 175, 55,0.35),transparent_70%)] blur-2xl"
+            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.35),transparent_70%)] blur-2xl"
           />
           <h2 className="relative text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Let's build your brand.
+            {t("business.cta.title")}
           </h2>
           <p className="relative mx-auto mt-4 max-w-lg text-white/65">
-            Tell us where you want to be. We'll bring the story that gets you
-            there.
+            {t("business.cta.lead")}
           </p>
           <Link
             to="/getInTouch"
-            className="group relative mt-9 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a8802a] to-[#d4af37] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#2a1e02] shadow-[0_16px_40px_-10px_rgba(212, 175, 55,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(212, 175, 55,0.85)]"
+            className="group relative mt-9 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a8802a] to-[#d4af37] px-9 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#2a1e02] shadow-[0_16px_40px_-10px_rgba(212,175,55,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_-10px_rgba(212,175,55,0.85)]"
           >
-            Get in touch
+            {t("business.cta.button")}
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import ReelStrip, { type ReelItem } from "./ReelStrip";
 
 /*
@@ -49,14 +50,17 @@ const GROUPS: Group[] = [
   },
 ];
 
-/* Naziv klijenta putuje sa klipom, pa se vidi ispod videa i u uvecanom prikazu. */
+/* Bez naziva ispod klipa — traka ostaje cista, a klip uzima punu visinu.
+   GROUPS i dalje drzi redosled i podelu po klijentu; ako naziv ikad zatreba,
+   dovoljno je vratiti `title: g.label` ispod. */
 const ITEMS: ReelItem[] = GROUPS.flatMap((g) =>
-  g.clips.map((c) => ({ src: `${DIR}/${c}.mp4`, title: g.label }))
+  g.clips.map((c) => ({ src: `${DIR}/${c}.mp4` }))
 );
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function BusinessReels() {
+  const { t } = useTranslation();
   return (
     <section
       id="our-work"
@@ -71,18 +75,17 @@ export default function BusinessReels() {
           className="mx-auto mb-12 max-w-2xl text-center"
         >
           <span className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]">
-            (04) — Our work
+            {t("business.reels.eyebrow")}
           </span>
           <h2 className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl">
-            The work,{" "}
+            {t("business.reels.titleBefore")}{" "}
             <span className="bg-gradient-to-r from-[#f4e2a1] to-[#d4af37] bg-clip-text text-transparent">
-              client by client
+              {t("business.reels.titleAccent")}
             </span>
-            .
+            {t("business.reels.titleAfter")}
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-white/65">
-            Campaigns, content and brand films we produced. Tap any clip to open
-            it full size.
+            {t("business.reels.lead")}
           </p>
         </motion.div>
       </div>

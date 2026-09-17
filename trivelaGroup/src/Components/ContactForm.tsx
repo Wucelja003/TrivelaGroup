@@ -1,18 +1,21 @@
 import { useRef, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./ContactForm.css";
 
+/* `value` ide backend-u i ostaje engleski (stabilan, nezavisan od jezika);
+   `id` je kljuc prevedene labele u contact.services. */
 const SERVICES = [
-  "Marketing",
-  "PR",
-  "Consulting",
-  "Content Creation",
-  "Social Media",
-  "Branding",
-  "Influencer Marketing",
-  "Event Management",
-];
+  { id: "marketing", value: "Marketing" },
+  { id: "pr", value: "PR" },
+  { id: "consulting", value: "Consulting" },
+  { id: "content", value: "Content Creation" },
+  { id: "social", value: "Social Media" },
+  { id: "branding", value: "Branding" },
+  { id: "influencer", value: "Influencer Marketing" },
+  { id: "events", value: "Event Management" },
+] as const;
 
 /* Paketi iz "Packages" sekcije na pocetnoj. Klik na "Choose ..." dovede ovde
    sa ?package=<ime>, pa se odgovarajuci predselektuje (moze da se menja). */
@@ -72,6 +75,8 @@ function Field({
 }
 
 export default function ContactForm() {
+  const { t } = useTranslation();
+  const serviceLabel = t("contact.services", { returnObjects: true });
   const [searchParams] = useSearchParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -132,10 +137,11 @@ export default function ContactForm() {
         <div className="max-w-xl">
           <div className="mb-8 text-7xl text-zelena sm:text-8xl">→</div>
           <h1 className="text-4xl font-medium tracking-tight text-white sm:text-5xl">
-            Got it. <span className="text-neutral-500">We'll be in touch.</span>
+            {t("contact.successTitle")}{" "}
+            <span className="text-neutral-500">{t("contact.successAccent")}</span>
           </h1>
           <p className="mt-6 text-lg font-normal text-neutral-400">
-            One of us will reply within 24 hours. Usually faster.
+            {t("contact.successBody")}
           </p>
         </div>
       </section>
@@ -151,26 +157,25 @@ export default function ContactForm() {
             className="contact-anim text-[11px] font-normal uppercase tracking-[0.2em] text-neutral-500"
             style={{ animationDelay: "0ms" }}
           >
-            (01) — Get in touch
+            {t("contact.eyebrow")}
           </span>
 
           <h1
             className="contact-anim mt-8 text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl"
             style={{ animationDelay: "90ms" }}
           >
-            Let's make
+            {t("contact.title1")}
             <br />
-            something
+            {t("contact.title2")}
             <br />
-            <span className="text-zelena">great.</span>
+            <span className="text-zelena">{t("contact.title3")}</span>
           </h1>
 
           <p
             className="contact-anim mt-8 max-w-md text-lg font-normal leading-relaxed text-neutral-400"
             style={{ animationDelay: "180ms" }}
           >
-            Tell us about your project. We reply within 24 hours, never with a
-            templated email.
+            {t("contact.lead")}
           </p>
 
           {/* Studio info 2x2 */}
@@ -180,7 +185,7 @@ export default function ContactForm() {
           >
             <div>
               <div className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
-                Email
+                {t("contact.emailLabel")}
               </div>
               <a
                 href="mailto:hello@trivelagroup.com"
@@ -191,13 +196,13 @@ export default function ContactForm() {
             </div>
             <div>
               <div className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
-                Studio
+                {t("contact.studio")}
               </div>
-              <p className="mt-2 text-base text-white">Belgrade, Serbia</p>
+              <p className="mt-2 text-base text-white">{t("common.location")}</p>
             </div>
             <div>
               <div className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
-                Social
+                {t("contact.social")}
               </div>
               <div className="mt-2 flex gap-4">
                 {["Instagram", "TikTok", "X"].map((s) => (
@@ -223,13 +228,13 @@ export default function ContactForm() {
           <div className="grid gap-10 sm:grid-cols-2">
             <Field
               id="name"
-              label="Name"
+              label={t("contact.fields.name")}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <Field
               id="email"
-              label="Email"
+              label={t("contact.fields.email")}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -238,7 +243,7 @@ export default function ContactForm() {
 
           <Field
             id="company"
-            label="Company (optional)"
+            label={t("contact.fields.company")}
             value={company}
             onChange={(e) => setCompany(e.target.value)}
           />
@@ -247,7 +252,7 @@ export default function ContactForm() {
               dugmeta; klik na vec izabran ga iskljucuje. */}
           <div>
             <div className="mb-5 text-[11px] uppercase tracking-[0.2em] text-neutral-500">
-              Which package are you interested in?
+              {t("contact.packageQuestion")}
             </div>
             <div className="flex flex-wrap gap-3">
               {PACKAGES.map((p) => {
@@ -274,23 +279,23 @@ export default function ContactForm() {
           {/* Chips */}
           <div>
             <div className="mb-5 text-[11px] uppercase tracking-[0.2em] text-neutral-500">
-              What can we help with?
+              {t("contact.helpQuestion")}
             </div>
             <div className="flex flex-wrap gap-3">
               {SERVICES.map((s) => {
-                const active = services.includes(s);
+                const active = services.includes(s.value);
                 return (
                   <button
-                    key={s}
+                    key={s.id}
                     type="button"
-                    onClick={() => toggleService(s)}
+                    onClick={() => toggleService(s.value)}
                     className={`rounded-full px-5 py-2.5 text-sm transition-all duration-200 ${
                       active
                         ? "bg-zelena text-teget"
                         : "border border-neutral-700 text-neutral-300 hover:border-neutral-400"
                     }`}
                   >
-                    {s}
+                    {serviceLabel[s.id]}
                   </button>
                 );
               })}
@@ -299,7 +304,7 @@ export default function ContactForm() {
 
           <Field
             id="message"
-            label="Message"
+            label={t("contact.fields.message")}
             rows={4}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -318,11 +323,11 @@ export default function ContactForm() {
               {status === "sending" ? (
                 <>
                   <span className="inline-block animate-spin">◐</span>
-                  Sending…
+                  {t("contact.sending")}
                 </>
               ) : (
                 <>
-                  Send message
+                  {t("contact.send")}
                   <span className="transition-transform duration-200 ease-out group-hover:translate-x-1">
                     →
                   </span>
@@ -332,7 +337,7 @@ export default function ContactForm() {
 
             {status === "error" && (
               <p className="text-sm text-red-400">
-                Couldn't send. Try again or email us directly.
+                {t("contact.error")}
               </p>
             )}
           </div>

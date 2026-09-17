@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 
 /*
  * InstagramEmbeds — zvanicni Instagram embed-ovi (post/reel) u HORIZONTALNOJ
@@ -65,7 +67,8 @@ function buildPlaceholder(): HTMLElement {
     "color:rgba(255,255,255,0.35)",
     "font-size:13px",
   ].join(";");
-  d.textContent = "Loading…";
+  d.dataset.i18n = "loading";
+  d.textContent = i18n.t("common.loading");
   return d;
 }
 
@@ -111,14 +114,23 @@ function buildFallback(url: string): HTMLAnchorElement {
     "text-align:center",
     "padding:24px",
   ].join(";");
+  /* Ikonica je staticki markup; tekst ide kroz textContent (ne innerHTML) i
+     nosi data-i18n, da ga efekat u komponenti osvezi pri promeni jezika. */
   a.innerHTML = `
     <span style="display:flex;align-items:center;justify-content:center;height:64px;width:64px;border-radius:18px;background:rgba(150,255,0,0.12);border:1px solid rgba(150,255,0,0.35)">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#96ff00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#96ff00" stroke="none"/>
       </svg>
-    </span>
-    <span style="font-weight:700;font-size:16px">View this post on Instagram</span>
-    <span style="opacity:.55;font-size:13px">Tap to open</span>`;
+    </span>`;
+  const title = document.createElement("span");
+  title.style.cssText = "font-weight:700;font-size:16px";
+  title.dataset.i18n = "view";
+  title.textContent = i18n.t("common.viewOnInstagram");
+  const hint = document.createElement("span");
+  hint.style.cssText = "opacity:.55;font-size:13px";
+  hint.dataset.i18n = "tap";
+  hint.textContent = i18n.t("common.tapToOpen");
+  a.append(title, hint);
   return a;
 }
 
@@ -127,8 +139,26 @@ export default function InstagramEmbeds({
 }: {
   permalinks: string[];
 }) {
+  const { t, i18n: inst } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  /* Placeholder i fallback kartice su imperativni DOM (van React-a), pa ih
+     React ne prevodi sam. Na promenu jezika samo osvezi njihov tekst — BEZ
+     remount-a, jer bi remount ponovo povukao sve Instagram iframe-ove. */
+  useEffect(() => {
+    const root = trackRef.current;
+    if (!root) return;
+    const set = (id: string, text: string) =>
+      root
+        .querySelectorAll<HTMLElement>(`[data-i18n="${id}"]`)
+        .forEach((el) => {
+          el.textContent = text;
+        });
+    set("loading", t("common.loading"));
+    set("view", t("common.viewOnInstagram"));
+    set("tap", t("common.tapToOpen"));
+  }, [t, inst.resolvedLanguage]);
 
   useEffect(() => {
     const process = () => window.instgrm?.Embeds?.process();
@@ -223,7 +253,7 @@ export default function InstagramEmbeds({
       <button
         type="button"
         onClick={() => page(-1)}
-        aria-label="Previous"
+        aria-label={t("common.previous")}
         className="absolute left-1 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zelena text-teget shadow-[0_8px_24px_rgba(150,255,0,0.28)] transition-transform duration-150 active:scale-90 sm:left-2 sm:flex sm:h-12 sm:w-12"
       >
         <Chevron dir="left" />
@@ -231,7 +261,7 @@ export default function InstagramEmbeds({
       <button
         type="button"
         onClick={() => page(1)}
-        aria-label="Next"
+        aria-label={t("common.next")}
         className="absolute right-1 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zelena text-teget shadow-[0_8px_24px_rgba(150,255,0,0.28)] transition-transform duration-150 active:scale-90 sm:right-2 sm:flex sm:h-12 sm:w-12"
       >
         <Chevron dir="right" />

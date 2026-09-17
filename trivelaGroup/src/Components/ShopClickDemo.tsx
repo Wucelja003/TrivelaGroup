@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, useReducedMotion } from "motion/react";
 import { LuArrowUpRight, LuRotateCw } from "react-icons/lu";
 import DemoPointer from "./DemoPointer";
@@ -41,6 +42,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 type Phase = "idle" | "moving" | "pressing" | "product";
 
 export default function ShopClickDemo() {
+  const { t } = useTranslation();
   const reduce = useReducedMotion();
   const [phase, setPhase] = useState<Phase>(reduce ? "product" : "idle");
   const [run, setRun] = useState(0); // bumping this replays the whole thing
@@ -119,9 +121,11 @@ export default function ShopClickDemo() {
         >
           <div className="mb-3 flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-mastilo/45">
-              All cases
+              {t("drop.shop.allCases")}
             </span>
-            <span className="text-[10px] font-medium text-mastilo/35">4 products</span>
+            <span className="text-[10px] font-medium text-mastilo/35">
+              {t("drop.shop.productCount", { count: CASES.length })}
+            </span>
           </div>
 
           {/* Four 53px cards on a phone were unreadable — three fit legibly and
@@ -210,7 +214,7 @@ export default function ShopClickDemo() {
               </span>
 
               <span className="mt-4 block text-[10px] font-semibold uppercase tracking-[0.16em] text-mastilo/45">
-                Your phone model
+                {t("drop.product.phoneModel")}
               </span>
               <div className="mt-1.5 rounded-lg border border-ledena bg-white px-3 py-2 text-[13px] font-medium text-mastilo shadow-[0_0_0_3px_rgba(124,196,255,0.18)]">
                 {/* Only starts once the page is actually showing, or it would
@@ -219,7 +223,7 @@ export default function ShopClickDemo() {
               </div>
 
               <span className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#08226c] to-[#14589b] px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] text-white">
-                Add to cart
+                {t("drop.product.addToCart")}
               </span>
             </div>
           </div>
@@ -229,15 +233,15 @@ export default function ShopClickDemo() {
       <div className="flex flex-col items-start gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
         <span className="text-[12px] text-mastilo/50">
           {showingProduct
-            ? "That is the case's own page — price, collection, and the model field."
-            : "Watch: the grid, one case, and where it takes you."}
+            ? t("drop.journey.shopDemo.captionProduct")
+            : t("drop.journey.shopDemo.captionGrid")}
         </span>
         <button
           onClick={() => setRun((r) => r + 1)}
           className="inline-flex shrink-0 items-center gap-2 rounded-full border border-mastilo/15 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-mastilo transition-all duration-200 hover:-translate-y-0.5 hover:border-mastilo/35"
         >
           <LuRotateCw className="h-3.5 w-3.5" />
-          Replay
+          {t("drop.journey.replay")}
         </button>
       </div>
     </div>

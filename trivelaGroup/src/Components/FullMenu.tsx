@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useLenis } from "lenis/react";
 import gsap from "gsap";
 import LiquidLines from "./LiquidLines";
@@ -16,17 +17,6 @@ import "./FullMenu.css";
  *
  * Boje su nase: teget slojevi + zelena kao akcenat.
  */
-
-const ITEMS = [
-  { label: "Trivela Group", to: "/" },
-  { label: "What we do", to: "/#what-we-do" },
-  { label: "Who we are", to: "/#who-we-are" },
-  { label: "About Us", to: "/history" },
-  { label: "Gallery", to: "/gallery" },
-  { label: "Trivela Drop", to: "/drop" },
-  { label: "Trivela Business", to: "/business" },
-  { label: "Get in Touch", to: "/getInTouch" },
-];
 
 const SOCIALS = [
   { label: "Instagram", href: "https://www.instagram.com/trivelagroup" },
@@ -56,6 +46,18 @@ export default function FullMenu({
   flat?: boolean;
   exclude?: string[];
 }) {
+  const { t } = useTranslation();
+  /* Pravi se u renderu jer t() je hook. Imena brendova se ne prevode. */
+  const ITEMS = [
+    { label: "Trivela Group", to: "/" },
+    { label: t("nav.whatWeDo"), to: "/#what-we-do" },
+    { label: t("nav.whoWeAre"), to: "/#who-we-are" },
+    { label: t("nav.aboutUs"), to: "/history" },
+    { label: t("nav.gallery"), to: "/gallery" },
+    { label: "Trivela Drop", to: "/drop" },
+    { label: "Trivela Business", to: "/business" },
+    { label: t("nav.getInTouch"), to: "/getInTouch" },
+  ];
   const visibleItems = exclude?.length
     ? ITEMS.filter((it) => !exclude.includes(it.to))
     : ITEMS;
@@ -302,7 +304,7 @@ export default function FullMenu({
         onClick={toggle}
         onPointerEnter={() => setMediaReady(true)}
         aria-expanded={open}
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
         className={`fm-toggle${flat ? " fm-toggle--flat" : ""}`}
       >
         <span ref={iconRef} className="fm-icon" aria-hidden="true">
@@ -328,7 +330,7 @@ export default function FullMenu({
         className="fm-panel"
         aria-hidden={!open}
         role="dialog"
-        aria-label="Menu"
+        aria-label={t("nav.menu")}
       >
         {/* Talasaste linije u pozadini panela — nase plave */}
         {mediaReady && (
@@ -355,7 +357,7 @@ export default function FullMenu({
         <div className={`fm-body${media ? "" : " fm-body--solo"}`}>
           <ul className="fm-list">
             {visibleItems.map((it, i) => (
-              <li key={it.label} className="fm-item" data-num={String(i + 1).padStart(2, "0")}>
+              <li key={it.to} className="fm-item" data-num={String(i + 1).padStart(2, "0")}>
                 <span className="fm-item-mask">
                   <span className="fm-item-label">
                     <button type="button" onClick={() => go(it.to)} className="fm-item-btn">
@@ -381,7 +383,7 @@ export default function FullMenu({
         </div>
 
         <div className="fm-foot">
-          <span className="fm-meta-row">Belgrade, Serbia</span>
+          <span className="fm-meta-row">{t("common.location")}</span>
           <div className="fm-meta-row flex items-center gap-6">
             {SOCIALS.map((s) => (
               <a

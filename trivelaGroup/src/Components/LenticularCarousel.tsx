@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "../lib/cn";
 
@@ -749,26 +750,31 @@ const Rail = ({
   current: number;
   token: string;
   onPick: (index: number) => void;
-}) => (
-  <div className="flex w-44 items-center gap-1.5 sm:w-56">
-    {items.map((item, index) => (
-      <button
-        key={`${token}-${index}`}
-        type="button"
-        onClick={() => onPick(index)}
-        aria-label={`Show ${item.title ?? `slide ${index + 1}`}`}
-        aria-current={index === current}
-        className="relative h-0.5 flex-1 cursor-pointer overflow-hidden rounded-full bg-current/20 transition-colors duration-200 before:absolute before:inset-x-0 before:-inset-y-2.5 before:content-[''] hover:bg-current/45"
-      >
-        <span
-          aria-hidden
-          className="absolute inset-0 origin-left rounded-full bg-current transition-transform duration-500 ease-out"
-          style={{ transform: `scaleX(${index === current ? 1 : 0})` }}
-        />
-      </button>
-    ))}
-  </div>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex w-44 items-center gap-1.5 sm:w-56">
+      {items.map((item, index) => (
+        <button
+          key={`${token}-${index}`}
+          type="button"
+          onClick={() => onPick(index)}
+          aria-label={t("common.showSlide", {
+            name: item.title ?? t("common.slideN", { n: index + 1 }),
+          })}
+          aria-current={index === current}
+          className="relative h-0.5 flex-1 cursor-pointer overflow-hidden rounded-full bg-current/20 transition-colors duration-200 before:absolute before:inset-x-0 before:-inset-y-2.5 before:content-[''] hover:bg-current/45"
+        >
+          <span
+            aria-hidden
+            className="absolute inset-0 origin-left rounded-full bg-current transition-transform duration-500 ease-out"
+            style={{ transform: `scaleX(${index === current ? 1 : 0})` }}
+          />
+        </button>
+      ))}
+    </div>
+  );
+};
 
 function ChevronGlyph({ side }: { side: "prev" | "next" }) {
   return (
@@ -796,17 +802,20 @@ const Arrow = ({
   side: "prev" | "next";
   disabled: boolean;
   onPress: () => void;
-}) => (
-  <button
-    type="button"
-    onClick={onPress}
-    disabled={disabled}
-    aria-label={side === "prev" ? "Previous slide" : "Next slide"}
-    className="cursor-pointer p-1 opacity-40 transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-15"
-  >
-    <ChevronGlyph side={side} />
-  </button>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <button
+      type="button"
+      onClick={onPress}
+      disabled={disabled}
+      aria-label={side === "prev" ? t("common.prevSlide") : t("common.nextSlide")}
+      className="cursor-pointer p-1 opacity-40 transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-15"
+    >
+      <ChevronGlyph side={side} />
+    </button>
+  );
+};
 
 const LenticularCarousel: React.FC<LenticularCarouselProps> = ({
   items = DEFAULT_ITEMS,
@@ -844,6 +853,7 @@ const LenticularCarousel: React.FC<LenticularCarouselProps> = ({
   className,
   onIndexChange,
 }) => {
+  const { t } = useTranslation();
   const count = items.length;
   const token = useId();
   const stage = useRef<HTMLDivElement | null>(null);
@@ -1009,8 +1019,8 @@ const LenticularCarousel: React.FC<LenticularCarouselProps> = ({
     <div
       tabIndex={0}
       role="group"
-      aria-roledescription="carousel"
-      aria-label="Lenticular carousel"
+      aria-roledescription={t("common.carousel")}
+      aria-label={t("common.imageCarousel")}
       onKeyDown={onKeyDown}
       className={cn(
         "relative flex w-full select-none flex-col items-center text-neutral-100 outline-none",

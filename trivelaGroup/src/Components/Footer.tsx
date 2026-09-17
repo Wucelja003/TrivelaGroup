@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { FaInstagram, FaTiktok } from "react-icons/fa6";
 import "./Footer.css";
 
@@ -16,19 +17,21 @@ const socials = [
   },
 ];
 
-const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/#what-we-do", label: "What we do" },
-  { to: "/history", label: "About Us" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/drop", label: "Trivela Drop" },
-  { to: "/business", label: "Trivela Business" },
-  { to: "/getInTouch", label: "Get In Touch" },
-];
-
 export default function Footer() {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const onDrop = pathname === "/drop" || pathname.startsWith("/drop/");
+
+  /* Pravi se u renderu jer t() je hook. Imena brendova se ne prevode. */
+  const navLinks = [
+    { to: "/", label: t("nav.home") },
+    { to: "/#what-we-do", label: t("nav.whatWeDo") },
+    { to: "/history", label: t("nav.aboutUs") },
+    { to: "/gallery", label: t("nav.gallery") },
+    { to: "/drop", label: "Trivela Drop" },
+    { to: "/business", label: "Trivela Business" },
+    { to: "/getInTouch", label: t("nav.getInTouch") },
+  ];
 
   return (
     <footer className="tg-footer relative z-[2] mt-24 w-full overflow-hidden border-t px-4 pb-10 pt-14 sm:px-6 lg:px-8">
@@ -62,11 +65,11 @@ export default function Footer() {
           {/* Navigation */}
           <div className="flex flex-col gap-4">
             <h4 className="text-xs uppercase tracking-[0.2em] f-accent">
-              Navigation
+              {t("footer.navigation")}
             </h4>
             <ul className="flex flex-col gap-2 text-xl f-ink sm:text-2xl">
               {navLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.to}>
                   <Link
                     to={link.to}
                     className="transition-colors duration-300 hover:f-accent-h"
@@ -81,10 +84,10 @@ export default function Footer() {
           {/* Who We Are */}
           <div className="flex flex-col gap-4">
             <h4 className="text-xs uppercase tracking-[0.2em] f-accent">
-              Who We Are
+              {t("footer.whoWeAre")}
             </h4>
             <p className="text-xl leading-tight f-ink sm:text-2xl">
-              Crafting iconic athlete brands.
+              {t("footer.tagline")}
             </p>
             <div className="flex flex-col gap-1 text-sm f-muted">
               <a
@@ -99,7 +102,7 @@ export default function Footer() {
           {/* Socials */}
           <div className="flex flex-col gap-4">
             <h4 className="text-xs uppercase tracking-[0.2em] f-accent">
-              Socials
+              {t("footer.socials")}
             </h4>
             <div className="flex items-center gap-6">
               {socials.map((s) => (
@@ -121,29 +124,28 @@ export default function Footer() {
         {/* Bottom row — centriran legal tekst */}
         <div className="mt-16 flex flex-col items-center gap-2 border-t f-rule pt-8 text-center text-xs f-muted sm:text-sm">
           <p>
-            © {new Date().getFullYear()} • Trivela Group • Marketing, PR &amp;
-            consulting.
+            © {new Date().getFullYear()} • Trivela Group • {t("footer.legalLine")}
           </p>
           <div className="flex items-center gap-3">
             <Link
               to="/terms"
               className="transition-colors duration-300 hover:f-accent-h"
             >
-              Privacy Policy
+              {t("footer.privacy")}
             </Link>
             <span className="f-faint">•</span>
             <Link
               to="/terms"
               className="transition-colors duration-300 hover:f-accent-h"
             >
-              Terms of Service
+              {t("footer.terms")}
             </Link>
             <span className="f-faint">•</span>
             <Link
               to="/terms"
               className="transition-colors duration-300 hover:f-accent-h"
             >
-              Cookies
+              {t("footer.cookies")}
             </Link>
           </div>
         </div>

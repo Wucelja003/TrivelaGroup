@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { markDone, onDone } from "../lib/sequence";
@@ -31,6 +32,7 @@ const heroImages = [
 ];
 
 export default function Home() {
+  const { t } = useTranslation();
   const heroRef = useRef<HTMLElement>(null);
   /* Tekst (naslov, tagline) ide preko StaggeredText-a i ceka intro zavesu */
   const [heroIn, setHeroIn] = useState(false);
@@ -188,7 +190,7 @@ export default function Home() {
           />
           <StaggeredText
             as="p"
-            text="Crafting iconic athlete brands."
+            text={t("home.hero.tagline")}
             className="hero-tagline"
             segmentBy="words"
             direction="top"
@@ -200,7 +202,7 @@ export default function Home() {
           />
           <div className="hero-subtitle">
             <Typewriter
-              text="Exclusive boutique agency for world-class players: elite vision, timeless legacy & unstoppable passion."
+              text={t("home.hero.subtitle")}
               start={subtitleStart}
               speed={28}
             />
@@ -208,7 +210,7 @@ export default function Home() {
 
           <div className="hero-actions">
             <Link to="/getInTouch" className="hero-cta">
-              <span className="hero-cta-label">Start working with us</span>
+              <span className="hero-cta-label">{t("home.hero.cta")}</span>
               <span className="hero-cta-arrow" aria-hidden="true">
                 →
               </span>
