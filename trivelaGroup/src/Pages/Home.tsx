@@ -236,9 +236,9 @@ export default function Home() {
       </section>
 
       <Introduce />
+      <PlayersShowcase />
       <WhoWeAre />
       <WhatWeDo />
-      <PlayersShowcase />
       <SeeOurWork />
       <Pricing />
     </>
