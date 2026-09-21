@@ -17,15 +17,19 @@ interface Player {
   file: string;
 }
 
+/* Prvih sest je namerno ovim redom (trazio klijent); ostali abecedno. */
 const players: Player[] = [
+  { first: "Vasilije", last: "Kostov", file: "Kostov" },
+  { first: "Ognjen", last: "Ugrešić", file: "Ugresic" },
+  { first: "Veljko", last: "Milosavljević", file: "Veljko_Milosavljevic" },
+  { first: "Dimitrije", last: "Sarić", file: "Dimitrije_Saric" },
+  { first: "Vladimir", last: "Lučić", file: "Vladimir_Lucic" },
+  { first: "Igor", last: "Miladinović", file: "Igor_Miladinovic" },
   { first: "Aleksa", last: "Damjanović", file: "Aleksa_Damjanovic" },
   { first: "Aljoša", last: "Vasić", file: "Aljosa_Vasic" },
   { first: "Bibras", last: "Natcho", file: "Bibars_Natcho" },
-  { first: "Dimitrije", last: "Sarić", file: "Dimitrije_Saric" },
   { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
   { first: "Ibrahim", last: "Zubairu", file: "Ibrahim_Zubairu" },
-  { first: "Igor", last: "Miladinović", file: "Igor_Miladinovic" },
-  { first: "Vasilije", last: "Kostov", file: "Kostov" },
   { first: "Lazar", last: "Jovanović", file: "Lazar_Jovanovic" },
   { first: "Levi", last: "Randolph", file: "Levi_Randolph" },
   { first: "Mihailo", last: "Ivanović", file: "Mihailo_Ivanovic" },
@@ -40,10 +44,7 @@ const players: Player[] = [
   { first: "Sara", last: "Stokić", file: "Sara_Stokic" },
   { first: "Stefan", last: "Džodić", file: "Stefan_Dzodic" },
   { first: "Stefan", last: "Mitrović", file: "Stefan_Mitrovic" },
-  { first: "Ognjen", last: "Ugrešić", file: "Ugresic" },
-  { first: "Veljko", last: "Milosavljević", file: "Veljko_Milosavljevic" },
   { first: "Viktor", last: "Radojević", file: "Viktor_Radojevic" },
-  { first: "Vladimir", last: "Lučić", file: "Vladimir_Lucic" },
 ];
 
 /* Brzina trake ne zavisi od broja kartica: ~4.5s po kartici */
