@@ -17,18 +17,18 @@ interface Player {
   file: string;
 }
 
-/* Prvih sest je namerno ovim redom (trazio klijent); ostali abecedno. */
+/* Prvih osam je namerno ovim redom (trazio klijent); ostali abecedno. */
 const players: Player[] = [
   { first: "Vasilije", last: "Kostov", file: "Kostov" },
   { first: "Ognjen", last: "Ugrešić", file: "Ugresic" },
   { first: "Veljko", last: "Milosavljević", file: "Veljko_Milosavljevic" },
+  { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
   { first: "Dimitrije", last: "Sarić", file: "Dimitrije_Saric" },
   { first: "Vladimir", last: "Lučić", file: "Vladimir_Lucic" },
-  { first: "Igor", last: "Miladinović", file: "Igor_Miladinovic" },
   { first: "Aleksa", last: "Damjanović", file: "Aleksa_Damjanovic" },
+  { first: "Igor", last: "Miladinović", file: "Igor_Miladinovic" },
   { first: "Aljoša", last: "Vasić", file: "Aljosa_Vasic" },
-  { first: "Bibras", last: "Natcho", file: "Bibars_Natcho" },
-  { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
+  { first: "Bibars", last: "Natcho", file: "Bibars_Natcho" },
   { first: "Ibrahim", last: "Zubairu", file: "Ibrahim_Zubairu" },
   { first: "Lazar", last: "Jovanović", file: "Lazar_Jovanovic" },
   { first: "Levi", last: "Randolph", file: "Levi_Randolph" },
@@ -98,31 +98,46 @@ function PlayerCard({
   );
 }
 
-export default function PlayersShowcase() {
-  const { t } = useTranslation();
-  const sectionRef = useRef<HTMLElement>(null);
-  /* Slike se ucitaju SVE kad se sekcija priblizi, ne jedna po jedna:
-     loading="lazy" ne vidi kartice odsecene trakom (desno van kadra), pa bi
-     svaka iskocila tek na ivici. */
-  const [load, setLoad] = useState(false);
+/* true od trenutka kad element PRVI PUT udje u (prosireni) kadar */
+function useSeenOnce<T extends Element>(options: IntersectionObserverInit) {
+  const ref = useRef<T>(null);
+  const [seen, setSeen] = useState(false);
+  const { rootMargin, threshold } = options;
 
   useEffect(() => {
-    const el = sectionRef.current;
+    const el = ref.current;
     if (!el || typeof IntersectionObserver === "undefined") {
-      setLoad(true);
+      setSeen(true);
       return;
     }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        setLoad(true);
+        setSeen(true);
         io.disconnect();
       },
-      { rootMargin: "800px 0px" },
+      { rootMargin, threshold },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [rootMargin, threshold]);
+
+  return [ref, seen] as const;
+}
+
+export default function PlayersShowcase() {
+  const { t } = useTranslation();
+  /* Slike se ucitaju SVE kad se sekcija priblizi, ne jedna po jedna:
+     loading="lazy" ne vidi kartice odsecene trakom (desno van kadra), pa bi
+     svaka iskocila tek na ivici. */
+  const [sectionRef, load] = useSeenOnce<HTMLElement>({
+    rootMargin: "800px 0px",
+  });
+  /* Traka krece tek kad se vidi — inace bi do tada vec odmakla i prvi
+     igraci (redosled je bitan) bi prosli pre nego sto neko stigne dovde. */
+  const [marqueeRef, running] = useSeenOnce<HTMLDivElement>({
+    threshold: 0.6,
+  });
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden py-24 sm:py-32">
@@ -140,9 +155,9 @@ export default function PlayersShowcase() {
         {/* Traka — TACNO dve iste kopije, pomak -50% pa se vrti bez skoka.
             Razmak kroz margin (ne gap), da -50% bude tacan. Druga kopija je
             samo vizuelna, citac ekrana je preskace. */}
-        <div className="pls-marquee">
+        <div ref={marqueeRef} className="pls-marquee">
           <div
-            className="pls-track"
+            className={`pls-track${running ? " is-running" : ""}`}
             style={{ "--pls-duration": DURATION } as CSSProperties}
           >
             {players.map((p) => (

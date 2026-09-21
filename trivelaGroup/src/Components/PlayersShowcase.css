@@ -3,6 +3,9 @@
    okvira kartice; ispod je plocica sa imenom i zelenom linijom. */
 
 .pls-marquee {
+  /* Prva kartica krece odmah iza zatamnjene ivice (maska je 6%), da prvi
+     igrac bude ceo vidljiv na startu. */
+  --pls-start: 6vw;
   overflow: hidden;
   /* Ivice se gube u pozadinu, bez tvrdog reza */
   -webkit-mask-image: linear-gradient(
@@ -28,7 +31,12 @@
      Gore ima mesta da kartica na hover moze da se podigne. */
   padding: 0.75rem 0 0.5rem;
   animation: pls-scroll var(--pls-duration, 110s) linear infinite;
+  /* Stoji na prvom kadru dok traka ne dodje na ekran (is-running iz JS-a) */
+  animation-play-state: paused;
   will-change: transform;
+}
+.pls-track.is-running {
+  animation-play-state: running;
 }
 
 /* Stani dok neko gleda */
@@ -36,9 +44,13 @@
   animation-play-state: paused;
 }
 
+/* Pomak je i dalje tacno -50%, pa se krug zatvara bez skoka */
 @keyframes pls-scroll {
+  from {
+    transform: translate3d(var(--pls-start), 0, 0);
+  }
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(calc(var(--pls-start) - 50%), 0, 0);
   }
 }
 
