@@ -635,11 +635,6 @@ const sr: Messages = {
     players: {
       eyebrow: "Veruju nam",
       title: "Igrači koji veruju našem radu",
-      roles: {
-        moneke: "Košarkaš KK Crvena zvezda",
-        footballer: "Fudbaler",
-        placeholder: "Klub / Uloga",
-      },
     },
 
     seeOurWork: {

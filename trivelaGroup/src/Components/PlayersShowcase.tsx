@@ -1,109 +1,97 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import "./PlayersShowcase.css";
 
 /*
- * "Players who trusted our work" — traka video kartica koja se sama lista i
- * staje na hover (isti obrazac kao Partners/PlayerMarquee). Ispod svakog videa
- * idu ime i uloga. Jedna kartica moze da ima vise osoba (isti video).
+ * "Players who trust our work" — traka Fantasy kartica koja se sama lista i
+ * staje na hover. Igrac (isecen PNG) "iskace" iznad okvira kartice, a ispod
+ * je plocica sa imenom. Slike su WebP kopije iz public/png_igraci
+ * (public/png_igraci-web, 480px) — originali su preteski za traku.
  */
 
-/* Ime se ne prevodi; uloga je kljuc u home.players.roles. */
-type RoleKey = "moneke" | "footballer" | "placeholder";
-
-interface Person {
-  name: string;
-  role: RoleKey;
-}
-
 interface Player {
-  video: string;
-  people: Person[];
+  first: string;
+  last: string;
+  /* Ime fajla u public/png_igraci-web, bez ekstenzije */
+  file: string;
 }
 
 const players: Player[] = [
-  {
-    video: "/videoTrivela-web/moneke_case.mp4",
-    people: [{ name: "Chima Moneke", role: "moneke" }],
-  },
-  {
-    video: "/videoTrivela-web/CaseVideo_2.mp4",
-    people: [
-      { name: "Ognjen Ugrešić", role: "footballer" },
-      { name: "Veljko Milosavljević", role: "footballer" },
-      { name: "Vasilije Kostov", role: "footballer" },
-    ],
-  },
-  {
-    /* Placeholder — ime/uloga se jos ne znaju. */
-    video: "/videoTrivela-web/zocCase.mp4",
-    people: [{ name: "Player Name", role: "placeholder" }],
-  },
+  { first: "Aleksa", last: "Damjanović", file: "Aleksa_Damjanovic" },
+  { first: "Aljoša", last: "Vasić", file: "Aljosa_Vasic" },
+  { first: "Bibras", last: "Natcho", file: "Bibars_Natcho" },
+  { first: "Dimitrije", last: "Sarić", file: "Dimitrije_Saric" },
+  { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
+  { first: "Ibrahim", last: "Zubairu", file: "Ibrahim_Zubairu" },
+  { first: "Igor", last: "Miladinović", file: "Igor_Miladinovic" },
+  { first: "Vasilije", last: "Kostov", file: "Kostov" },
+  { first: "Lazar", last: "Jovanović", file: "Lazar_Jovanovic" },
+  { first: "Levi", last: "Randolph", file: "Levi_Randolph" },
+  { first: "Mihailo", last: "Ivanović", file: "Mihailo_Ivanovic" },
+  { first: "Mihailo", last: "Stevanović", file: "Mihailo_Stevanovic" },
+  { first: "Mihajlo", last: "Ilić", file: "Mihajlo_Ilic" },
+  { first: "Nemanja", last: "Nikolić", file: "Nemanja_Nikolic" },
+  { first: "Nemanja", last: "Trifunović", file: "Nemanja_Trifunovic" },
+  { first: "Nikola", last: "Petković", file: "Nikola_Petkovic" },
+  { first: "Nikola", last: "Štulić", file: "Nikola_Stulic" },
+  { first: "Patrick", last: "Enrici", file: "Patrick_Enrici" },
+  { first: "Petar", last: "Ratkov", file: "Petar_Ratkov" },
+  { first: "Sara", last: "Stokić", file: "Sara_Stokic" },
+  { first: "Stefan", last: "Džodić", file: "Stefan_Dzodic" },
+  { first: "Stefan", last: "Mitrović", file: "Stefan_Mitrovic" },
+  { first: "Ognjen", last: "Ugrešić", file: "Ugresic" },
+  { first: "Veljko", last: "Milosavljević", file: "Veljko_Milosavljevic" },
+  { first: "Viktor", last: "Radojević", file: "Viktor_Radojevic" },
+  { first: "Vladimir", last: "Lučić", file: "Vladimir_Lucic" },
 ];
 
-function PlayerCard({ player }: { player: Player }) {
-  const { t } = useTranslation();
-  const roles = t("home.players.roles", { returnObjects: true });
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
-  const multi = player.people.length > 1;
+/* Brzina trake ne zavisi od broja kartica: ~4.5s po kartici */
+const DURATION = `${players.length * 4.5}s`;
 
-  const toggleMute = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = !v.muted;
-    if (!v.muted) v.play().catch(() => {});
-    setMuted(v.muted);
-  };
-
+function PlayerCard({
+  player,
+  copy,
+  load,
+}: {
+  player: Player;
+  copy?: boolean;
+  load: boolean;
+}) {
   return (
-    <figure className="pls-card">
-      <div className="pls-thumb">
-        <video
-          ref={videoRef}
-          src={player.video}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="h-full w-full object-cover"
+    <figure className="pls-card" aria-hidden={copy || undefined}>
+      <div className="pls-frame">
+        <div className="pls-panel" />
+        <img
+          src="/Trivela_Logo_mark.svg"
+          alt=""
+          aria-hidden="true"
+          className="pls-badge"
+          draggable={false}
         />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent" />
-        <button
-          type="button"
-          onClick={toggleMute}
-          aria-label={muted ? t("common.unmute") : t("common.mute")}
-          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-zelena hover:text-zelena"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.8}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-4 w-4"
-          >
-            <path d="M11 5 6 9H2v6h4l5 4V5z" />
-            {muted ? (
-              <path d="m22 9-6 6M16 9l6 6" />
-            ) : (
-              <path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14" />
-            )}
-          </svg>
-        </button>
+        {/* Glatko se pojavi kad se ucita; ref pokriva i vec kesirane slike,
+            gde onLoad ume da okine pre nego sto React zakaci handler. */}
+        <div className="pls-photo-clip">
+          <img
+            src={load ? `/png_igraci-web/${player.file}.webp` : undefined}
+            alt=""
+            width={480}
+            height={480}
+            decoding="async"
+            draggable={false}
+            className="pls-photo"
+            ref={(el) => {
+              /* complete je true i za <img> bez src-a, pa proveri i sliku */
+              if (el?.complete && el.naturalWidth > 0) el.classList.add("is-in");
+            }}
+            onLoad={(e) => e.currentTarget.classList.add("is-in")}
+          />
+        </div>
       </div>
 
-      <figcaption className={`pls-cap${multi ? " pls-cap--multi" : ""}`}>
-        {player.people.map((p) => (
-          <div key={p.name} className="pls-person">
-            <span className="pls-name">{p.name}</span>
-            <span className="pls-role">
-              <span className="pls-dot" />
-              {roles[p.role]}
-            </span>
-          </div>
-        ))}
+      <figcaption className="pls-plate">
+        <span className="pls-first">{player.first}</span>
+        <span className="pls-last">{player.last}</span>
       </figcaption>
     </figure>
   );
@@ -111,11 +99,35 @@ function PlayerCard({ player }: { player: Player }) {
 
 export default function PlayersShowcase() {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+  /* Slike se ucitaju SVE kad se sekcija priblizi, ne jedna po jedna:
+     loading="lazy" ne vidi kartice odsecene trakom (desno van kadra), pa bi
+     svaka iskocila tek na ivici. */
+  const [load, setLoad] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setLoad(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setLoad(true);
+        io.disconnect();
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
+    <section ref={sectionRef} className="relative overflow-hidden py-24 sm:py-32">
       <div className="relative z-10">
         {/* Header */}
-        <div className="mx-auto mb-16 max-w-7xl px-5 text-center sm:mb-20 sm:px-8">
+        <div className="mx-auto mb-12 max-w-7xl px-5 text-center sm:mb-16 sm:px-8">
           <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zelena">
             {t("home.players.eyebrow")}
           </span>
@@ -125,14 +137,18 @@ export default function PlayersShowcase() {
         </div>
 
         {/* Traka — TACNO dve iste kopije, pomak -50% pa se vrti bez skoka.
-            Razmak kroz margin (ne gap), da -50% bude tacan. */}
+            Razmak kroz margin (ne gap), da -50% bude tacan. Druga kopija je
+            samo vizuelna, citac ekrana je preskace. */}
         <div className="pls-marquee">
-          <div className="pls-track">
-            {players.map((p, i) => (
-              <PlayerCard key={`1-${i}`} player={p} />
+          <div
+            className="pls-track"
+            style={{ "--pls-duration": DURATION } as CSSProperties}
+          >
+            {players.map((p) => (
+              <PlayerCard key={`1-${p.file}`} player={p} load={load} />
             ))}
-            {players.map((p, i) => (
-              <PlayerCard key={`2-${i}`} player={p} />
+            {players.map((p) => (
+              <PlayerCard key={`2-${p.file}`} player={p} load={load} copy />
             ))}
           </div>
         </div>

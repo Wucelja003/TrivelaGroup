@@ -1,5 +1,6 @@
-/* ===== Players showcase — traka koja se sama lista, staje na hover =====
-   Home strana (tamna): zeleni akcenat. Kartice su video 9:16 + ime/uloga. */
+/* ===== Players showcase — traka Fantasy kartica, staje na hover =====
+   Home strana (tamna): zeleni akcenat. Igrac (isecen PNG) iskace iznad
+   okvira kartice; ispod je plocica sa imenom i zelenom linijom. */
 
 .pls-marquee {
   overflow: hidden;
@@ -23,12 +24,14 @@
 .pls-track {
   display: flex;
   width: max-content;
-  padding: 0 1rem;
-  animation: pls-scroll 28s linear infinite;
+  /* Samo vertikalni padding: horizontalni bi pomerio -50% i napravio skok.
+     Gore ima mesta da kartica na hover moze da se podigne. */
+  padding: 0.75rem 0 0.5rem;
+  animation: pls-scroll var(--pls-duration, 110s) linear infinite;
   will-change: transform;
 }
 
-/* Stani dok neko gleda / dok slusa video */
+/* Stani dok neko gleda */
 .pls-marquee:hover .pls-track {
   animation-play-state: paused;
 }
@@ -42,66 +45,174 @@
 /* --- Kartica --- */
 .pls-card {
   flex: 0 0 auto;
-  width: clamp(210px, 24vw, 280px);
+  width: clamp(150px, 15vw, 188px);
   /* Razmak kroz margin, NE gap — inace -50% nije tacan */
-  margin: 0 1.1rem;
+  margin: 0 0.8rem;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pls-card:hover {
+  transform: translateY(-6px);
 }
 
-.pls-thumb {
+/* Kvadrat kao i slika; panel krece nize, pa glava izviri iznad njega */
+.pls-frame {
   position: relative;
-  aspect-ratio: 9 / 16;
-  overflow: hidden;
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-  transition: box-shadow 0.3s ease;
-}
-.pls-card:hover .pls-thumb {
-  box-shadow: 0 0 60px rgba(150, 255, 0, 0.22);
+  aspect-ratio: 1 / 1;
 }
 
-/* --- Ime + uloga ispod --- */
-.pls-cap {
-  margin-top: 1rem;
-  text-align: center;
+.pls-panel {
+  position: absolute;
+  inset: 16% 0 0 0;
+  overflow: hidden;
+  border-radius: 1.1rem 1.1rem 0 0;
+  border: 1px solid rgba(150, 255, 0, 0.22);
+  border-bottom: 0;
+  background:
+    radial-gradient(
+      70% 60% at 50% 74%,
+      rgba(150, 255, 0, 0.3),
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.045) 0 1px,
+      transparent 1px 11px
+    ),
+    linear-gradient(165deg, #10297a 0%, #08226c 38%, #01072d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 22px 50px rgba(0, 0, 0, 0.45);
+  transition:
+    border-color 0.45s ease,
+    box-shadow 0.45s ease;
 }
-.pls-cap--multi {
+
+/* Odsjaj koji prelazi preko kartice na hover */
+.pls-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.16) 48%,
+    transparent 66%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pls-card:hover .pls-panel {
+  border-color: rgba(150, 255, 0, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 0 44px rgba(150, 255, 0, 0.25);
+}
+.pls-card:hover .pls-panel::after {
+  transform: translateX(120%);
+}
+
+/* Trivela znak u uglu, kao grb kluba na Fantasy kartici */
+.pls-badge {
+  position: absolute;
+  z-index: 1;
+  top: calc(16% + 0.6rem);
+  right: 0.65rem;
+  height: 1.3rem;
+  width: auto;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Omotac sece bocne ivice na sirini panela (da ramena ne izlete na hover),
+   a gore pusta glavu da izviri iznad okvira. */
+.pls-photo-clip {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  clip-path: inset(-30% 0 0 0);
+  pointer-events: none;
+}
+
+.pls-photo {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  transform: translateY(6%);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+  transition:
+    opacity 0.8s ease,
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pls-photo.is-in {
+  opacity: 1;
+  transform: none;
+}
+.pls-card:hover .pls-photo.is-in {
+  transform: scale(1.06);
+}
+
+/* --- Plocica sa imenom --- */
+.pls-plate {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-}
-
-.pls-name {
-  display: block;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: #ffffff;
-  font-size: 1.35rem;
-  line-height: 1.1;
-}
-.pls-cap--multi .pls-name {
-  font-size: 1.05rem;
-}
-
-.pls-role {
-  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.35rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  padding: 0.6rem 0.5rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 0;
+  border-radius: 0 0 1.1rem 1.1rem;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 34, 108, 0.92),
+    rgba(1, 7, 45, 0.96)
+  );
+  text-align: center;
 }
-.pls-cap--multi .pls-role {
-  font-size: 0.8rem;
-  margin-top: 0.15rem;
+
+/* Zelena linija izmedju slike i imena */
+.pls-plate::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #96ff00 18%,
+    #d6ff9e 50%,
+    #96ff00 82%,
+    transparent
+  );
+  box-shadow: 0 0 14px rgba(150, 255, 0, 0.6);
 }
-.pls-dot {
-  height: 0.5rem;
-  width: 0.5rem;
-  flex-shrink: 0;
-  border-radius: 999px;
-  background: #96ff00;
-  box-shadow: 0 0 10px #96ff00;
+
+.pls-first {
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #96ff00;
+}
+
+.pls-last {
+  max-width: 100%;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: clamp(0.88rem, 1.15vw, 1.08rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #ffffff;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -111,5 +222,10 @@
   /* Bez animacije mora rucno da se prevuce */
   .pls-marquee {
     overflow-x: auto;
+  }
+  .pls-card,
+  .pls-photo,
+  .pls-panel::after {
+    transition: none;
   }
 }

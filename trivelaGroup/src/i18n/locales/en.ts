@@ -652,11 +652,6 @@ const en = {
     players: {
       eyebrow: "Trusted by",
       title: "Players who trust our work",
-      roles: {
-        moneke: "BC Player of Crvena Zvezda",
-        footballer: "Football player",
-        placeholder: "Club / Role",
-      },
     },
 
     seeOurWork: {
