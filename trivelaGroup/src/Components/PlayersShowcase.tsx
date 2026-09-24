@@ -6,49 +6,41 @@ import "./PlayersShowcase.css";
 /*
  * "Players who trust our work" — traka Fantasy kartica koja se sama lista i
  * staje na hover. Igrac (isecen PNG) "iskace" iznad okvira kartice, a ispod
- * je plocica sa imenom. Slike su WebP kopije iz public/png_igraci
- * (public/png_igraci-web, 480px) — originali su preteski za traku.
+ * je plocica sa imenom. Slike su WebP kopije iz public/png_dopuna
+ * (public/png_dopuna-web, 480px) — originali su preteski za traku.
  */
 
 interface Player {
   first: string;
   last: string;
-  /* Ime fajla u public/png_igraci-web, bez ekstenzije */
+  /* Ime fajla u public/png_dopuna-web, bez ekstenzije */
   file: string;
 }
 
-/* Prvih osam je namerno ovim redom (trazio klijent); ostali abecedno. */
+/* Prvih pet je namerno ovim redom (trazio klijent); ostali abecedno. */
 const players: Player[] = [
-  { first: "Vasilije", last: "Kostov", file: "Kostov" },
-  { first: "Ognjen", last: "Ugrešić", file: "Ugresic" },
+  { first: "Vasilije", last: "Kostov", file: "Vasilije_Kostov" },
+  { first: "Ognjen", last: "Ugrešić", file: "Ognjen_Ugresic" },
   { first: "Veljko", last: "Milosavljević", file: "Veljko_Milosavljevic" },
   { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
-  { first: "Dimitrije", last: "Sarić", file: "Dimitrije_Saric" },
-  { first: "Vladimir", last: "Lučić", file: "Vladimir_Lucic" },
   { first: "Aleksa", last: "Damjanović", file: "Aleksa_Damjanovic" },
-  { first: "Igor", last: "Miladinović", file: "Igor_Miladinovic" },
   { first: "Aljoša", last: "Vasić", file: "Aljosa_Vasic" },
   { first: "Bibars", last: "Natcho", file: "Bibars_Natcho" },
   { first: "Ibrahim", last: "Zubairu", file: "Ibrahim_Zubairu" },
   { first: "Lazar", last: "Jovanović", file: "Lazar_Jovanovic" },
-  { first: "Levi", last: "Randolph", file: "Levi_Randolph" },
   { first: "Mihailo", last: "Ivanović", file: "Mihailo_Ivanovic" },
-  { first: "Mihailo", last: "Stevanović", file: "Mihailo_Stevanovic" },
-  { first: "Mihajlo", last: "Ilić", file: "Mihajlo_Ilic" },
-  { first: "Nemanja", last: "Nikolić", file: "Nemanja_Nikolic" },
   { first: "Nemanja", last: "Trifunović", file: "Nemanja_Trifunovic" },
-  { first: "Nikola", last: "Petković", file: "Nikola_Petkovic" },
   { first: "Nikola", last: "Štulić", file: "Nikola_Stulic" },
-  { first: "Patrick", last: "Enrici", file: "Patrick_Enrici" },
-  { first: "Petar", last: "Ratkov", file: "Petar_Ratkov" },
   { first: "Sara", last: "Stokić", file: "Sara_Stokic" },
-  { first: "Stefan", last: "Džodić", file: "Stefan_Dzodic" },
   { first: "Stefan", last: "Mitrović", file: "Stefan_Mitrovic" },
-  { first: "Viktor", last: "Radojević", file: "Viktor_Radojevic" },
 ];
 
 /* Brzina trake ne zavisi od broja kartica: ~4.5s po kartici */
 const DURATION = `${players.length * 4.5}s`;
+
+/* TRI iste kopije, pomak tacno -1/3 — dve nisu dovoljne da pokriju vrlo
+   siroke ekrane, pa bi se na kraju kruga videla rupa. */
+const COPIES = [0, 1, 2];
 
 function PlayerCard({
   player,
@@ -74,7 +66,7 @@ function PlayerCard({
             gde onLoad ume da okine pre nego sto React zakaci handler. */}
         <div className="pls-photo-clip">
           <img
-            src={load ? `/png_igraci-web/${player.file}.webp` : undefined}
+            src={load ? `/png_dopuna-web/${player.file}.webp` : undefined}
             alt=""
             width={480}
             height={480}
@@ -152,20 +144,24 @@ export default function PlayersShowcase() {
           </h2>
         </div>
 
-        {/* Traka — TACNO dve iste kopije, pomak -50% pa se vrti bez skoka.
-            Razmak kroz margin (ne gap), da -50% bude tacan. Druga kopija je
-            samo vizuelna, citac ekrana je preskace. */}
+        {/* Traka — jednake kopije liste, pomak za tacno jednu kopiju, pa se
+            vrti bez skoka. Razmak kroz margin (ne gap), da pomak bude tacan.
+            Kopije posle prve su samo vizuelne, citac ekrana ih preskace. */}
         <div ref={marqueeRef} className="pls-marquee">
           <div
             className={`pls-track${running ? " is-running" : ""}`}
             style={{ "--pls-duration": DURATION } as CSSProperties}
           >
-            {players.map((p) => (
-              <PlayerCard key={`1-${p.file}`} player={p} load={load} />
-            ))}
-            {players.map((p) => (
-              <PlayerCard key={`2-${p.file}`} player={p} load={load} copy />
-            ))}
+            {COPIES.map((n) =>
+              players.map((p) => (
+                <PlayerCard
+                  key={`${n}-${p.file}`}
+                  player={p}
+                  load={load}
+                  copy={n > 0}
+                />
+              )),
+            )}
           </div>
         </div>
       </div>

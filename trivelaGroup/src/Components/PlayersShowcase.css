@@ -44,13 +44,13 @@
   animation-play-state: paused;
 }
 
-/* Pomak je i dalje tacno -50%, pa se krug zatvara bez skoka */
+/* Pomak je tacno jedna kopija (1/3 trake), pa se krug zatvara bez skoka */
 @keyframes pls-scroll {
   from {
     transform: translate3d(var(--pls-start), 0, 0);
   }
   to {
-    transform: translate3d(calc(var(--pls-start) - 50%), 0, 0);
+    transform: translate3d(calc(var(--pls-start) - 100% / 3), 0, 0);
   }
 }
 
