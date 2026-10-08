@@ -12,6 +12,7 @@
   --f-rule: rgba(255, 255, 255, 0.1);
   --f-glow: rgba(150, 255, 0, 0.14);
   --f-edge: rgba(150, 255, 0, 0.28);
+  --f-social-glow: rgba(150, 255, 0, 0.7);
 }
 
 /* Trivela Drop — bela strana: zelena bi na njoj bila neupotrebljiva
@@ -25,6 +26,23 @@
   --f-rule: rgba(8, 34, 108, 0.14);
   --f-glow: rgba(124, 196, 255, 0.22);
   --f-edge: rgba(8, 34, 108, 0.18);
+  --f-social-glow: rgba(8, 34, 108, 0.45);
+}
+
+/* Trivela Business — tamno siva strana: akcenat je zlatna, ista kao u
+   logu i naslovima tamo. */
+:root[data-page="business"] .tg-footer {
+  --f-accent: #d4af37;
+  --f-accent-h: #f4e2a1;
+  --f-rule: rgba(212, 175, 55, 0.18);
+  --f-glow: rgba(212, 175, 55, 0.14);
+  --f-edge: rgba(212, 175, 55, 0.28);
+  --f-social-glow: rgba(212, 175, 55, 0.7);
+}
+
+/* Ikonice mreza: sjaj na hover prati akcenat strane */
+.tg-footer .f-social:hover {
+  filter: drop-shadow(0 0 14px var(--f-social-glow));
 }
 
 .tg-footer .f-ink {
@@ -58,6 +76,9 @@
 }
 :root[data-page="drop"] .tg-footer .f-logo {
   filter: none;
+}
+:root[data-page="business"] .tg-footer .f-logo {
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
 }
 
 /* Odsjaj iza wordmark-a */

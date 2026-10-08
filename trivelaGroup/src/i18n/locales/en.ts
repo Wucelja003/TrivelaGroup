@@ -484,38 +484,9 @@ const en = {
       titleAfter: ".",
       lead: "From startups to established names — inside sport and far beyond it.",
     },
-    masterpieces: {
-      eyebrow: "(03) — Clients & masterpieces",
-      titleBefore: "Masterpieces,",
-      titleAccent: "made together",
-      titleAfter: ".",
-      lead: "Every brand we touch gets the same obsession we bring to an athlete's name. A few of the stories we're proud of.",
-      spotlights: {
-        savic: {
-          name: "Restaurant Savic",
-          role: "Brand & social film",
-          kicker: "Case 01",
-          title: "A table worth talking about.",
-          story:
-            "We gave Restaurant Savic more than a menu — we gave it a mood. From the plating to the lighting, we shot and cut the content that fills the room every night, and built the social presence that keeps the reservations coming. Proof that the same eye for a story works just as well in a kitchen as on a pitch.",
-          tags: ["Content", "Social", "Film"],
-        },
-        opening: {
-          name: "Restaurant Savic — Grand opening",
-          role: "Launch campaign",
-          kicker: "Case 02",
-          title: "Opening night, sold out.",
-          story:
-            "For the launch we ran the full campaign — teaser films, influencer seeding and a night the whole city wanted an invite to. The doors opened to a full house and a waiting list, and the footage lived on long after the last plate was cleared.",
-          tags: ["Launch", "Campaign", "Video"],
-        },
-      },
-    },
     reels: {
-      eyebrow: "(04) — Our work",
-      titleBefore: "The work,",
-      titleAccent: "client by client",
-      titleAfter: ".",
+      eyebrow: "(03) — Our work",
+      title: "Gallery",
       lead: "Campaigns, content and brand films we produced. Tap any clip to open it full size.",
     },
     cta: {
@@ -533,6 +504,7 @@ const en = {
     title3: "great.",
     lead: "Tell us about your project. We reply within 24 hours, never with a templated email.",
     emailLabel: "Email",
+    phoneLabel: "Phone",
     studio: "Studio",
     social: "Social",
     fields: {
@@ -650,8 +622,7 @@ const en = {
     },
 
     players: {
-      eyebrow: "Trusted by",
-      title: "Players who trust our work",
+      title: "Players who put their trust in us",
     },
 
     seeOurWork: {

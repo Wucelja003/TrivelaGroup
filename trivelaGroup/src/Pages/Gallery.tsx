@@ -61,6 +61,9 @@ const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
 /* Reels (video) iz public/trivelaReels — listaju se isto kao galerija slika,
    samo su video, svaki u prirodnoj velicini (9:16, jedan landscape). */
 const REEL_FILES = [
+  "matija",
+  "golovi",
+  "ugri",
   "trivelaReelsMain",
   "trivelaReelsStulic",
   "trivelaReelsUgresic",

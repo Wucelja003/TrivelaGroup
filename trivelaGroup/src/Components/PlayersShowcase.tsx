@@ -136,10 +136,7 @@ export default function PlayersShowcase() {
       <div className="relative z-10">
         {/* Header */}
         <div className="mx-auto mb-12 max-w-7xl px-5 text-center sm:mb-16 sm:px-8">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zelena">
-            {t("home.players.eyebrow")}
-          </span>
-          <h2 className="mx-auto mt-5 max-w-4xl bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.28))] sm:text-5xl lg:text-6xl">
+          <h2 className="mx-auto max-w-4xl bg-gradient-to-b from-[#d6ff9e] via-[#96ff00] to-[#6fd000] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent [filter:drop-shadow(0_0_28px_rgba(150,255,0,0.28))] sm:text-5xl lg:text-6xl">
             {t("home.players.title")}
           </h2>
         </div>

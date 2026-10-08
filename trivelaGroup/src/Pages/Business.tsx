@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, useReducedMotion, type Variants } from "motion/react";
@@ -69,6 +69,9 @@ interface Client {
   tone: "light" | "dark";
 }
 const CLIENTS: Client[] = [
+  { name: "Fudbalski savez Srbije", file: "FudbalskiSavezSrbije", tone: "dark" },
+  { name: "KK Vojvodina", file: "KK_Vojvodina_2022", tone: "dark" },
+  { name: "Noah Yerevan", file: "Noah_Yerevan", tone: "dark" },
   { name: "Concierge of Football", file: "ConciergeOfFootball", tone: "dark" },
   { name: "Liga Pub", file: "LigaPub", tone: "dark" },
   { name: "M55 Performance Center", file: "M55_PerformanceCenter", tone: "dark" },
@@ -111,139 +114,6 @@ function MarqueeRow({ variant }: { variant?: "b" }) {
   );
 }
 
-/* --- Spotlight: izdvojeni klijent (video/foto + dva podteksta) i duza prica.
-   PLACEHOLDER tekst — restoran, ispravicemo posle. Ako `video` postoji renderuje
-   se video, u suprotnom `image`. --- */
-/* Tekst (ime, uloga, kicker, naslov, prica, tagovi) je u prevodima pod
-   business.masterpieces.spotlights.<id>; ovde ostaje samo medij. */
-interface Spotlight {
-  id: "savic" | "opening";
-  video?: string;
-  image?: string;
-}
-const SPOTLIGHTS: Spotlight[] = [
-  { id: "savic", video: "/videoTrivela-web/restaurant.mp4" },
-  { id: "opening", video: "/videoTrivela-web/restaurant_2.mp4" },
-];
-
-function SpotlightBlock({ s, flip }: { s: Spotlight; flip: boolean }) {
-  const { t } = useTranslation();
-  const copy = t("business.masterpieces.spotlights", { returnObjects: true })[s.id];
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
-
-  const toggleMute = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = !v.muted;
-    if (!v.muted) v.play().catch(() => {});
-    setMuted(v.muted);
-  };
-
-  return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
-      className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
-    >
-      {/* Foto + dva podteksta (ime + uloga) */}
-      <motion.figure
-        variants={item}
-        className={`relative mx-auto w-full max-w-[360px] ${
-          flip ? "lg:order-2" : ""
-        }`}
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-5 -z-10 rounded-[2rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(212,175,55,0.18),transparent_70%)]"
-        />
-        <div className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(212,175,55,0.22)]">
-          {s.video ? (
-            <>
-              <video
-                ref={videoRef}
-                src={s.video}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-              />
-              {/* Gradijent + dugme za zvuk — isti obrazac kao ostali video */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent" />
-              <button
-                type="button"
-                onClick={toggleMute}
-                aria-label={muted ? t("common.unmute") : t("common.mute")}
-                className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-colors duration-200 hover:border-[#d4af37] hover:text-[#d4af37]"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <path d="M11 5 6 9H2v6h4l5 4V5z" />
-                  {muted ? (
-                    <path d="m22 9-6 6M16 9l6 6" />
-                  ) : (
-                    <path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14" />
-                  )}
-                </svg>
-              </button>
-            </>
-          ) : (
-            <img
-              src={s.image}
-              alt={copy.name}
-              loading="lazy"
-              className="aspect-[9/16] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-            />
-          )}
-        </div>
-        <figcaption className="mt-5 flex items-baseline justify-between gap-4">
-          <span className="text-xl font-bold tracking-tight text-white">
-            {copy.name}
-          </span>
-          <span className="inline-flex items-center gap-2 text-sm text-white/60">
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#d4af37] shadow-[0_0_10px_#d4af37]" />
-            {copy.role}
-          </span>
-        </figcaption>
-      </motion.figure>
-
-      {/* Duza prica */}
-      <motion.div variants={item} className={flip ? "lg:order-1" : ""}>
-        <span className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]">
-          {copy.kicker}
-        </span>
-        <h3 className="mt-4 text-2xl font-extrabold leading-[1.12] tracking-tight sm:text-3xl">
-          {copy.title}
-        </h3>
-        <p className="mt-5 text-base leading-relaxed text-white/70 sm:text-lg">
-          {copy.story}
-        </p>
-        <div className="mt-7 flex flex-wrap gap-2.5">
-          {/* `tag`, ne `t` — da ne zaseni funkciju za prevod */}
-          {copy.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-white/12 bg-white/[0.04] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-white/70"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
 function Emblem({ reduce }: { reduce: boolean | null }) {
   return (
     <div className="relative h-24 w-24">
@@ -259,7 +129,7 @@ function Emblem({ reduce }: { reduce: boolean | null }) {
       />
       <div className="absolute inset-[12px] flex items-center justify-center rounded-full border border-white/12 bg-[#14171a]/85 backdrop-blur-sm">
         <img
-          src="/Trivela_Logo_mark.svg"
+          src="/Trivela_Logo_mark_gold.svg"
           alt="Trivela"
           className="h-9 w-9 [filter:drop-shadow(0_0_10px_rgba(212,175,55,0.6))]"
         />
@@ -455,48 +325,6 @@ export default function Business() {
               <MarqueeRow />
               <MarqueeRow variant="b" />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== MASTERPIECES (spotlight klijenti) ===== */}
-      <section className="relative px-5 py-24 sm:px-8 sm:py-32">
-        <div className="mx-auto max-w-6xl">
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-80px" }}
-            className="mx-auto max-w-2xl text-center"
-          >
-            <motion.span
-              variants={item}
-              className="text-[12px] font-semibold uppercase tracking-[0.3em] text-[#d4af37]"
-            >
-              {t("business.masterpieces.eyebrow")}
-            </motion.span>
-            <motion.h2
-              variants={headline}
-              className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl"
-            >
-              {t("business.masterpieces.titleBefore")}{" "}
-              <span className="bg-gradient-to-r from-[#f4e2a1] to-[#d4af37] bg-clip-text text-transparent">
-                {t("business.masterpieces.titleAccent")}
-              </span>
-              {t("business.masterpieces.titleAfter")}
-            </motion.h2>
-            <motion.p
-              variants={item}
-              className="mx-auto mt-5 max-w-xl text-white/65"
-            >
-              {t("business.masterpieces.lead")}
-            </motion.p>
-          </motion.div>
-
-          <div className="mt-16 space-y-20 sm:mt-20 sm:space-y-28">
-            {SPOTLIGHTS.map((s, i) => (
-              <SpotlightBlock key={s.id} s={s} flip={i % 2 === 1} />
-            ))}
           </div>
         </div>
       </section>

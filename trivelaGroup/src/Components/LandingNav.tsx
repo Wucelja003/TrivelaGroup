@@ -92,8 +92,6 @@ interface Props {
   immediate?: boolean;
   /* Korpa je obavezna na prodavnici; na landingu nema sta da radi. */
   cart?: boolean;
-  /* Kolaz slika u meniju — na landingu da, drugde ne mora. */
-  menuMedia?: boolean;
   /* Svetla tema: bela podloga ispod trake (Trivela Drop) */
   light?: boolean;
   /* Marka strane na kojoj smo — ta se skriva iz dva dugmeta u sredini.
@@ -108,7 +106,6 @@ interface Props {
 export default function LandingNav({
   immediate = false,
   cart = false,
-  menuMedia = true,
   light = false,
   current = "group",
   menuExclude,
@@ -184,13 +181,28 @@ export default function LandingNav({
           data-nav-item
           className="pointer-events-auto flex shrink-0 items-center"
         >
+          {/* Logo i njegov sjaj prate brend strane */}
           <img
-            src={current === "drop" ? "/dropLogo.png" : "/Logo_Trivela-2.svg"}
-            alt={current === "drop" ? "Trivela Drop" : "Trivela Group"}
+            src={
+              current === "drop"
+                ? "/dropLogo.png"
+                : current === "business"
+                  ? "/Trivela_Business_Logo.svg"
+                  : "/Logo_Trivela-2.svg"
+            }
+            alt={
+              current === "drop"
+                ? "Trivela Drop"
+                : current === "business"
+                  ? "Trivela Business"
+                  : "Trivela Group"
+            }
             className={`h-14 w-auto sm:h-16 ${
               light
                 ? ""
-                : "[filter:drop-shadow(0_0_18px_rgba(150,255,0,0.4))]"
+                : current === "business"
+                  ? "[filter:drop-shadow(0_0_18px_rgba(212,175,55,0.45))]"
+                  : "[filter:drop-shadow(0_0_18px_rgba(150,255,0,0.4))]"
             }`}
           />
         </Link>
@@ -224,11 +236,7 @@ export default function LandingNav({
               <span className="tg-cluster-div" aria-hidden="true" />
             )}
             {menu && (
-              <FullMenu
-                media={menuMedia}
-                flat={cart}
-                exclude={menuExclude}
-              />
+              <FullMenu flat={cart} exclude={menuExclude} />
             )}
           </div>
         </div>

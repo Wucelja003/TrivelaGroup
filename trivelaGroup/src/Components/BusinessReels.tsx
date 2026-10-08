@@ -24,6 +24,17 @@ interface Group {
 }
 
 const GROUPS: Group[] = [
+  { label: "KK Vojvodina", clips: ["Vojvodina_MediaDay"] },
+  {
+    label: "Trivela",
+    clips: [
+      "golovi",
+      "trivelaMain",
+      "videoCasesFootballers",
+      "videoZoc",
+      "videoOsetkowski",
+    ],
+  },
   {
     label: "Restoran Savić",
     clips: [
@@ -39,15 +50,6 @@ const GROUPS: Group[] = [
   { label: "Camp Jerkić", clips: ["videoCampJerkic"] },
   { label: "Air Fantast", clips: ["videoAirFantast"] },
   { label: "Rising Star", clips: ["photoRisingStar"] },
-  {
-    label: "Trivela",
-    clips: [
-      "trivelaMain",
-      "videoCasesFootballers",
-      "videoZoc",
-      "videoOsetkowski",
-    ],
-  },
 ];
 
 /* Bez naziva ispod klipa — traka ostaje cista, a klip uzima punu visinu.
@@ -78,11 +80,9 @@ export default function BusinessReels() {
             {t("business.reels.eyebrow")}
           </span>
           <h2 className="mt-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl">
-            {t("business.reels.titleBefore")}{" "}
             <span className="bg-gradient-to-r from-[#f4e2a1] to-[#d4af37] bg-clip-text text-transparent">
-              {t("business.reels.titleAccent")}
+              {t("business.reels.title")}
             </span>
-            {t("business.reels.titleAfter")}
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-white/65">
             {t("business.reels.lead")}

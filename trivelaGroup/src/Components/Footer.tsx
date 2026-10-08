@@ -21,6 +21,18 @@ export default function Footer() {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const onDrop = pathname === "/drop" || pathname.startsWith("/drop/");
+  const onBusiness = pathname === "/business";
+
+  /* Logo i naziv prate brend strane na kojoj je posetilac */
+  const brand = onDrop
+    ? { src: "/dropLogo.png", alt: "Trivela Drop", word: "Drop" }
+    : onBusiness
+      ? {
+          src: "/Trivela_Business_Logo.svg",
+          alt: "Trivela Business",
+          word: "Business",
+        }
+      : { src: "/Logo_Trivela-2.svg", alt: "Trivela Group", word: "Group" };
 
   /* Pravi se u renderu jer t() je hook. Imena brendova se ne prevode. */
   const navLinks = [
@@ -50,15 +62,15 @@ export default function Footer() {
           <div className="flex items-start gap-5">
             <Link to="/" className="flex shrink-0 items-center">
               <img
-                src={onDrop ? "/dropLogo.png" : "/Logo_Trivela-2.svg"}
-                alt={onDrop ? "Trivela Drop" : "Trivela Group"}
+                src={brand.src}
+                alt={brand.alt}
                 className="f-logo h-16 w-16 object-contain"
               />
             </Link>
             <h3 className="text-2xl font-semibold uppercase leading-[1.05] tracking-tight f-ink sm:text-3xl">
               Trivela
               <br />
-              <span className="f-accent">{onDrop ? "Drop" : "Group"}</span>
+              <span className="f-accent">{brand.word}</span>
             </h3>
           </div>
 
@@ -96,6 +108,12 @@ export default function Footer() {
               >
                 trivelabusiness@gmail.com
               </a>
+              <a
+                href="tel:+381653887181"
+                className="transition-colors duration-300 hover:f-accent-h"
+              >
+                +381 65 388 71 81
+              </a>
             </div>
           </div>
 
@@ -112,7 +130,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="f-accent transition-all duration-300 hover:scale-110 hover:[filter:drop-shadow(0_0_14px_rgba(150,255,0,0.7))]"
+                  className="f-social f-accent transition-all duration-300 hover:scale-110"
                 >
                   <s.Icon className="h-10 w-10" />
                 </a>

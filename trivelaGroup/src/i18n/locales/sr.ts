@@ -24,7 +24,7 @@ const sr: Messages = {
 
   common: {
     location: "Beograd, Srbija",
-    basedIn: "Sedište:",
+    basedIn: "Lokacija:",
     mute: "Isključi zvuk",
     unmute: "Uključi zvuk",
     previous: "Prethodno",
@@ -99,17 +99,17 @@ const sr: Messages = {
 
   drop: {
     hero: {
-      titleBefore: "Nosi svoje",
+      titleBefore: "Izaberi svoje",
       titleAccent: "boje",
       lead1: "Ekskluzivne kolekcije inspirisane sportistima.",
-      lead2: "Ograničena izdanja koja potpisuje Trivela Group.",
-      cta: "Napravi svoju maskicu po meri",
+      lead2: "Limitirane kolekcije Trivela Group.",
+      cta: "Napravi svoju maskicu",
     },
 
     shop: {
       trustedEyebrow: "Veruju nam najbolji",
-      trustedTitle1: "Ljudi koji su verovali",
-      trustedTitle2: "našem radu",
+      trustedTitle1: "Ko veruje",
+      trustedTitle2: "našem radu?",
       playerRoles: {
         basketball: "Košarkaš",
         football: "Fudbaler",
@@ -218,7 +218,7 @@ const sr: Messages = {
     custom: {
       eyebrow: "Napravljeno za tebe",
       titleBefore: "Napravi svoju",
-      titleAccent: "maskicu po meri",
+      titleAccent: "maskicu",
       lead: "Otpremi svoju fotografiju, izaberi telefon, reci nam gde da je pošaljemo — a mi pravimo unikatnu maskicu samo za tebe.",
       photo: "Tvoja fotografija",
       uploading: "Otpremanje…",
@@ -260,13 +260,13 @@ const sr: Messages = {
     journey: {
       flows: {
         custom: {
-          tab: "Maskica po meri",
+          tab: "Custom made maskica",
           eyebrow: "Tvoja slika, naša maskica",
-          heading: "Kako poslati zahtev za maskicu po meri",
+          heading: "Kako poslati zahtev za maskicu",
           sub: "Šta da upišeš, polje po polje — da prva skica odmah bude prava.",
         },
         order: {
-          tab: "Gotova maskica",
+          tab: "Trivela maskica",
           eyebrow: "Iz Drop ponude",
           heading: "Kako poručiti maskicu",
           sub: "Četiri koraka od izbora do potvrđene porudžbine.",
@@ -439,14 +439,14 @@ const sr: Messages = {
     hero: {
       title1: "Izvan igre",
       title2: "Stvoreno za biznis.",
-      lead: "Isto pripovedanje koje je sportiste pretvorilo u ikone — sada radi za kompanije, osnivače i brendove daleko izvan sporta.",
+      lead: "Isto pripovedanje koje je sportiste pretvorilo u brendove — sada radi za kompanije, osnivače i brendove daleko izvan sporta.",
       ctaPrimary: "Započnite projekat",
       ctaSecondary: "Pogledajte naše klijente",
     },
     beyond: {
       eyebrow: "(01) — Izvan sporta",
       title: "Ne samo sportisti.",
-      lead: "Godinama smo sportiste činili nezaboravnim. Isto to umeće — marketing, PR i brend konsalting — sada pokreće kompanije u svim industrijama.",
+      lead: "Godinama smo sportiste činili nezaboravnim. Isto to umeće — marketing, PR i brend konsalting — sada pokreće kompanije u različitim industrijama.",
       pillars: {
         social: {
           title: "Društvene mreže",
@@ -469,38 +469,9 @@ const sr: Messages = {
       titleAfter: ".",
       lead: "Od startapa do afirmisanih imena — u sportu i daleko izvan njega.",
     },
-    masterpieces: {
-      eyebrow: "(03) — Klijenti i remek-dela",
-      titleBefore: "Remek-dela,",
-      titleAccent: "stvorena zajedno",
-      titleAfter: ".",
-      lead: "Svaki brend sa kojim radimo dobija istu posvećenost koju unosimo u ime jednog sportiste. Nekoliko priča na koje smo ponosni.",
-      spotlights: {
-        savic: {
-          name: "Restoran Savić",
-          role: "Brend i film za društvene mreže",
-          kicker: "Slučaj 01",
-          title: "Sto o kom se priča.",
-          story:
-            "Restoranu Savić dali smo više od jelovnika — dali smo mu atmosferu. Od serviranja do svetla, snimili smo i montirali sadržaj koji svake večeri puni salu i izgradili prisustvo na društvenim mrežama zahvaljujući kom rezervacije ne prestaju. Dokaz da isto oko za priču jednako dobro radi u kuhinji kao i na terenu.",
-          tags: ["Sadržaj", "Društvene mreže", "Film"],
-        },
-        opening: {
-          name: "Restoran Savić — Svečano otvaranje",
-          role: "Kampanja za otvaranje",
-          kicker: "Slučaj 02",
-          title: "Veče otvaranja, rasprodato.",
-          story:
-            "Za otvaranje smo vodili kompletnu kampanju — tizer filmove, saradnje sa influenserima i veče na koje je ceo grad želeo pozivnicu. Vrata su se otvorila pred punom salom i listom čekanja, a snimci su živeli još dugo nakon što je sklonjen poslednji tanjir.",
-          tags: ["Otvaranje", "Kampanja", "Video"],
-        },
-      },
-    },
     reels: {
-      eyebrow: "(04) — Naši radovi",
-      titleBefore: "Radovi,",
-      titleAccent: "klijent po klijent",
-      titleAfter: ".",
+      eyebrow: "(03) — Naši radovi",
+      title: "Galerija",
       lead: "Kampanje, sadržaj i brend filmovi koje smo producirali. Dodirnite bilo koji snimak da ga otvorite u punoj veličini.",
     },
     cta: {
@@ -517,6 +488,7 @@ const sr: Messages = {
     title3: "sjajno.",
     lead: "Recite nam nešto o svom projektu. Odgovaramo u roku od 24 sata, nikad šablonskim mejlom.",
     emailLabel: "Email",
+    phoneLabel: "Telefon",
     studio: "Studio",
     social: "Društvene mreže",
     fields: {
@@ -548,7 +520,7 @@ const sr: Messages = {
   footer: {
     navigation: "Navigacija",
     whoWeAre: "Ko smo mi",
-    tagline: "Gradimo ikonične brendove sportista.",
+    tagline: "Gradimo lične brendove sportista.",
     socials: "Društvene mreže",
     legalLine: "Marketing, PR i konsalting.",
     privacy: "Politika privatnosti",
@@ -558,9 +530,9 @@ const sr: Messages = {
 
   home: {
     hero: {
-      tagline: "Gradimo ikonične brendove sportista.",
+      tagline: "Gradimo lične brendove sportista.",
       subtitle:
-        "Ekskluzivna butik agencija za igrače svetske klase: elitna vizija, bezvremensko nasleđe i nezaustavljiva strast.",
+        "Ekskluzivna agencija za elitne igrače: savremena vizija i nezaustavljiva strast.",
       cta: "Započni saradnju sa nama",
     },
 
@@ -602,7 +574,7 @@ const sr: Messages = {
           copy: "Gradi reputaciju koja seže dalje od same igre.",
         },
         video: {
-          title: "Snimatelji",
+          title: "Videografi",
           copy: "Beleže trenutke koji definišu karijere.",
         },
         design: {
@@ -633,13 +605,12 @@ const sr: Messages = {
     },
 
     players: {
-      eyebrow: "Veruju nam",
-      title: "Igrači koji veruju našem radu",
+      title: "Igrači koji su nam ukazali poverenje",
     },
 
     seeOurWork: {
       eyebrow: "Pogledaj naše radove",
-      title: "Naša galerija",
+      title: "Galerija",
       cta: "Pogledaj više",
     },
 

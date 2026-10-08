@@ -187,11 +187,24 @@ export default function ContactForm() {
               <div className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                 {t("contact.emailLabel")}
               </div>
+              {/* Mejl je jedna duga rec: bez prelamanja na telefonu izlazi iz
+                  svoje kolone i upada u susednu (telefon). */}
               <a
                 href="mailto:hello@trivelagroup.com"
+                className="mt-2 inline-block max-w-full text-base text-white transition-colors duration-200 [overflow-wrap:anywhere] hover:text-zelena"
+              >
+                trivelabusiness@gmail.com
+              </a>
+            </div>
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">
+                {t("contact.phoneLabel")}
+              </div>
+              <a
+                href="tel:+381653887181"
                 className="mt-2 inline-block text-base text-white transition-colors duration-200 hover:text-zelena"
               >
-              trivelabusiness@gmail.com
+                +381 65 388 71 81
               </a>
             </div>
             <div>

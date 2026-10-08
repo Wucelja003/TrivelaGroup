@@ -26,23 +26,12 @@ const SOCIALS = [
 /* Slojevi koji ulaze pre panela — od tamnijeg ka svetlijem */
 const PRELAYERS = ["#04123a", "#0a2a1c"];
 
-/* Kolaz uz stavke. Web verzije (720px, ~80 kB) — originali su 1–5 MB
-   i ne smeju u meni koji stoji u DOM-u od ucitavanja strane. */
-const MEDIA = [
-  "/menu/menu-01.jpg",
-  "/menu/menu-02.jpg",
-  "/menu/menu-03.jpg",
-  "/menu/menu-04.jpg",
-];
-
 export default function FullMenu({
-  media = true,
   /* U grupi sa korpom dugme gubi svoj okvir — okvir nosi grupa */
   flat = false,
   /* Sakrij stavke za rute na kojima vec jesi */
   exclude,
 }: {
-  media?: boolean;
   flat?: boolean;
   exclude?: string[];
 }) {
@@ -62,10 +51,9 @@ export default function FullMenu({
     ? ITEMS.filter((it) => !exclude.includes(it.to))
     : ITEMS;
   const [open, setOpen] = useState(false);
-  /* Slike i WebGL platno se prave tek kad zatreba — dok meni stoji zatvoren
-     nema razloga da se skidaju ni da GPU radi. Okviri kolaza su ipak uvek u
-     DOM-u, da ih GSAP nadje i na prvom otvaranju. */
-  const [mediaReady, setMediaReady] = useState(false);
+  /* WebGL platno se pravi tek kad zatreba — dok meni stoji zatvoren nema
+     razloga da GPU radi. */
+  const [glReady, setGlReady] = useState(false);
   const openRef = useRef(false);
   const busyRef = useRef(false);
   const lenis = useLenis();
@@ -112,14 +100,10 @@ export default function FullMenu({
     );
     const rows = Array.from(panel.querySelectorAll<HTMLElement>(".fm-item"));
     const meta = Array.from(panel.querySelectorAll<HTMLElement>(".fm-meta-row"));
-    const media = Array.from(
-      panel.querySelectorAll<HTMLElement>(".fm-media-item")
-    );
 
     gsap.set(labels, { yPercent: 140, rotate: 8 });
     gsap.set(rows, { "--fm-num": 0 });
     gsap.set(meta, { y: 24, autoAlpha: 0 });
-    gsap.set(media, { autoAlpha: 0, y: 46, scale: 0.94 });
 
     const tl = gsap.timeline({ paused: true });
 
@@ -159,20 +143,6 @@ export default function FullMenu({
       rows,
       { "--fm-num": 1, duration: 0.5, ease: "power2.out", stagger: 0.06 },
       panelAt + 0.22
-    );
-
-    /* Kolaz ulazi uz slova, malo pomerena faza da ne krene sve u isti tren */
-    tl.to(
-      media,
-      {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.9,
-        ease: "power4.out",
-        stagger: 0.09,
-      },
-      panelAt + 0.2
     );
 
     tl.to(
@@ -259,7 +229,7 @@ export default function FullMenu({
     const next = !openRef.current;
     openRef.current = next;
     setOpen(next);
-    if (next) setMediaReady(true);
+    if (next) setGlReady(true);
     if (next) playOpen();
     else playClose();
     animateIcon(next);
@@ -302,7 +272,7 @@ export default function FullMenu({
       <button
         type="button"
         onClick={toggle}
-        onPointerEnter={() => setMediaReady(true)}
+        onPointerEnter={() => setGlReady(true)}
         aria-expanded={open}
         aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
         className={`fm-toggle${flat ? " fm-toggle--flat" : ""}`}
@@ -333,7 +303,7 @@ export default function FullMenu({
         aria-label={t("nav.menu")}
       >
         {/* Talasaste linije u pozadini panela — nase plave */}
-        {mediaReady && (
+        {glReady && (
           <LiquidLines
             className="fm-bg"
             active={open}
@@ -354,7 +324,7 @@ export default function FullMenu({
         {/* Veo preko linija — bez njega bela slova plivaju po saru */}
         <div className="fm-veil" aria-hidden="true" />
 
-        <div className={`fm-body${media ? "" : " fm-body--solo"}`}>
+        <div className="fm-body">
           <ul className="fm-list">
             {visibleItems.map((it, i) => (
               <li key={it.to} className="fm-item" data-num={String(i + 1).padStart(2, "0")}>
@@ -368,18 +338,6 @@ export default function FullMenu({
               </li>
             ))}
           </ul>
-
-          {media && (
-            <div className="fm-media" aria-hidden="true">
-              {MEDIA.map((src) => (
-                <div key={src} className="fm-media-item">
-                  {mediaReady && (
-                    <img src={src} alt="" loading="lazy" decoding="async" />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         <div className="fm-foot">

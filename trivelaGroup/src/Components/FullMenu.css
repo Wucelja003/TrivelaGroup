@@ -239,77 +239,12 @@
   z-index: 2;
   flex: 1 1 auto;
   /* Bez ovoga grid dete ne moze da se skupi ispod svog sadrzaja, pa bi
-     kolaz gurao podnozje van ekrana umesto da se prilagodi. */
+     duga lista gurala podnozje van ekrana umesto da se prilagodi. */
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 2.5rem;
-}
-@media (min-width: 1024px) {
-  .fm-body {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    /* Kolaz se rasteze na punu visinu tela, lista ostaje centrirana */
-    align-items: stretch;
-    gap: 3rem;
-  }
-  .fm-list {
-    align-self: center;
-  }
-  /* Bez kolaza lista ide preko cele sirine, da ne ostane praznina desno */
-  .fm-body--solo {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* --- Kolaz --- */
-.fm-media {
-  display: none;
-}
-@media (min-width: 1024px) {
-  .fm-media {
-    /* Dva reda dele raspolozivu visinu tela, a sirina stavke izlazi iz
-       njihove visine. Tako su slike uvek najvece sto panel dopusta i ne
-       moraju da se pogadjaju brojevi po velicini ekrana. */
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    justify-content: end;
-    align-content: center;
-    gap: 1.25rem;
-    height: 100%;
-    min-height: 0;
-  }
-}
-
-.fm-media-item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 1.1rem;
-  border: 1px solid rgba(150, 255, 0, 0.16);
-  background: #061a3f;
-  height: 100%;
-  width: auto;
-  max-width: 100%;
-  min-height: 0;
-  aspect-ratio: 9 / 16;
-  will-change: transform, opacity;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
-}
-.fm-media-item:hover {
-  border-color: rgba(150, 255, 0, 0.55);
-  box-shadow: 0 0 34px rgba(150, 255, 0, 0.18);
-}
-
-.fm-media-item img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  /* Zumiranje ide na slici, jer wrapper ima GSAP transform */
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.fm-media-item:hover img {
-  transform: scale(1.07);
 }
 
 /* --- Velike stavke --- */
