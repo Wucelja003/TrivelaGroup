@@ -208,6 +208,8 @@ const en = {
         phone: "Invalid phone number",
         postal: "Invalid postal code",
       },
+      failed:
+        "We could not place the order. Check your connection and try again — your cart is untouched. If it keeps failing, write to us at trivelabusiness@gmail.com.",
       placing: "Placing order…",
       place: "Place order",
       terms:
@@ -622,7 +624,7 @@ const en = {
     },
 
     players: {
-      title: "Players who put their trust in us",
+      title: "Players who trust our work",
     },
 
     seeOurWork: {

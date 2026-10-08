@@ -195,6 +195,8 @@ const sr: Messages = {
         phone: "Neispravan broj telefona",
         postal: "Neispravan poštanski broj",
       },
+      failed:
+        "Porudžbina nije prošla. Proveri vezu i probaj ponovo — korpa ti je ostala netaknuta. Ako se ponovi, piši nam na trivelabusiness@gmail.com.",
       placing: "Slanje porudžbine…",
       place: "Poruči",
       terms:

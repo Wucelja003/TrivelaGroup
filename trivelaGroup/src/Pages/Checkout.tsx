@@ -154,6 +154,8 @@ export default function Checkout() {
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<FieldKey, ErrKey>>>({});
   const [status, setStatus] = useState<Status>("idle");
+  /* Porudzbina nije prosla (server/baza) — korpa ostaje, kupac moze ponovo */
+  const [failed, setFailed] = useState(false);
   const [order, setOrder] = useState<{
     number: string;
     items: CartItem[];
@@ -207,12 +209,46 @@ export default function Checkout() {
     if (!validate()) return;
 
     setStatus("placing");
-    // TODO (backend): kreiranje porudzbine u bazi (orders) ide preko servera,
-    // da se cena ne bi falsifikovala. Za sad je porudzbina lokalna maketa.
-    const number = `TRV-${Date.now().toString(36).slice(-6).toUpperCase()}`;
+    setFailed(false);
     const placed = [...items];
 
-    /* Potvrda mejlom — best-effort, ne blokira zavrsetak porudzbine. */
+    /* Porudzbinu upisuje edge funkcija (service_role), koja cene cita iz
+       baze i vraca broj. Ako to padne, porudzbine NEMA — ne lazi kupca da
+       je prosla. */
+    let number: string;
+    let charged = total;
+    try {
+      const { data, error } = await supabase.functions.invoke("create-order", {
+        body: {
+          customer: {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            phone: form.phone,
+            address: form.address,
+            city: form.city,
+            postal: form.postal,
+          },
+          items: placed.map((it) => ({
+            slug: it.id,
+            name: it.name,
+            model: it.model,
+            qty: it.qty,
+          })),
+        },
+      });
+      if (error) throw error;
+      if (!data?.number) throw new Error(data?.error ?? "Nema broja porudzbine");
+      number = data.number;
+      if (typeof data.total === "number") charged = data.total;
+    } catch (err) {
+      console.error("[checkout] porudzbina nije upisana:", err);
+      setFailed(true);
+      setStatus("idle");
+      return;
+    }
+
+    /* Potvrda mejlom — best-effort, porudzbina je vec u bazi. */
     try {
       await supabase.functions.invoke("send-email", {
         body: {
@@ -224,7 +260,7 @@ export default function Checkout() {
           address: form.address,
           city: form.city,
           postal: form.postal,
-          total,
+          total: charged,
           items: placed.map((it) => ({
             name: it.name,
             model: it.model,
@@ -237,7 +273,7 @@ export default function Checkout() {
       console.warn("[checkout] mejl nije poslat:", err);
     }
 
-    setOrder({ number, items: placed, total, email: form.email });
+    setOrder({ number, items: placed, total: charged, email: form.email });
     clear();
     setStatus("done");
   };
@@ -437,6 +473,16 @@ export default function Checkout() {
                 </div>
               </div>
             </div>
+
+            {/* Porudzbina nije prosla — korpa je netaknuta, moze ponovo */}
+            {failed && (
+              <p
+                role="alert"
+                className="mt-8 rounded-2xl border border-red-400/30 bg-red-400/10 px-5 py-4 text-sm text-red-200"
+              >
+                {t("drop.checkout.failed")}
+              </p>
+            )}
 
             {/* Submit (desktop only — mobile ima ispod summary-ja) */}
             <div
