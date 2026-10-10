@@ -52,12 +52,17 @@ const GROUPS: Group[] = [
   { label: "Rising Star", clips: ["photoRisingStar"] },
 ];
 
+/* Klipovi koji idu na POCETAK trake, ovim redom. Sve sto je ovde ne ponavlja
+   se kasnije, pa se izdvajanje svodi na jedan red. */
+const FEATURED = ["Vojvodina_MediaDay", "golovi", "videoSavic"];
+
 /* Bez naziva ispod klipa — traka ostaje cista, a klip uzima punu visinu.
-   GROUPS i dalje drzi redosled i podelu po klijentu; ako naziv ikad zatreba,
-   dovoljno je vratiti `title: g.label` ispod. */
-const ITEMS: ReelItem[] = GROUPS.flatMap((g) =>
-  g.clips.map((c) => ({ src: `${DIR}/${c}.mp4` }))
-);
+   GROUPS i dalje drzi podelu po klijentu; ako naziv ikad zatreba, dovoljno
+   je vratiti `title: g.label` ispod. */
+const ITEMS: ReelItem[] = [
+  ...FEATURED,
+  ...GROUPS.flatMap((g) => g.clips).filter((c) => !FEATURED.includes(c)),
+].map((c) => ({ src: `${DIR}/${c}.mp4` }));
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
