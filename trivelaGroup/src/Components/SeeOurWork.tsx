@@ -12,9 +12,40 @@ import { galleryPhotos } from "../data/galleryPhotos";
  * galeriju, ne prvih par.
  */
 
-/* Raspon kroz galeriju: svaka treca fotka -> ~15 razlicitih radova.
-   Fotke su 9:16, pa i karusel ide 9:16 (bez odsecanja). */
-const picks = galleryPhotos.filter((_, i) => i % 3 === 0).slice(0, 15);
+/* ====================================================================
+   KOJE FOTKE IDU U KARUSEL — uredjuje se SAMO ova lista.
+
+   Upisi ime fajla iz public/TrivelaGallery, bez putanje. Redosled u listi
+   je redosled u karuselu, pa prebacivanjem reda menjas i redosled.
+   Ako lista ostane prazna, uzima se svaka treca fotka iz galerije.
+   ==================================================================== */
+const PICKS: string[] = [
+  "IMG_9537.JPG",
+  "IMG_9469.JPG",
+  "IMG_2134.jpg",
+  "kostov hapoel 1.jpg",
+  "petko_lagalaxy.jpg",
+  "kostov derbi2.jpg",
+  "IMG_0783.JPG",
+  "IMG_3620.JPG",
+  "IMG_4181.JPG",
+  "IMG_4878.jpg",
+  "IMG_5316.JPG",
+  "IMG_7624.JPG",
+  "IMG_8081.JPG",
+  "IMG_8577.JPG",
+  "IMG_6093.JPG",
+];
+
+const fileOf = (src: string) => src.split("/").pop() ?? src;
+
+/* Fotke su 9:16, pa i karusel ide 9:16 (bez odsecanja). Ime koje nije u
+   galeriji se preskace — bolje jedna fotka manje nego prazna kartica. */
+const picks = PICKS.length
+  ? PICKS.map((name) =>
+      galleryPhotos.find((p) => fileOf(p.src) === name),
+    ).filter((p): p is (typeof galleryPhotos)[number] => Boolean(p))
+  : galleryPhotos.filter((_, i) => i % 3 === 0).slice(0, 15);
 
 /* Imena ISPOD radova (redosled prati `picks`). Popuni pravim imenima igraca;
    prazno polje padne na naziv iz galerije. Odvojeno od galerije — menjanje

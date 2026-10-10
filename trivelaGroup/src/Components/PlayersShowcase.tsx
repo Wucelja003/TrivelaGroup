@@ -6,33 +6,51 @@ import "./PlayersShowcase.css";
 /*
  * "Players who trust our work" — traka Fantasy kartica koja se sama lista i
  * staje na hover. Igrac (isecen PNG) "iskace" iznad okvira kartice, a ispod
- * je plocica sa imenom. Slike su WebP kopije iz public/png_dopuna
- * (public/png_dopuna-web, 480px) — originali su preteski za traku.
+ * je plocica sa imenom.
+ *
+ * SLIKE: public/igraci — JEDINI folder sa igracima. Unutra su WebP kopije na
+ * 480px; originali stoje van projekta (Desktop/VV/Reserved folders), jer su
+ * preteski da se vuku na svakoj poseti.
  */
 
 interface Player {
   first: string;
   last: string;
-  /* Ime fajla u public/png_dopuna-web, bez ekstenzije */
+  /* Ime fajla u public/igraci, bez ekstenzije */
   file: string;
 }
 
-/* Prvih pet je namerno ovim redom (trazio klijent); ostali abecedno. */
+/* Prvih osam je namerno ovim redom (trazio klijent); ostali abecedno po
+   prezimenu. */
 const players: Player[] = [
-  { first: "Vasilije", last: "Kostov", file: "Vasilije_Kostov" },
-  { first: "Ognjen", last: "Ugrešić", file: "Ognjen_Ugresic" },
   { first: "Veljko", last: "Milosavljević", file: "Veljko_Milosavljevic" },
-  { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
+  { first: "Ognjen", last: "Ugrešić", file: "Ognjen_Ugresic" },
+  { first: "Vasilije", last: "Kostov", file: "Vasilije_Kostov" },
+  { first: "Matija", last: "Popović", file: "Matija_Popovic" },
+  { first: "Marko", last: "Veličković", file: "MV_Vojvodina"},
+  { first: "Dimitrije", last: "Sarić", file: "Dimitrije_Saric" },
   { first: "Aleksa", last: "Damjanović", file: "Aleksa_Damjanovic" },
-  { first: "Aljoša", last: "Vasić", file: "Aljosa_Vasic" },
-  { first: "Bibars", last: "Natcho", file: "Bibars_Natcho" },
-  { first: "Ibrahim", last: "Zubairu", file: "Ibrahim_Zubairu" },
-  { first: "Lazar", last: "Jovanović", file: "Lazar_Jovanovic" },
+  { first: "Vladimir", last: "Lučić", file: "Vladimir_Lucic" },
+  { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
+  { first: "Igor", last: "Miladinović", file: "Igor_Miladinovic" },
+  { first: "Stefan", last: "Džodić", file: "Stefan_Dzodic" },
+  { first: "Patrick", last: "Enrici", file: "Patrick_Enrici" },
+  { first: "Mihajlo", last: "Ilić", file: "Mihajlo_Ilic" },
   { first: "Mihailo", last: "Ivanović", file: "Mihailo_Ivanovic" },
-  { first: "Nemanja", last: "Trifunović", file: "Nemanja_Trifunovic" },
-  { first: "Nikola", last: "Štulić", file: "Nikola_Stulic" },
-  { first: "Sara", last: "Stokić", file: "Sara_Stokic" },
+  { first: "Lazar", last: "Jovanović", file: "Lazar_Jovanovic" },
   { first: "Stefan", last: "Mitrović", file: "Stefan_Mitrovic" },
+  { first: "Bibars", last: "Natcho", file: "Bibars_Natcho" },
+  { first: "Nemanja", last: "Nikolić", file: "Nemanja_Nikolic" },
+  { first: "Nikola", last: "Petković", file: "Nikola_Petkovic" },
+  { first: "Viktor", last: "Radojević", file: "Viktor_Radojevic" },
+  { first: "Levi", last: "Randolph", file: "Levi_Randolph" },
+  { first: "Petar", last: "Ratkov", file: "Petar_Ratkov" },
+  { first: "Mihailo", last: "Stevanović", file: "Mihailo_Stevanovic" },
+  { first: "Sara", last: "Stokić", file: "Sara_Stokic" },
+  { first: "Nikola", last: "Štulić", file: "Nikola_Stulic" },
+  { first: "Nemanja", last: "Trifunović", file: "Nemanja_Trifunovic" },
+  { first: "Aljoša", last: "Vasić", file: "Aljosa_Vasic" },
+  { first: "Ibrahim", last: "Zubairu", file: "Ibrahim_Zubairu" },
 ];
 
 /* Brzina trake ne zavisi od broja kartica: ~4.5s po kartici */
@@ -66,7 +84,7 @@ function PlayerCard({
             gde onLoad ume da okine pre nego sto React zakaci handler. */}
         <div className="pls-photo-clip">
           <img
-            src={load ? `/png_dopuna-web/${player.file}.webp` : undefined}
+            src={load ? `/igraci/${player.file}.webp` : undefined}
             alt=""
             width={480}
             height={480}

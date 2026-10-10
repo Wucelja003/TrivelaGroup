@@ -32,7 +32,7 @@ const DROP_PLAYERS: { img: string; name: string; role: PlayerRole }[] = [
   { img: "/TrivelaGroupPhotos/NatchoPhoto.jpg", name: "Bibars Natcho", role: "football" },
   { img: "/TrivelaGroupPhotos/MatheusSaldanhaPhoto.jpg", name: "Matheus Saldanha", role: "football" },
   { img: "/TrivelaGroupPhotos/LessortPhoto.jpg", name: "Mathias Lessort", role: "basketball" },
-  { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maskimović", role: "football" },
+  { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maksimović", role: "football" },
 ];
 
 type SortKey = "az" | "za" | "price-asc" | "price-desc";
@@ -388,8 +388,7 @@ export default function Shop() {
             </span>
             <h2 className="mt-4 bg-gradient-to-b from-[#1c6bb8] via-[#0d3f70] to-[#08226c] bg-clip-text pb-[0.16em] text-4xl font-extrabold leading-[1.05] tracking-tight text-transparent sm:text-5xl lg:text-6xl">
               {t("drop.shop.trustedTitle1")}
-              <br />
-              {t("drop.shop.trustedTitle2")}
+            
             </h2>
           </div>
 

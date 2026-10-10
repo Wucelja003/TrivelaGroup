@@ -121,8 +121,7 @@ const en = {
 
     shop: {
       trustedEyebrow: "Trusted by the best",
-      trustedTitle1: "People who trusted",
-      trustedTitle2: "our work",
+      trustedTitle1: "Who's wearing it ",
       playerRoles: {
         basketball: "Basketball Player",
         football: "Football Player",

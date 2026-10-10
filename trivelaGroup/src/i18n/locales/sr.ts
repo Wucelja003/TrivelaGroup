@@ -108,8 +108,7 @@ const sr: Messages = {
 
     shop: {
       trustedEyebrow: "Veruju nam najbolji",
-      trustedTitle1: "Ko veruje",
-      trustedTitle2: "našem radu?",
+      trustedTitle1: "Ko veruje našem radu?",
       playerRoles: {
         basketball: "Košarkaš",
         football: "Fudbaler",
