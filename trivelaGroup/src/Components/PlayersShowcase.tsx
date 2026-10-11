@@ -28,7 +28,7 @@ const players: Player[] = [
   { first: "Vasilije", last: "Kostov", file: "Vasilije_Kostov" },
   { first: "Matija", last: "Popović", file: "Matija_Popovic" },
   { first: "Marko", last: "Veličković", file: "MV_Vojvodina"},
-  { first: "Dimitrije", last: "Sarić", file: "Dimitrije_Saric" },
+  { first: "Dimitrije", last: "Šarić", file: "Dimitrije_Saric" },
   { first: "Aleksa", last: "Damjanović", file: "Aleksa_Damjanovic" },
   { first: "Vladimir", last: "Lučić", file: "Vladimir_Lucic" },
   { first: "Đorđe", last: "Ranković", file: "Djordje_Rankovic" },
