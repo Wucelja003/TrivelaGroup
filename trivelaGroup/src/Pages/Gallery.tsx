@@ -11,6 +11,7 @@ import LenticularCarousel, {
 import InstagramEmbeds from "../Components/InstagramEmbeds";
 import ReelStrip, { type ReelItem } from "../Components/ReelStrip";
 import "./Gallery.css";
+import { useSeo } from "../lib/seo";
 
 /* Kategorije koje umesto slika prikazuju Instagram embed-ove (post/reel). */
 const GALLERY_EMBEDS: Partial<Record<GalleryCategory, string[]>> = {
@@ -112,6 +113,11 @@ const CAT_SHAPE: Partial<Record<GalleryCategory, CatShape>> = {
 
 export default function Gallery() {
   const { t } = useTranslation();
+  useSeo({
+    title: t("seo.gallery.title"),
+    description: t("seo.gallery.description"),
+    path: "/gallery",
+  });
   /* Vrednost kategorije ("Reels"...) je kljuc stanja i podataka; prevodi se
      samo ono sto se prikazuje. */
   const catLabel = t("gallery.categories", { returnObjects: true });

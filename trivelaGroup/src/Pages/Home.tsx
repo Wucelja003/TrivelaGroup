@@ -16,6 +16,7 @@ import SeeOurWork from "../Components/SeeOurWork";
 import PlayersShowcase from "../Components/PlayersShowcase";
 import Pricing from "../Components/Pricing";
 import "./Home.css";
+import { useSeo } from "../lib/seo";
 
 // Slike za rotirajući točak u hero-u — iz public/TrivelaHero
 const heroImages = [
@@ -33,6 +34,11 @@ const heroImages = [
 
 export default function Home() {
   const { t } = useTranslation();
+  useSeo({
+    title: t("seo.home.title"),
+    description: t("seo.home.description"),
+    path: "/",
+  });
   const heroRef = useRef<HTMLElement>(null);
   /* Tekst (naslov, tagline) ide preko StaggeredText-a i ceka intro zavesu */
   const [heroIn, setHeroIn] = useState(false);

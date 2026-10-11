@@ -1,0 +1,9 @@
+# Trivela Group
+User-agent: *
+Allow: /
+
+# Korpa i admin nemaju sta da traze u pretrazi
+Disallow: /checkout
+Disallow: /admin
+
+Sitemap: https://trivela-group.com/sitemap.xml

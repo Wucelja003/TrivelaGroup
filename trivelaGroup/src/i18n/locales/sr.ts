@@ -22,6 +22,55 @@ const sr: Messages = {
     openCart: "Otvori korpu ({{n}})",
   },
 
+
+  consent: {
+    title: "Kolačići",
+    body: "Merimo posete da bismo videli koje strane ljudi zaista čitaju. Bez reklama i bez profilisanja.",
+    more: "Više",
+    accept: "Prihvatam",
+    decline: "Ne, hvala",
+  },
+
+  seo: {
+    home: {
+      title: "Trivela Group",
+      description:
+        "Butik sportska agencija iz Beograda: izgradnja brenda, PR i sadržaj za sportiste, klubove i kompanije.",
+    },
+    about: {
+      title: "O nama",
+      description:
+        "Od jedne Instagram stranice do kreativne agencije koja gradi brendove sportista — kako je Trivela Group počela.",
+    },
+    gallery: {
+      title: "Galerija",
+      description:
+        "Utakmice, verifikacije, rilsovi i objave koje smo napravili za sportiste i klubove.",
+    },
+    drop: {
+      title: "Trivela Drop",
+      description:
+        "Maskice za telefon inspirisane sportistima, u ograničenim serijama, i maskice po meri od tvoje fotografije.",
+    },
+    product: {
+      description:
+        "Maskica {{name}} iz Trivela Drop ponude — premium tvrda maskica, testirana na padove, isporuka za 2–4 radna dana.",
+    },
+    business: {
+      title: "Trivela Business",
+      description:
+        "Marketing, PR i brend konsalting za kompanije, osnivače i brendove daleko izvan sporta.",
+    },
+    contact: {
+      title: "Kontakt",
+      description:
+        "Recite nam nešto o svom projektu. Odgovaramo u roku od 24 sata, nikad šablonskim mejlom.",
+    },
+    checkout: {
+      title: "Porudžbina",
+      description: "Završi svoju Trivela Drop porudžbinu.",
+    },
+  },
   common: {
     location: "Beograd, Srbija",
     basedIn: "Lokacija:",

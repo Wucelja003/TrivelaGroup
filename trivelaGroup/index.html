@@ -4,13 +4,81 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Logo_Trivela-2.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO: ovo su POCETNE vrednosti. Svaka strana ih menja kroz useSeo()
+         (src/lib/seo.ts). Mreze (Instagram, WhatsApp, LinkedIn) ne izvrsavaju
+         JavaScript, pa im ostaje ono sto je ovde — zato opis i slika moraju
+         da budu smisleni i bez skripte. -->
+    <title>Trivela Group — Building iconic athlete brands</title>
+    <meta
+      name="description"
+      content="Trivela Group is a boutique sports agency from Belgrade: brand building, PR and content for athletes, clubs and companies."
+    />
+    <link rel="canonical" href="https://trivela-group.com/" />
+    <meta name="theme-color" content="#01072d" />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Trivela Group" />
+    <meta property="og:url" content="https://trivela-group.com/" />
+    <meta
+      property="og:title"
+      content="Trivela Group — Building iconic athlete brands"
+    />
+    <meta
+      property="og:description"
+      content="Boutique sports agency from Belgrade: brand building, PR and content for athletes, clubs and companies."
+    />
+    <meta property="og:image" content="https://trivela-group.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="sr_RS" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Trivela Group — Building iconic athlete brands"
+    />
+    <meta
+      name="twitter:description"
+      content="Boutique sports agency from Belgrade: brand building, PR and content for athletes, clubs and companies."
+    />
+    <meta
+      name="twitter:image"
+      content="https://trivela-group.com/og-image.jpg"
+    />
+
+    <!-- Ko smo, za Google -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Trivela Group",
+        "url": "https://trivela-group.com/",
+        "logo": "https://trivela-group.com/Logo_Trivela-2.svg",
+        "image": "https://trivela-group.com/og-image.jpg",
+        "description": "Boutique sports agency from Belgrade: brand building, PR and content for athletes, clubs and companies.",
+        "email": "trivelabusiness@gmail.com",
+        "telephone": "+381653887181",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Belgrade",
+          "addressCountry": "RS"
+        },
+        "sameAs": [
+          "https://www.instagram.com/trivelagroup",
+          "https://www.tiktok.com/@trivelagroup"
+        ]
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>Trivela Group</title>
   </head>
   <body>
     <div id="root"></div>

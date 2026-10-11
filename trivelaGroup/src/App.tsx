@@ -19,6 +19,8 @@ import LandingNav from "./Components/LandingNav";
 import Intro from "./Components/Intro";
 import CartDrawer from "./Components/CartDrawer";
 import LanguageToggle from "./Components/LanguageToggle";
+import CookieConsent from "./Components/CookieConsent";
+import { initAnalytics, pageview } from "./lib/analytics";
 import Home from "./Pages/Home";
 /* Sve strane osim landinga su lazy — svaka ide u svoj chunk, pa glavni bundle
    ostaje mali i pocetno ucitavanje je brzo. Kod strane se skida tek kad se ona
@@ -112,6 +114,24 @@ function SiteIntro() {
   return <Intro />;
 }
 
+/* Analitika (GA4): SPA ne salje posete sama, pa ih mi prijavljujemo na svakoj
+   promeni rute. Bez VITE_GA_ID se ne ucitava nista. Admin se ne meri. */
+function SiteAnalytics() {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
+  useEffect(() => {
+    if (isBare(pathname)) return;
+    pageview(pathname + search);
+  }, [pathname, search]);
+
+  if (isBare(pathname)) return null;
+  return <CookieConsent />;
+}
+
 export default function App() {
   return (
     <AuthProvider>
@@ -142,6 +162,7 @@ export default function App() {
             <SiteNav />
             <SiteCart />
             <SiteLanguage />
+            <SiteAnalytics />
           </ReactLenis>
         </BrowserRouter>
       </CartProvider>

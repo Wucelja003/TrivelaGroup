@@ -13,6 +13,7 @@ import CustomCase from "../Components/CustomCase";
 import TrivelaJourney from "../Components/TrivelaJourney";
 import PlayerMarquee, { type PlayerItem } from "../Components/PlayerMarquee";
 import "./Shop.css";
+import { useSeo } from "../lib/seo";
 
 /* Igraci za "People who trusted our work". Ime se ne prevodi; uloga je
    kljuc u drop.shop.playerRoles i prevodi se u Shop komponenti. */
@@ -338,6 +339,11 @@ function Sidebar({
 /* ---------- Page ---------- */
 export default function Shop() {
   const { t } = useTranslation();
+  useSeo({
+    title: t("seo.drop.title"),
+    description: t("seo.drop.description"),
+    path: "/drop",
+  });
   const roleLabel = t("drop.shop.playerRoles", { returnObjects: true });
   const dropPlayers: PlayerItem[] = DROP_PLAYERS.map((p) => ({
     img: p.img,

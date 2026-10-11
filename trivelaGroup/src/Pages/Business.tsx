@@ -5,6 +5,7 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 import AuroraField from "../Components/AuroraField";
 import BusinessReels from "../Components/BusinessReels";
 import "./Business.css";
+import { useSeo } from "../lib/seo";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -140,6 +141,11 @@ function Emblem({ reduce }: { reduce: boolean | null }) {
 
 export default function Business() {
   const { t } = useTranslation();
+  useSeo({
+    title: t("seo.business.title"),
+    description: t("seo.business.description"),
+    path: "/business",
+  });
   const pillarText = t("business.beyond.pillars", { returnObjects: true });
   const reduce = useReducedMotion();
 

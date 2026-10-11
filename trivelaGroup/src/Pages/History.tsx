@@ -8,6 +8,7 @@ import {
   type Variants,
 } from "motion/react";
 import "./History.css";
+import { useSeo } from "../lib/seo";
 
 /*
  * About Us — priča u dva poglavlja (ruta ostaje /history).
@@ -94,6 +95,11 @@ function TrivelaCurve() {
 
 export default function History() {
   const { t } = useTranslation();
+  useSeo({
+    title: t("seo.about.title"),
+    description: t("seo.about.description"),
+    path: "/history",
+  });
   const steps = t("about.origins.steps", { returnObjects: true });
   const timelineRef = useRef<HTMLDivElement>(null);
   /* Zelena kičma se puni tacno onoliko koliko si prosao kroz vremensku liniju */

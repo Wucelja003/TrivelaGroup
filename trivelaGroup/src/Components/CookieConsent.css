@@ -1,0 +1,151 @@
+/* Traka za pristanak — dole LEVO (desno je prekidac jezika).
+   z-index 56: tik iznad prekidaca (55), ispod fioke korpe (60), menija (70),
+   uvecanog videa (90) i intro zavese (100). */
+
+.cc {
+  position: fixed;
+  left: max(1rem, env(safe-area-inset-left));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 56;
+  width: min(23rem, calc(100vw - 2rem));
+  padding: 1rem 1.1rem 1.1rem;
+  border-radius: 1rem;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  animation: cc-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  /* Trivela Group (podrazumevano): teget + lime */
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(1, 7, 45, 0.9);
+  border: 1px solid rgba(150, 255, 0, 0.3);
+  box-shadow:
+    0 18px 40px -14px rgba(0, 0, 0, 0.7),
+    0 0 30px -10px rgba(150, 255, 0, 0.35);
+}
+
+@keyframes cc-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.cc-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #96ff00;
+}
+
+.cc-body {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.cc-link {
+  color: #96ff00;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cc-btn {
+  flex: 1 1 auto;
+  padding: 0.6rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.cc-btn:focus-visible {
+  outline: 2px solid #96ff00;
+  outline-offset: 2px;
+}
+
+.cc-btn--yes {
+  background: #96ff00;
+  color: #01072d;
+}
+.cc-btn--yes:hover {
+  background: #aaff3d;
+}
+
+.cc-btn--no {
+  background: transparent;
+  color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+.cc-btn--no:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+}
+
+/* --- Trivela Drop: bela strana, zelena bi se izgubila --- */
+html[data-page="drop"] .cc {
+  color: rgba(8, 34, 108, 0.8);
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(8, 34, 108, 0.16);
+  box-shadow: 0 18px 40px -14px rgba(8, 34, 108, 0.35);
+}
+html[data-page="drop"] .cc-title,
+html[data-page="drop"] .cc-link {
+  color: #08226c;
+}
+html[data-page="drop"] .cc-btn--yes {
+  background: #08226c;
+  color: #ffffff;
+}
+html[data-page="drop"] .cc-btn--yes:hover {
+  background: #0a2d8c;
+}
+html[data-page="drop"] .cc-btn--no {
+  border-color: rgba(8, 34, 108, 0.25);
+}
+html[data-page="drop"] .cc-btn--no:hover {
+  border-color: rgba(8, 34, 108, 0.5);
+  color: #08226c;
+}
+
+/* --- Trivela Business: zlatni akcenat --- */
+html[data-page="business"] .cc {
+  background: rgba(20, 23, 26, 0.92);
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow:
+    0 18px 40px -14px rgba(0, 0, 0, 0.7),
+    0 0 30px -10px rgba(212, 175, 55, 0.3);
+}
+html[data-page="business"] .cc-title,
+html[data-page="business"] .cc-link {
+  color: #d4af37;
+}
+html[data-page="business"] .cc-btn--yes {
+  background: linear-gradient(90deg, #a8802a, #d4af37);
+  color: #2a1e02;
+}
+html[data-page="business"] .cc-btn--yes:hover {
+  background: linear-gradient(90deg, #c09430, #f4e2a1);
+}
+html[data-page="business"] .cc-btn:focus-visible {
+  outline-color: #d4af37;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc {
+    animation: none;
+  }
+}

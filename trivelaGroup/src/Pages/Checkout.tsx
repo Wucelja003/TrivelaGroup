@@ -11,6 +11,7 @@ import { useCart, type CartItem } from "../context/CartContext";
 import { formatPrice } from "../data/cases";
 import { supabase } from "../lib/supabase";
 import "./Checkout.css";
+import { useSeo } from "../lib/seo";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+\d][\d\s().-]{6,}$/;
@@ -146,6 +147,13 @@ function OrderRow({ item }: { item: CartItem }) {
 /* ---- Page ---- */
 export default function Checkout() {
   const { t } = useTranslation();
+  /* Korpa nema sta da trazi u pretrazi */
+  useSeo({
+    title: t("seo.checkout.title"),
+    description: t("seo.checkout.description"),
+    path: "/checkout",
+    noindex: true,
+  });
   const label = t("drop.checkout.fields", { returnObjects: true });
   const errText = t("drop.checkout.errors", { returnObjects: true });
   const { items, subtotal, clear } = useCart();

@@ -32,6 +32,55 @@ const en = {
     openCart: "Open cart ({{n}})",
   },
 
+
+  consent: {
+    title: "Cookies",
+    body: "We measure visits to see which pages people actually read. No ads, no profiling.",
+    more: "More",
+    accept: "Accept",
+    decline: "Decline",
+  },
+
+  seo: {
+    home: {
+      title: "Trivela Group",
+      description:
+        "Boutique sports agency from Belgrade: brand building, PR and content for athletes, clubs and companies.",
+    },
+    about: {
+      title: "About Us",
+      description:
+        "From one Instagram page to a creative agency building athlete brands — how Trivela Group started and what we stand for.",
+    },
+    gallery: {
+      title: "Gallery",
+      description:
+        "Matchdays, verifications, reels and posts we produced for athletes and clubs.",
+    },
+    drop: {
+      title: "Trivela Drop",
+      description:
+        "Athlete-inspired phone cases in limited editions, plus custom cases made from your own photo.",
+    },
+    product: {
+      description:
+        "{{name}} phone case by Trivela Drop — premium hard case, drop tested, delivered in 2–4 working days.",
+    },
+    business: {
+      title: "Trivela Business",
+      description:
+        "Marketing, PR and brand consulting for companies, founders and brands far outside sport.",
+    },
+    contact: {
+      title: "Get in Touch",
+      description:
+        "Tell us about your project. We reply within 24 hours — never with a template email.",
+    },
+    checkout: {
+      title: "Checkout",
+      description: "Complete your Trivela Drop order.",
+    },
+  },
   common: {
     location: "Belgrade, Serbia",
     basedIn: "Based in:",

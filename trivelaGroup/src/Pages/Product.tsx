@@ -6,6 +6,7 @@ import { formatPrice, type CaseItem } from "../data/cases";
 import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import "./Product.css";
+import { useSeo } from "../lib/seo";
 
 /* Đoković maskica (Legends) ima vise varijacija boje — swatch-evi menjaju sliku.
    Slike: /public/DjokovicCases (4:5). Vezano za slug proizvoda. */
@@ -123,6 +124,17 @@ export default function Product() {
   const isDjok = !!item && item.id === DJOKOVIC_SLUG;
   const djokColor = DJOKOVIC_COLORS[colorIdx];
   const djokImg = isDjok ? `/DjokovicCases/${djokColor.file}.PNG` : null;
+
+  /* Naslov nosi ime maskice — to je ono sto se trazi u pretrazi. Dok se
+     proizvod ucitava iz baze, stoji naslov prodavnice. */
+  useSeo({
+    title: item ? item.name : t("seo.drop.title"),
+    description: item
+      ? t("seo.product.description", { name: item.name })
+      : t("seo.drop.description"),
+    path: `/drop/${id ?? ""}`,
+    image: item?.image,
+  });
 
   const suggestions = useMemo(() => {
     if (!item) return [];
