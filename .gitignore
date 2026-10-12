@@ -20,3 +20,6 @@ trivelaGroup/public/First-video.mp4.mp4
 .vscode/
 .idea/
 *.log
+
+# === Supabase CLI radni folder (ID projekta, lokalno stanje) ===
+api/supabase/.temp/
