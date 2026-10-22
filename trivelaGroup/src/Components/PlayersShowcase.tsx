@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
+import SkewedCarousel, {
+  type SkewedCarouselItem,
+} from "./SkewedCarousel";
 import "./PlayersShowcase.css";
 
 /*
@@ -53,24 +55,21 @@ const players: Player[] = [
   { first: "Ibrahim", last: "Zubairu", file: "Ibrahim_Zubairu" },
 ];
 
-/* Brzina trake ne zavisi od broja kartica: ~4.5s po kartici */
-const DURATION = `${players.length * 4.5}s`;
-
-/* TRI iste kopije, pomak tacno -1/3 — dve nisu dovoljne da pokriju vrlo
-   siroke ekrane, pa bi se na kraju kruga videla rupa. */
-const COPIES = [0, 1, 2];
+/* Karusel nosi samo sliku i naslov, pa igraca vracamo po naslovu */
+const byTitle = new Map(players.map((p) => [`${p.first} ${p.last}`, p]));
 
 function PlayerCard({
   player,
-  copy,
   load,
+  focused = true,
 }: {
   player: Player;
-  copy?: boolean;
   load: boolean;
+  /* Kartica u fokusu je puna; bocne su malo prigusene */
+  focused?: boolean;
 }) {
   return (
-    <figure className="pls-card" aria-hidden={copy || undefined}>
+    <figure className={`pls-card${focused ? " is-focused" : ""}`}>
       <div className="pls-frame">
         <div className="pls-panel" />
         <img
@@ -135,18 +134,20 @@ function useSeenOnce<T extends Element>(options: IntersectionObserverInit) {
   return [ref, seen] as const;
 }
 
+/* Kartice za karusel: slika je ono sto karusel zna, a `player` nosimo uz
+   nju da kartica moze da se nacrta u renderItem. */
+const items: SkewedCarouselItem[] = players.map((p) => ({
+  src: `/igraci/${p.file}.webp`,
+  title: `${p.first} ${p.last}`,
+}));
+
 export default function PlayersShowcase() {
   const { t } = useTranslation();
   /* Slike se ucitaju SVE kad se sekcija priblizi, ne jedna po jedna:
-     loading="lazy" ne vidi kartice odsecene trakom (desno van kadra), pa bi
-     svaka iskocila tek na ivici. */
+     karusel drzi bocne kartice van kadra, pa bi "lazy" svaku dovlacio tek
+     kad dodje na red i kartica bi bila prazna dok se ne skine. */
   const [sectionRef, load] = useSeenOnce<HTMLElement>({
     rootMargin: "800px 0px",
-  });
-  /* Traka krece tek kad se vidi — inace bi do tada vec odmakla i prvi
-     igraci (redosled je bitan) bi prosli pre nego sto neko stigne dovde. */
-  const [marqueeRef, running] = useSeenOnce<HTMLDivElement>({
-    threshold: 0.6,
   });
 
   return (
@@ -159,25 +160,33 @@ export default function PlayersShowcase() {
           </h2>
         </div>
 
-        {/* Traka — jednake kopije liste, pomak za tacno jednu kopiju, pa se
-            vrti bez skoka. Razmak kroz margin (ne gap), da pomak bude tacan.
-            Kopije posle prve su samo vizuelne, citac ekrana ih preskace. */}
-        <div ref={marqueeRef} className="pls-marquee">
-          <div
-            className={`pls-track${running ? " is-running" : ""}`}
-            style={{ "--pls-duration": DURATION } as CSSProperties}
-          >
-            {COPIES.map((n) =>
-              players.map((p) => (
-                <PlayerCard
-                  key={`${n}-${p.file}`}
-                  player={p}
-                  load={load}
-                  copy={n > 0}
-                />
-              )),
-            )}
-          </div>
+        {/* Coverflow: karusel daje 3D okvir, strelice, tackice, prevlacenje i
+            tastere, a kartica ostaje nasa (okvir, znak, plocica sa imenom). */}
+        <div className="pls-rail text-white">
+          <SkewedCarousel
+            items={items}
+            renderItem={(item, focused) => {
+              const player = byTitle.get(item.title);
+              if (!player) return null;
+              return <PlayerCard player={player} load={load} focused={focused} />;
+            }}
+            initialIndex={0}
+            cardWidth={218}
+            aspectRatio="10 / 13"
+            rotation={52}
+            inactiveScale={0.84}
+            perspective={950}
+            borderRadius={18}
+            loop
+            /* Bez automatskog listanja — posetilac vodi, strelicama,
+               tackicama, prevlacenjem ili tasterima. */
+            autoplay={false}
+            showTitles={false}
+            showControls
+            showDots
+            enableDrag
+            enableKeyboard
+          />
         </div>
       </div>
     </section>

@@ -177,6 +177,8 @@ const en = {
         lessortWife: "Mathias Lessort's wife",
       },
       allCases: "All cases",
+      newBadge: "New",
+      onlyNew: "New arrivals ({{n}})",
       // Mnozina: i18next bira _one/_few/_other po jeziku. Engleski nikad ne
       // koristi _few, ali kljuc mora postojati da bi srpski imao isti oblik.
       productCount_one: "{{count}} product",
@@ -185,6 +187,7 @@ const en = {
       sortBy: "Sort by",
       collections: "Collections",
       sort: {
+        newest: "Newest first",
         az: "Name: A – Z",
         za: "Name: Z – A",
         priceAsc: "Price: low to high",
@@ -241,6 +244,10 @@ const en = {
       lead: "A few details and your cases are on the way. We reply within 24 hours if anything's off.",
       contact: "Contact",
       shipping: "Shipping",
+      serbiaOnly:
+        "We currently ship within Serbia only. Orders to other countries are not available yet — write to us and we'll let you know when they open.",
+      note: "Note (optional)",
+      noteHint: "Courier instructions, floor, gift message…",
       fields: {
         firstName: "First name",
         lastName: "Last name",

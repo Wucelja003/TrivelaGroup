@@ -164,6 +164,8 @@ const sr: Messages = {
         lessortWife: "Supruga Mathiasa Lessorta",
       },
       allCases: "Sve maskice",
+      newBadge: "Novo",
+      onlyNew: "Novo u ponudi ({{n}})",
       // 1 proizvod · 2–4 proizvoda · 5+ proizvoda (21 proizvod, 22 proizvoda...)
       productCount_one: "{{count}} proizvod",
       productCount_few: "{{count}} proizvoda",
@@ -171,6 +173,7 @@ const sr: Messages = {
       sortBy: "Sortiraj po",
       collections: "Kolekcije",
       sort: {
+        newest: "Najnovije prvo",
         az: "Naziv: A – Z",
         za: "Naziv: Z – A",
         priceAsc: "Cena: od najniže",
@@ -228,6 +231,10 @@ const sr: Messages = {
       lead: "Još par detalja i tvoje maskice kreću na put. Ako nešto nije u redu, javljamo se u roku od 24 sata.",
       contact: "Kontakt",
       shipping: "Dostava",
+      serbiaOnly:
+        "Za sada šaljemo samo na adrese u Srbiji. Porudžbine za druge zemlje još nisu moguće — piši nam pa ti javimo čim se otvore.",
+      note: "Napomena (opciono)",
+      noteHint: "Poruka za kurira, sprat, poklon…",
       fields: {
         firstName: "Ime",
         lastName: "Prezime",

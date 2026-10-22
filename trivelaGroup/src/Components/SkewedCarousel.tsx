@@ -97,6 +97,12 @@ export interface SkewedCarouselProps {
   className?: string;
   /** Fired whenever the focused slide changes */
   onIndexChange?: (index: number) => void;
+  /**
+   * Custom slide contents. Without it a slide is the item's image plus its
+   * caption; with it the carousel only supplies the 3D frame and the
+   * navigation, and the caller draws whatever goes inside.
+   */
+  renderItem?: (item: SkewedCarouselItem, focused: boolean) => React.ReactNode;
 }
 
 const FLICK_DISTANCE = 45;
@@ -132,6 +138,7 @@ interface SlideProps {
   captioned: boolean;
   transition: Transition;
   onPick: () => void;
+  render?: (item: SkewedCarouselItem, focused: boolean) => React.ReactNode;
 }
 
 const Slide = ({
@@ -148,6 +155,7 @@ const Slide = ({
   captioned,
   transition,
   onPick,
+  render,
 }: SlideProps) => (
   <div style={{ perspective }}>
     <motion.div
@@ -163,16 +171,22 @@ const Slide = ({
         aria-label={item.title}
         aria-current={focused}
         style={{ borderRadius: radius }}
-        className="relative block h-full w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 outline-none focus-visible:[outline:2px_solid_currentColor] focus-visible:[outline-offset:4px]"
+        className={`relative block h-full w-full cursor-pointer border-0 bg-transparent p-0 outline-none focus-visible:[outline:2px_solid_currentColor] focus-visible:[outline-offset:4px]${
+          render ? "" : " overflow-hidden"
+        }`}
       >
-        <img
-          src={item.src}
-          alt={item.alt ?? item.title}
-          draggable={false}
-          className="h-full w-full object-cover"
-        />
+        {render ? (
+          render(item, focused)
+        ) : (
+          <img
+            src={item.src}
+            alt={item.alt ?? item.title}
+            draggable={false}
+            className="h-full w-full object-cover"
+          />
+        )}
 
-        {captioned && (
+        {captioned && !render && (
           <>
             <motion.span
               aria-hidden
@@ -279,6 +293,7 @@ const SkewedCarousel: React.FC<SkewedCarouselProps> = ({
   enableKeyboard = true,
   className,
   onIndexChange,
+  renderItem,
 }) => {
   const { t } = useTranslation();
   const count = items.length;
@@ -381,6 +396,7 @@ const SkewedCarousel: React.FC<SkewedCarouselProps> = ({
               captioned={showTitles}
               transition={motions.card}
               onPick={() => focusSlide(index)}
+              render={renderItem}
             />
           ))}
         </motion.div>

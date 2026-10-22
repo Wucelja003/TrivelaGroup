@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import type { CaseItem, CollectionName } from "./cases";
+import { isNewCase } from "./cases";
 import { collections as staticCollections } from "./cases";
 import { seedCases } from "./seedCases";
+import { productImage } from "./productImages";
 
 // Deljeni cache — svi komponenti povuku podatke jednom
 let cache: CaseItem[] | null = null;
@@ -77,6 +79,7 @@ interface ProductRow {
   badge: string | null;
   color: string | null;
   image_url: string | null;
+  created_at: string | null;
   collections: { name: string } | { name: string }[] | null;
 }
 
@@ -89,7 +92,10 @@ function normalize(row: ProductRow): CaseItem {
     price: Number(row.price),
     badge: row.badge ?? "",
     color: row.color ?? "#01072d",
-    image: row.image_url ?? undefined,
+    /* Lokalna WebP slika ako je imamo; iz baze samo za nove maskice. */
+    image: productImage(row.slug, row.image_url),
+    createdAt: row.created_at ?? undefined,
+    isNew: isNewCase(row.created_at ?? undefined),
   };
 }
 
@@ -100,9 +106,10 @@ async function fetchCases(): Promise<CaseItem[]> {
   inflight = (async () => {
     const { data, error } = await supabase
       .from("products")
-      .select("slug, name, price, badge, color, image_url, collections(name)")
+      .select("slug, name, price, badge, color, image_url, created_at, collections(name)")
       .eq("active", true)
-      .order("name", { ascending: true });
+      /* Najnovije prvo — nove maskice su ono sto ljudi traze. */
+      .order("created_at", { ascending: false });
 
     if (error) throw error;
     const items = ((data ?? []) as ProductRow[]).map(normalize);

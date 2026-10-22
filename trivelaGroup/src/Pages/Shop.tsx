@@ -36,13 +36,14 @@ const DROP_PLAYERS: { img: string; name: string; role: PlayerRole }[] = [
   { img: "/TrivelaGroupPhotos/AndrijaMaksimovicPhoto.jpg", name: "Andrija Maksimović", role: "football" },
 ];
 
-type SortKey = "az" | "za" | "price-asc" | "price-desc";
+type SortKey = "new" | "az" | "za" | "price-asc" | "price-desc";
 
 /* Labela je kljuc u drop.shop.sort (vrednost sortiranja ostaje ista). */
 const sortOptions: {
   key: SortKey;
-  label: "az" | "za" | "priceAsc" | "priceDesc";
+  label: "newest" | "az" | "za" | "priceAsc" | "priceDesc";
 }[] = [
+  { key: "new", label: "newest" },
   { key: "az", label: "az" },
   { key: "za", label: "za" },
   { key: "price-asc", label: "priceAsc" },
@@ -170,6 +171,7 @@ function PhoneCase({ item }: { item: CaseItem }) {
 
 /* ---------- Card ---------- */
 function ShopCard({ item, index }: { item: CaseItem; index: number }) {
+  const { t } = useTranslation();
   return (
     <article
       className="shop-anim group"
@@ -192,6 +194,14 @@ function ShopCard({ item, index }: { item: CaseItem; index: number }) {
             <PhoneCase item={item} />
           )}
         </div>
+
+        {/* Oznaka NOVO — gore levo, da se vidi pre nego sto se pogleda ime */}
+        {item.isNew && (
+          <span className="pointer-events-none absolute left-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-zelena px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-teget shadow-[0_6px_20px_-6px_rgba(150,255,0,0.9)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-teget" aria-hidden="true" />
+            {t("drop.shop.newBadge")}
+          </span>
+        )}
 
         {/* Zatamnjenje odozdo */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-teget/70 via-teget/15 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -352,8 +362,11 @@ export default function Shop() {
   }));
   const { cases, loading, error, fallback } = useCases();
   const collectionList = useCollections();
-  const [sort, setSort] = useState<SortKey>("az");
+  /* Podrazumevano najnovije — nove maskice su ono sto ljudi traze. */
+  const [sort, setSort] = useState<SortKey>("new");
   const [selected, setSelected] = useState<CollectionName[]>([]);
+  /* Dugme "Samo novo" iznad spiska */
+  const [onlyNew, setOnlyNew] = useState(false);
   const [collectionsOpen, setCollectionsOpen] = useState(true);
 
   const toggleCollection = (c: CollectionName) =>
@@ -361,13 +374,22 @@ export default function Shop() {
       prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
     );
 
+  const newCount = useMemo(() => cases.filter((c) => c.isNew).length, [cases]);
+
   const visible = useMemo(() => {
-    const list =
+    let list =
       selected.length === 0
         ? [...cases]
         : cases.filter((c) => selected.includes(c.collection));
+    if (onlyNew) list = list.filter((c) => c.isNew);
     list.sort((a, b) => {
       switch (sort) {
+        /* Bez datuma (statican fallback) redosled ostaje kakav je stigao */
+        case "new":
+          return (
+            new Date(b.createdAt ?? 0).getTime() -
+            new Date(a.createdAt ?? 0).getTime()
+          );
         case "az":
           return a.name.localeCompare(b.name);
         case "za":
@@ -379,7 +401,7 @@ export default function Shop() {
       }
     });
     return list;
-  }, [sort, selected, cases]);
+  }, [sort, selected, cases, onlyNew]);
 
   return (
     <>
@@ -439,9 +461,30 @@ export default function Shop() {
             collectionList={collectionList}
           />
 
+          <div>
+          {/* Prekidac "samo nove" — stoji iznad spiska, vidi se odmah */}
+          {newCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setOnlyNew((v) => !v)}
+              aria-pressed={onlyNew}
+              className={`mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-bold uppercase tracking-[0.12em] transition-all duration-200 ${
+                onlyNew
+                  ? "border-zelena bg-zelena text-teget shadow-[0_8px_22px_-8px_rgba(150,255,0,0.8)]"
+                  : "border-mastilo/20 text-mastilo hover:border-zelena hover:text-ledena-ink"
+              }`}
+            >
+              <span
+                aria-hidden="true"
+                className={`h-2 w-2 rounded-full ${onlyNew ? "bg-teget" : "bg-zelena"}`}
+              />
+              {t("drop.shop.onlyNew", { n: newCount })}
+            </button>
+          )}
+
           {/* Grid — key okida re-animaciju pri promeni filtera */}
           <div
-            key={`${sort}-${selected.join(",")}-${loading ? "l" : "r"}`}
+            key={`${sort}-${selected.join(",")}-${onlyNew ? "n" : "a"}-${loading ? "l" : "r"}`}
             className="grid grid-cols-2 gap-5 sm:grid-cols-3 xl:grid-cols-4"
           >
             {error && (
@@ -461,6 +504,7 @@ export default function Shop() {
               visible.map((item, i) => (
                 <ShopCard key={item.id} item={item} index={i} />
               ))}
+          </div>
           </div>
         </div>
       </div>

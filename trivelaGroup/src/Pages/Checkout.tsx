@@ -40,6 +40,8 @@ interface FormState {
   address: string;
   city: string;
   postal: string;
+  /* Opciono — ne ulazi u proveru forme */
+  note: string;
 }
 
 const EMPTY: FormState = {
@@ -50,6 +52,7 @@ const EMPTY: FormState = {
   address: "",
   city: "",
   postal: "",
+  note: "",
 };
 
 /* ---- Underline field with floating label ---- */
@@ -146,7 +149,7 @@ function OrderRow({ item }: { item: CartItem }) {
 
 /* ---- Page ---- */
 export default function Checkout() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   /* Korpa nema sta da trazi u pretrazi */
   useSeo({
     title: t("seo.checkout.title"),
@@ -225,6 +228,8 @@ export default function Checkout() {
        je prosla. */
     let number: string;
     let charged = total;
+    /* Racun u mejlu mora da se poklopi sa onim sto je server upisao */
+    let billed = { subtotal, shipping };
     try {
       const { data, error } = await supabase.functions.invoke("create-order", {
         body: {
@@ -249,6 +254,9 @@ export default function Checkout() {
       if (!data?.number) throw new Error(data?.error ?? "Nema broja porudzbine");
       number = data.number;
       if (typeof data.total === "number") charged = data.total;
+      if (typeof data.subtotal === "number" && typeof data.shipping === "number") {
+        billed = { subtotal: data.subtotal, shipping: data.shipping };
+      }
     } catch (err) {
       console.error("[checkout] porudzbina nije upisana:", err);
       setFailed(true);
@@ -262,18 +270,29 @@ export default function Checkout() {
         body: {
           kind: "order",
           number,
+          /* Kupcu pisemo na jeziku na kom je i poruciо */
+          lang: i18n.resolvedLanguage,
           email: form.email,
           name: `${form.firstName} ${form.lastName}`.trim(),
           phone: form.phone,
           address: form.address,
           city: form.city,
           postal: form.postal,
+          note: form.note.trim() || undefined,
+          subtotal: billed.subtotal,
+          shipping: billed.shipping,
           total: charged,
           items: placed.map((it) => ({
             name: it.name,
             model: it.model,
             price: it.price,
             qty: it.qty,
+            /* Slicica u mejlu; mora apsolutna adresa, mejl nema nas domen */
+            image: it.image?.startsWith("http")
+              ? it.image
+              : it.image
+                ? `${window.location.origin}${it.image}`
+                : undefined,
           })),
         },
       });
@@ -449,6 +468,31 @@ export default function Checkout() {
               >
                 {t("drop.checkout.shipping")}
               </div>
+
+              {/* Saljemo samo po Srbiji — kupac to mora da vidi PRE nego sto
+                  upise adresu, ne posle porudzbine. */}
+              <div
+                className="co-anim mb-8 flex items-start gap-3 rounded-2xl border border-zelena/30 bg-zelena/[0.07] px-5 py-4"
+                style={{ animationDelay: "340ms" }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.8}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-zelena"
+                >
+                  <path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z" />
+                  <circle cx="12" cy="10" r="2.6" />
+                </svg>
+                <p className="text-sm leading-relaxed text-white/80">
+                  {t("drop.checkout.serbiaOnly")}
+                </p>
+              </div>
+
               <div className="grid gap-10">
                 <Field
                   id="address"
@@ -478,6 +522,34 @@ export default function Checkout() {
                     error={err("postal")}
                     animationDelay={460}
                   />
+                </div>
+
+                {/* Napomena — opciono. Kurir, sprat, poklon, bilo sta. */}
+                <div
+                  className="co-anim relative"
+                  style={{ animationDelay: "510ms" }}
+                >
+                  <textarea
+                    id="note"
+                    value={form.note}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, note: e.target.value }))
+                    }
+                    rows={3}
+                    maxLength={500}
+                    placeholder=" "
+                    className="peer w-full resize-none border-b border-neutral-700 bg-transparent pt-7 pb-2 text-base text-white outline-none transition-colors duration-300 focus:border-zelena"
+                  />
+                  <label
+                    htmlFor="note"
+                    className="pointer-events-none absolute left-0 top-7 text-base font-normal text-neutral-500 transition-all duration-200 ease-out peer-focus:top-0 peer-focus:text-[11px] peer-focus:uppercase peer-focus:tracking-[0.2em] peer-focus:text-zelena peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-[11px] peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-[0.2em] peer-[:not(:placeholder-shown)]:text-neutral-400"
+                  >
+                    {t("drop.checkout.note")}
+                  </label>
+                  <div className="mt-2 flex items-center justify-between text-[11px] text-neutral-500">
+                    <span>{t("drop.checkout.noteHint")}</span>
+                    <span>{form.note.length}/500</span>
+                  </div>
                 </div>
               </div>
             </div>

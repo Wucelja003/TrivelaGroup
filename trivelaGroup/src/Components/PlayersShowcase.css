@@ -1,75 +1,48 @@
-/* ===== Players showcase — traka Fantasy kartica, staje na hover =====
+/* ===== Players showcase — Fantasy kartice u 3D coverflow karuselu =====
    Home strana (tamna): zeleni akcenat. Igrac (isecen PNG) iskace iznad
-   okvira kartice; ispod je plocica sa imenom i zelenom linijom. */
+   okvira kartice; ispod je plocica sa imenom i zelenom linijom.
+   Listanje (strelice, tackice, prevlacenje, tasteri) nosi SkewedCarousel —
+   ovde je samo izgled kartice. */
 
-.pls-marquee {
-  /* Prva kartica krece odmah iza zatamnjene ivice (maska je 6%), da prvi
-     igrac bude ceo vidljiv na startu. */
-  --pls-start: 6vw;
-  overflow: hidden;
-  /* Ivice se gube u pozadinu, bez tvrdog reza */
+.pls-rail {
+  /* Bocne kartice su zakosene i izlaze iz sirine; maska ih gubi u pozadinu
+     umesto da se vide odsecene. */
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    #000 6%,
-    #000 94%,
+    #000 10%,
+    #000 90%,
     transparent 100%
   );
   mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    #000 6%,
-    #000 94%,
+    #000 10%,
+    #000 90%,
     transparent 100%
   );
 }
 
-.pls-track {
-  display: flex;
-  width: max-content;
-  /* Samo vertikalni padding: horizontalni bi pomerio -50% i napravio skok.
-     Gore ima mesta da kartica na hover moze da se podigne. */
-  padding: 0.75rem 0 0.5rem;
-  animation: pls-scroll var(--pls-duration, 110s) linear infinite;
-  /* Stoji na prvom kadru dok traka ne dodje na ekran (is-running iz JS-a) */
-  animation-play-state: paused;
-  will-change: transform;
-}
-.pls-track.is-running {
-  animation-play-state: running;
-}
-
-/* Stani dok neko gleda */
-.pls-marquee:hover .pls-track {
-  animation-play-state: paused;
-}
-
-/* Pomak je tacno jedna kopija (1/3 trake), pa se krug zatvara bez skoka */
-@keyframes pls-scroll {
-  from {
-    transform: translate3d(var(--pls-start), 0, 0);
-  }
-  to {
-    transform: translate3d(calc(var(--pls-start) - 100% / 3), 0, 0);
-  }
-}
-
 /* --- Kartica --- */
 .pls-card {
-  flex: 0 0 auto;
-  width: clamp(150px, 15vw, 188px);
-  /* Razmak kroz margin, NE gap — inace -50% nije tacan */
-  margin: 0 0.8rem;
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  /* Bocne kartice su prigusene, fokusirana je puna */
+  opacity: 0.72;
+  transition: opacity 0.4s ease;
 }
-.pls-card:hover {
-  transform: translateY(-6px);
+.pls-card.is-focused {
+  opacity: 1;
 }
 
 /* Kvadrat kao i slika; panel krece nize, pa glava izviri iznad njega */
 .pls-frame {
   position: relative;
-  aspect-ratio: 1 / 1;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .pls-panel {
@@ -114,13 +87,13 @@
   transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.pls-card:hover .pls-panel {
+.pls-card.is-focused .pls-panel {
   border-color: rgba(150, 255, 0, 0.55);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     0 0 44px rgba(150, 255, 0, 0.25);
 }
-.pls-card:hover .pls-panel::after {
+.pls-card.is-focused .pls-panel::after {
   transform: translateX(120%);
 }
 
@@ -165,7 +138,7 @@
   opacity: 1;
   transform: none;
 }
-.pls-card:hover .pls-photo.is-in {
+.pls-card.is-focused .pls-photo.is-in {
   transform: scale(1.06);
 }
 
@@ -228,13 +201,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pls-track {
-    animation: none;
-  }
-  /* Bez animacije mora rucno da se prevuce */
-  .pls-marquee {
-    overflow-x: auto;
-  }
+  /* Samo listanje se ne pokrece samo (iskljuceno iz JS-a); prelazi stoje */
   .pls-card,
   .pls-photo,
   .pls-panel::after {

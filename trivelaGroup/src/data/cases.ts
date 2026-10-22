@@ -10,6 +10,21 @@ export interface CaseItem {
   badge: string;
   color: string;
   image?: string;
+  /* Kad je maskica dodata — po tome ide "najnovije prvo" i oznaka NOVO.
+     Statични fallback podaci ga nemaju, pa je opciono. */
+  createdAt?: string;
+  isNew?: boolean;
+}
+
+/* Maskica je "nova" prvih 30 dana od dodavanja. Posle sama prestane da
+   nosi oznaku — niko ne mora da je skida rucno. */
+export const NEW_FOR_DAYS = 30;
+
+export function isNewCase(createdAt?: string): boolean {
+  if (!createdAt) return false;
+  const added = new Date(createdAt).getTime();
+  if (Number.isNaN(added)) return false;
+  return Date.now() - added < NEW_FOR_DAYS * 24 * 60 * 60 * 1000;
 }
 
 export const collections: CollectionName[] = ["World Cup", "Euroleague"];

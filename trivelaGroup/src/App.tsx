@@ -21,6 +21,10 @@ import CartDrawer from "./Components/CartDrawer";
 import LanguageToggle from "./Components/LanguageToggle";
 import CookieConsent from "./Components/CookieConsent";
 import { initAnalytics, pageview } from "./lib/analytics";
+/* Vercel Analytics — meri posete BEZ kolacica, pa mu ne treba pristanak.
+   Radi samo na Vercel-u (lokalno je mrtav), i mora da bude ukljucen u
+   Vercel nalogu: Project -> Analytics -> Enable Web Analytics. */
+import { Analytics } from "@vercel/analytics/react";
 import Home from "./Pages/Home";
 /* Sve strane osim landinga su lazy — svaka ide u svoj chunk, pa glavni bundle
    ostaje mali i pocetno ucitavanje je brzo. Kod strane se skida tek kad se ona
@@ -163,6 +167,7 @@ export default function App() {
             <SiteCart />
             <SiteLanguage />
             <SiteAnalytics />
+            <Analytics />
           </ReactLenis>
         </BrowserRouter>
       </CartProvider>

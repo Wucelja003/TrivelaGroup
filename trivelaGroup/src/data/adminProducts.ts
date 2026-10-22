@@ -127,10 +127,50 @@ function uniqueSlug(name: string, taken: Set<string>): string {
   return `${base}-${n}`;
 }
 
+/* Najsira tacka prikaza maskice na sajtu je oko 450px, pa je 900px tacno
+   dvostruko (ostro i na retina ekranima). Sve preko toga je cist utrosak
+   saobracaja. */
+const MAX_WIDTH = 900;
+
+/* Smanji i pretvori u WebP PRE slanja.
+   ZASTO: originali iz telefona/Photoshopa su bili 6-9 MB. Sa 25 maskica
+   jedna poseta prodavnici povlacila je ~170 MB i za par nedelja potrosila
+   mesecnu kvotu saobracaja, posle cega Supabase zakljuca ceo projekat.
+   Ako kompresija ne uspe ili ne pomogne, salje se original — bolje veliki
+   fajl nego prekinuta otprema. */
+async function shrink(file: File): Promise<File> {
+  if (!file.type.startsWith("image/")) return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_WIDTH / bitmap.width);
+    const w = Math.round(bitmap.width * scale);
+    const h = Math.round(bitmap.height * scale);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(bitmap, 0, 0, w, h);
+    bitmap.close();
+
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/webp", 0.82),
+    );
+    if (!blob || blob.size >= file.size) return file;
+
+    const name = file.name.replace(/\.[^.]+$/, "") + ".webp";
+    return new File([blob], name, { type: "image/webp" });
+  } catch {
+    return file;
+  }
+}
+
 /* Otprema sliku u Storage i vraca javni URL. Ime je timestamp + cist
    nastavak, da se dve iste slike ne pregaze. new Date() je ovde u redu —
    ovo je korisnicka akcija u browseru, ne workflow skripta. */
-export async function uploadImage(file: File): Promise<string> {
+export async function uploadImage(original: File): Promise<string> {
+  const file = await shrink(original);
   const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
   const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   const { error } = await supabase.storage
