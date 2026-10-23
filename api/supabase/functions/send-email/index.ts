@@ -186,7 +186,7 @@ const T = {
     total: "Ukupno",
     deliverTo: "Isporuka na adresu",
     noteLabel: "Napomena",
-    eta: "Isporuka obično traje 2–4 radna dana.",
+    eta: "Isporuka obično traje 5–7 radnih dana.",
     help: "Ako nešto nije u redu, odgovori na ovaj mejl i javljamo se u roku od 24 sata.",
   },
   en: {
@@ -203,7 +203,7 @@ const T = {
     total: "Total",
     deliverTo: "Delivery address",
     noteLabel: "Note",
-    eta: "Delivery usually takes 2–4 working days.",
+    eta: "Delivery usually takes 5–7 working days.",
     help: "If anything looks wrong, just reply to this email — we answer within 24 hours.",
   },
 };

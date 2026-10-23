@@ -54,7 +54,7 @@ const sr: Messages = {
     },
     product: {
       description:
-        "Maskica {{name}} iz Trivela Drop ponude — premium tvrda maskica, testirana na padove, isporuka za 2–4 radna dana.",
+        "Maskica {{name}} iz Trivela Drop ponude — premium tvrda maskica, testirana na padove, isporuka za 5–7 radnih dana.",
     },
     business: {
       title: "Trivela Business",
@@ -201,7 +201,7 @@ const sr: Messages = {
       phoneModelPlaceholder: "npr. iPhone 18 Pro",
       addToCart: "Dodaj u korpu",
       added: "Dodato u korpu",
-      stock: "Na stanju · Isporuka za 2–4 radna dana",
+      stock: "Na stanju · Isporuka za 5–7 radnih dana",
       alsoLike: "Možda će ti se svideti i",
       viewAll: "Pogledaj sve",
     },
@@ -268,7 +268,7 @@ const sr: Messages = {
       thanks: "Hvala, {{name}}.",
       friend: "prijatelju",
       confirmBefore: "Uskoro ćemo poslati potvrdu na",
-      confirmAfter: ". Isporuka obično traje 2–4 radna dana.",
+      confirmAfter: ". Isporuka obično traje 5–7 radnih dana.",
       backHome: "Nazad na početnu",
     },
 

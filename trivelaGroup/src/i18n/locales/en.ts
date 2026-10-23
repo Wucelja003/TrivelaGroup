@@ -64,7 +64,7 @@ const en = {
     },
     product: {
       description:
-        "{{name}} phone case by Trivela Drop — premium hard case, drop tested, delivered in 2–4 working days.",
+        "{{name}} phone case by Trivela Drop — premium hard case, drop tested, delivered in 5–7 working days.",
     },
     business: {
       title: "Trivela Business",
@@ -215,7 +215,7 @@ const en = {
       phoneModelPlaceholder: "e.g. iPhone 18 Pro",
       addToCart: "Add to cart",
       added: "Added to cart",
-      stock: "In stock · Ships in 2–4 business days",
+      stock: "In stock · Ships in 5–7 business days",
       alsoLike: "You might also like",
       viewAll: "View all",
     },
@@ -281,7 +281,7 @@ const en = {
       thanks: "Thanks, {{name}}.",
       friend: "friend",
       confirmBefore: "We'll send a confirmation to",
-      confirmAfter: " shortly. Delivery typically takes 2–4 business days.",
+      confirmAfter: " shortly. Delivery typically takes 5–7 business days.",
       backHome: "Back home",
     },
 
