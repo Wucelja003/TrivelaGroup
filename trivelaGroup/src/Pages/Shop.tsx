@@ -20,6 +20,7 @@ import { useSeo } from "../lib/seo";
 type PlayerRole = "basketball" | "football" | "lessortWife";
 
 const DROP_PLAYERS: { img: string; name: string; role: PlayerRole }[] = [
+  { img: "/TrivelaGroupPhotos/Lamar_photo.jpg", name: "Lamar Stevens", role: "basketball" },
   { img: "/TrivelaGroupPhotos/ZachLedayPhoto.jpg", name: "Zach Leday", role: "basketball" },
   { img: "/TrivelaGroupPhotos/MusaPhoto.JPG", name: "Džanan Musa", role: "basketball" },
   { img: "/TrivelaGroupPhotos/VladimirLucicPhoto.jpg", name: "Vladimir Lučić", role: "football" },
