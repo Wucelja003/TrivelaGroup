@@ -337,3 +337,370 @@
 .adm-coll-add .adm-btn {
   flex-shrink: 0;
 }
+
+/* ===== Tabovi (Maskice / Porudžbine) ===== */
+.adm-tabs {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.adm-tab {
+  position: relative;
+  padding: 0.7rem 1.1rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.adm-tab:hover {
+  color: #ffffff;
+}
+.adm-tab.is-on {
+  color: #96ff00;
+}
+/* Zelena linija ispod aktivnog taba, preko ivice sekcije */
+.adm-tab.is-on::after {
+  content: "";
+  position: absolute;
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 999px;
+  background: #96ff00;
+}
+
+/* ===== Porudžbine ===== */
+.ord-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* --- Brojke na vrhu --- */
+.ord-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.ord-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+.ord-stat-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+.ord-stat-num--accent {
+  color: #96ff00;
+}
+.ord-stat-lbl {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* --- Filteri i pretraga --- */
+.ord-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.ord-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ord-chip {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+.ord-chip:hover {
+  border-color: rgba(150, 255, 0, 0.5);
+  color: #ffffff;
+}
+.ord-chip.is-on {
+  background: #96ff00;
+  border-color: #96ff00;
+  color: #00230a;
+}
+.ord-search {
+  width: min(260px, 100%);
+}
+
+.ord-empty {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/* --- Lista --- */
+.ord-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ord-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.ord-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.ord-card.is-open {
+  border-color: rgba(150, 255, 0, 0.35);
+}
+
+.ord-head {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.95rem 1.1rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ord-head-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.ord-number {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: #96ff00;
+}
+.ord-customer {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.ord-head-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.ord-total {
+  font-weight: 700;
+  color: #ffffff;
+}
+.ord-chev {
+  color: rgba(255, 255, 255, 0.4);
+  transition: transform 0.25s ease;
+}
+.ord-chev.is-open {
+  transform: rotate(180deg);
+}
+
+/* --- Status --- */
+.ord-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ord-dot {
+  height: 0.42rem;
+  width: 0.42rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+.ord-pill--pending {
+  color: #ffb84d;
+}
+.ord-pill--paid {
+  color: #7cc4ff;
+}
+.ord-pill--processing {
+  color: #c08cff;
+}
+.ord-pill--shipped {
+  color: #96ff00;
+}
+.ord-pill--delivered {
+  color: #58d68d;
+}
+.ord-pill--cancelled {
+  color: #ff7a7a;
+}
+
+/* --- Otvorena kartica --- */
+.ord-body {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ord-cols {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 720px) {
+  .ord-cols {
+    grid-template-columns: 1.35fr 1fr;
+  }
+}
+
+.ord-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.5rem;
+}
+.ord-label--mt {
+  margin-top: 1.1rem;
+}
+
+.ord-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.ord-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.88rem;
+  color: #ffffff;
+}
+.ord-item-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ord-item-sub {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+.ord-item-qty {
+  color: rgba(255, 255, 255, 0.55);
+}
+.ord-item-price {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ord-sums {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.3rem 1rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.ord-sum-strong {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.ord-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.88rem;
+}
+.ord-contact-name {
+  color: #ffffff;
+  font-weight: 600;
+}
+.ord-link {
+  color: #96ff00;
+  text-decoration: none;
+}
+.ord-link:hover {
+  text-decoration: underline;
+}
+
+.ord-address {
+  font-style: normal;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+.ord-when-full {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ord-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ord-actions .adm-btn--primary {
+  margin-top: 0;
+  align-self: auto;
+}
+.ord-select-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.ord-select {
+  width: auto;
+  min-width: 160px;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import AdminOrders from "../Components/AdminOrders";
 import { formatPrice } from "../data/cases";
 import {
   createCollection,
@@ -304,6 +305,7 @@ function Dashboard() {
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState<AdminProduct | null>(null);
   const [newColl, setNewColl] = useState("");
+  const [tab, setTab] = useState<"cases" | "orders">("cases");
   const [collBusy, setCollBusy] = useState(false);
   const [collError, setCollError] = useState<string | null>(null);
 
@@ -371,6 +373,28 @@ function Dashboard() {
         </button>
       </header>
 
+      {/* Dve sekcije: katalog i porudzbine */}
+      <nav className="adm-tabs">
+        <button
+          type="button"
+          onClick={() => setTab("cases")}
+          className={`adm-tab${tab === "cases" ? " is-on" : ""}`}
+        >
+          Maskice
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab("orders")}
+          className={`adm-tab${tab === "orders" ? " is-on" : ""}`}
+        >
+          Porudžbine
+        </button>
+      </nav>
+
+      {tab === "orders" ? (
+        <AdminOrders />
+      ) : (
+      <>
       {/* Kolekcije */}
       <section className="adm-card">
         <h2 className="adm-h2">Kolekcije</h2>
@@ -453,6 +477,8 @@ function Dashboard() {
           ))}
         </div>
       </section>
+      </>
+      )}
     </div>
   );
 }
