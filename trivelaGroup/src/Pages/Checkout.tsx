@@ -7,8 +7,8 @@ import {
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCart, type CartItem } from "../context/CartContext";
-import { formatPrice } from "../data/cases";
+import { lineUnitPrice, useCart, type CartItem } from "../context/CartContext";
+import { formatPrice, GIFT_BOX_PRICE } from "../data/cases";
 import { supabase } from "../lib/supabase";
 import "./Checkout.css";
 import { useSeo } from "../lib/seo";
@@ -111,6 +111,7 @@ function Field({
 
 /* ---- Order row (thumbnail) ---- */
 function OrderRow({ item }: { item: CartItem }) {
+  const { t } = useTranslation();
   return (
     <li className="flex items-center gap-3 py-3">
       <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-lg border border-white/10">
@@ -139,9 +140,14 @@ function OrderRow({ item }: { item: CartItem }) {
         <p className="truncate text-[11px] uppercase tracking-[0.15em] text-white/40">
           {item.model}
         </p>
+        {item.giftBox && (
+          <p className="mt-0.5 truncate text-[11px] font-semibold text-zelena">
+            {t("drop.cart.giftBox")}
+          </p>
+        )}
       </div>
       <p className="text-sm font-semibold text-zelena">
-        {formatPrice(item.price * item.qty)}
+        {formatPrice(lineUnitPrice(item) * item.qty)}
       </p>
     </li>
   );
@@ -222,6 +228,7 @@ export default function Checkout() {
     setStatus("placing");
     setFailed(false);
     const placed = [...items];
+    const boxCount = placed.reduce((n, it) => n + (it.giftBox ? it.qty : 0), 0);
 
     /* Porudzbinu upisuje edge funkcija (service_role), koja cene cita iz
        baze i vraca broj. Ako to padne, porudzbine NEMA — ne lazi kupca da
@@ -247,6 +254,7 @@ export default function Checkout() {
             name: it.name,
             model: it.model,
             qty: it.qty,
+            giftBox: !!it.giftBox,
           })),
         },
       });
@@ -282,18 +290,32 @@ export default function Checkout() {
           subtotal: billed.subtotal,
           shipping: billed.shipping,
           total: charged,
-          items: placed.map((it) => ({
-            name: it.name,
-            model: it.model,
-            price: it.price,
-            qty: it.qty,
-            /* Slicica u mejlu; mora apsolutna adresa, mejl nema nas domen */
-            image: it.image?.startsWith("http")
-              ? it.image
-              : it.image
-                ? `${window.location.origin}${it.image}`
-                : undefined,
-          })),
+          /* Isto razvrstavanje kao u bazi: maskice po svojoj ceni, pa
+             kutije kao zasebna stavka — mejl i admin pokazuju isto. */
+          items: [
+            ...placed.map((it) => ({
+              name: it.name,
+              model: it.model,
+              price: it.price,
+              qty: it.qty,
+              /* Slicica u mejlu; mora apsolutna adresa, mejl nema nas domen */
+              image: it.image?.startsWith("http")
+                ? it.image
+                : it.image
+                  ? `${window.location.origin}${it.image}`
+                  : undefined,
+            })),
+            ...(boxCount > 0
+              ? [
+                  {
+                    name: t("drop.cart.giftBoxLine"),
+                    model: "—",
+                    price: GIFT_BOX_PRICE,
+                    qty: boxCount,
+                  },
+                ]
+              : []),
+          ],
         },
       });
     } catch (err) {

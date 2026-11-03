@@ -214,6 +214,8 @@ const sr: Messages = {
       count_one: "{{count}} artikal",
       count_few: "{{count}} artikla",
       count_other: "{{count}} artikala",
+      giftBox: "Sa poklon kutijom",
+      giftBoxLine: "Poklon kutija",
       close: "Zatvori korpu",
       dialog: "Korpa",
       emptyTitle: "Korpa je prazna",

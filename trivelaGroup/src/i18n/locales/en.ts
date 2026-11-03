@@ -227,6 +227,8 @@ const en = {
       count_one: "{{count}} item",
       count_few: "{{count}} items",
       count_other: "{{count}} items",
+      giftBox: "With gift box",
+      giftBoxLine: "Gift box",
       close: "Close cart",
       dialog: "Shopping cart",
       emptyTitle: "Your cart is empty",

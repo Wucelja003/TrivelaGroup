@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCart, type CartItem } from "../context/CartContext";
+import { lineUnitPrice, useCart, type CartItem } from "../context/CartContext";
 import { formatPrice } from "../data/cases";
 import "./CartDrawer.css";
 
@@ -103,11 +103,16 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
             <p className="mt-0.5 truncate text-[11px] uppercase tracking-[0.15em] text-mastilo/65">
               {item.model}
             </p>
+            {item.giftBox && (
+              <p className="mt-1 inline-flex items-center gap-1 rounded-full bg-zelena/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.1em] text-[#4a7a00]">
+                {t("drop.cart.giftBox")}
+              </p>
+            )}
           </div>
           <button
             type="button"
             aria-label={t("drop.cart.remove", { name: item.name })}
-            onClick={() => removeItem(item.id, item.model)}
+            onClick={() => removeItem(item)}
             className="rounded-full p-1.5 text-mastilo/65 transition-colors hover:bg-mastilo/6 hover:text-red-400"
           >
             <Trash />
@@ -120,7 +125,7 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
             <button
               type="button"
               aria-label={t("drop.cart.decrease")}
-              onClick={() => updateQty(item.id, item.model, item.qty - 1)}
+              onClick={() => updateQty(item, item.qty - 1)}
               className="flex h-8 w-8 items-center justify-center text-mastilo/70 transition-colors hover:bg-mastilo/6 hover:text-mastilo"
             >
               −
@@ -131,7 +136,7 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
             <button
               type="button"
               aria-label={t("drop.cart.increase")}
-              onClick={() => updateQty(item.id, item.model, item.qty + 1)}
+              onClick={() => updateQty(item, item.qty + 1)}
               className="flex h-8 w-8 items-center justify-center text-mastilo/70 transition-colors hover:bg-mastilo/6 hover:text-mastilo"
             >
               +
@@ -139,7 +144,7 @@ function CartRow({ item, index }: { item: CartItem; index: number }) {
           </div>
 
           <p className="text-sm font-bold text-mastilo">
-            {formatPrice(item.price * item.qty)}
+            {formatPrice(lineUnitPrice(item) * item.qty)}
           </p>
         </div>
       </div>

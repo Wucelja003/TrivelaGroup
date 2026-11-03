@@ -27,6 +27,10 @@ export function isNewCase(createdAt?: string): boolean {
   return Date.now() - added < NEW_FOR_DAYS * 24 * 60 * 60 * 1000;
 }
 
+/* Poklon kutija — doplata po maskici. Vrednost MORA da se poklapa sa
+   GIFT_BOX_PRICE u edge funkciji create-order, koja racuna pravu cenu. */
+export const GIFT_BOX_PRICE = 400;
+
 export const collections: CollectionName[] = ["World Cup", "Euroleague"];
 
 /* Cena u dinarima: "2.900 RSD" (bez decimala, tacka kao hiljadu — sr-RS). */

@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { GIFT_BOX_PRICE } from "../data/cases";
 
 export interface CartItem {
   id: string; // product slug
@@ -18,6 +19,13 @@ export interface CartItem {
   color: string;
   image?: string;
   qty: number;
+  /* Poklon kutija uz ovu maskicu (doplata GIFT_BOX_PRICE po komadu) */
+  giftBox?: boolean;
+}
+
+/* Cena jedne stavke sa svim doplatama */
+export function lineUnitPrice(it: Pick<CartItem, "price" | "giftBox">) {
+  return it.price + (it.giftBox ? GIFT_BOX_PRICE : 0);
 }
 
 interface AddItemInput extends Omit<CartItem, "qty"> {
@@ -33,16 +41,18 @@ interface CartContextValue {
   open: () => void;
   close: () => void;
   addItem: (input: AddItemInput) => void;
-  removeItem: (id: string, model: string) => void;
-  updateQty: (id: string, model: string, qty: number) => void;
+  removeItem: (item: CartItem) => void;
+  updateQty: (item: CartItem, qty: number) => void;
   clear: () => void;
 }
 
 const STORAGE_KEY = "trivela.cart.v1";
 const CartContext = createContext<CartContextValue | null>(null);
 
-function keyOf(id: string, model: string) {
-  return `${id}::${model}`;
+/* Ista maskica sa kutijom i bez nje su DVE stavke — zato kutija ulazi
+   u kljuc, inace bi se spojile i doplata bi se izgubila. */
+function keyOf(it: Pick<CartItem, "id" | "model" | "giftBox">) {
+  return `${it.id}::${it.model}::${it.giftBox ? "box" : "plain"}`;
 }
 
 function loadFromStorage(): CartItem[] {
@@ -104,8 +114,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback((input: AddItemInput) => {
     const qty = Math.max(1, input.qty ?? 1);
     setItems((prev) => {
-      const k = keyOf(input.id, input.model);
-      const idx = prev.findIndex((it) => keyOf(it.id, it.model) === k);
+      const k = keyOf(input);
+      const idx = prev.findIndex((it) => keyOf(it) === k);
       if (idx === -1) {
         return [...prev, { ...input, qty }];
       }
@@ -116,18 +126,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setBumpKey((k) => k + 1);
   }, []);
 
-  const removeItem = useCallback((id: string, model: string) => {
-    const k = keyOf(id, model);
-    setItems((prev) => prev.filter((it) => keyOf(it.id, it.model) !== k));
+  const removeItem = useCallback((item: CartItem) => {
+    const k = keyOf(item);
+    setItems((prev) => prev.filter((it) => keyOf(it) !== k));
   }, []);
 
-  const updateQty = useCallback((id: string, model: string, qty: number) => {
-    const k = keyOf(id, model);
+  const updateQty = useCallback((item: CartItem, qty: number) => {
+    const k = keyOf(item);
     setItems((prev) => {
-      if (qty <= 0) return prev.filter((it) => keyOf(it.id, it.model) !== k);
-      return prev.map((it) =>
-        keyOf(it.id, it.model) === k ? { ...it, qty } : it
-      );
+      if (qty <= 0) return prev.filter((it) => keyOf(it) !== k);
+      return prev.map((it) => (keyOf(it) === k ? { ...it, qty } : it));
     });
   }, []);
 
@@ -142,7 +150,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<CartContextValue>(() => {
     const count = items.reduce((n, it) => n + it.qty, 0);
-    const subtotal = items.reduce((s, it) => s + it.price * it.qty, 0);
+    const subtotal = items.reduce((s, it) => s + lineUnitPrice(it) * it.qty, 0);
     return {
       items,
       count,

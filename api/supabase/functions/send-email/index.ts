@@ -223,13 +223,20 @@ function orderEmails(d: any) {
   const total = Number(d.total ?? subtotal);
   const shipping = d.shipping != null ? Number(d.shipping) : total - subtotal;
 
+  /* Ako bilo koji artikal ima sliku, tabela dobija kolonu za slicice —
+     tada i stavka bez slike (npr. poklon kutija) mora da ima praznu
+     celiju, inace bi joj se naziv pomerio u kolonu sa slikama. */
+  const hasThumbs = items.some((it) => it.image);
+
   /* Sličica maskice uz artikal; bez slike ostaje samo tekst. */
   const thumb = (src: unknown) =>
     src
       ? `<td width="56" style="padding:10px 12px 10px 0;vertical-align:top">
            <img src="${esc(src)}" width="56" height="56" alt="" style="display:block;border:0;border-radius:10px;background:#0a1544;object-fit:cover">
          </td>`
-      : "";
+      : hasThumbs
+        ? `<td width="56" style="padding:10px 12px 10px 0;font-size:0;line-height:0">&nbsp;</td>`
+        : "";
 
   const lines = items
     .map(
@@ -245,7 +252,7 @@ function orderEmails(d: any) {
     )
     .join("");
 
-  const span = items.some((it) => it.image) ? 2 : 1;
+  const span = hasThumbs ? 2 : 1;
 
   const sum = (label: string, value: string, strong = false) =>
     `<tr>

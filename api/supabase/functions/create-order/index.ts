@@ -21,6 +21,11 @@
 const SB_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SB_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
+/* Poklon kutija — doplata po maskici. Cena se NE uzima iz zahteva nego
+   stoji ovde, isto kao i cene maskica; klijent salje samo da li je hoce.
+   Mora da se poklapa sa GIFT_BOX_PRICE u src/data/cases.ts. */
+const GIFT_BOX_PRICE = 400;
+
 /* Postarina — isti pragovi kao na Checkout strani. */
 const FREE_SHIPPING_FROM = 6000;
 const SHIPPING_FEE = 590;
@@ -108,6 +113,7 @@ Deno.serve(async (req: Request) => {
           Math.max(parseInt(String((it as Record<string, unknown>)?.qty ?? "1"), 10) || 1, 1),
           MAX_QTY_PER_LINE,
         ),
+        giftBox: (it as Record<string, unknown>)?.giftBox === true,
       };
     });
 
@@ -149,6 +155,21 @@ Deno.serve(async (req: Request) => {
         line_total: money(unit * l.qty),
       };
     });
+
+    /* Kutije idu kao ZASEBNA stavka porudzbine: tako se vide u adminu i u
+       mejlu, i zbir se slaze bez menjanja seme baze. */
+    const boxes = lines.reduce((n, l) => n + (l.giftBox ? l.qty : 0), 0);
+    if (boxes > 0) {
+      items.push({
+        product_id: null,
+        product_name: "Poklon kutija",
+        collection_name: null,
+        model: "—",
+        unit_price: GIFT_BOX_PRICE,
+        quantity: boxes,
+        line_total: money(GIFT_BOX_PRICE * boxes),
+      });
+    }
 
     const subtotal = money(items.reduce((s, it) => s + it.line_total, 0));
     const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : SHIPPING_FEE;

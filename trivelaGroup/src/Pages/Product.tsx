@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { formatPrice, type CaseItem } from "../data/cases";
+import { formatPrice, GIFT_BOX_PRICE, type CaseItem } from "../data/cases";
 import GiftBoxOption from "../Components/GiftBoxOption";
 import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
@@ -11,10 +11,6 @@ import { useSeo } from "../lib/seo";
 
 /* Đoković maskica (Legends) ima vise varijacija boje — swatch-evi menjaju sliku.
    Slike: /public/DjokovicCases (4:5). Vezano za slug proizvoda. */
-/* Poklon kutija — doplata uz maskicu. Cena stoji ovde, pa se menja
-   na jednom mestu (i u prikazu i u korpi). */
-export const GIFT_BOX_PRICE = 400;
-
 const DJOKOVIC_SLUG = "novak-djokovic";
 /* Naziv boje je kljuc u drop.product.colors (prevodi se); `file` je stabilan
    identifikator koji ide u ID stavke u korpi. */
@@ -323,6 +319,7 @@ export default function Product() {
                     badge: item.badge,
                     color: isDjok ? djokColor.swatch : item.color,
                     image: isDjok ? djokImg ?? item.image : item.image,
+                    giftBox,
                   });
                   setAdded(true);
                   setTimeout(() => setAdded(false), 1800);
