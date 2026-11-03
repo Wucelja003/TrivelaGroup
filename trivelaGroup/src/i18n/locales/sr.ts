@@ -198,6 +198,8 @@ const sr: Messages = {
         grey: "Siva",
       },
       phoneModel: "Model tvog telefona",
+      giftBox: "Poklon kutija",
+      giftBoxDesc: "Tvrda kutija sa sunđerastim ležištem — spremna da se odmah pokloni.",
       phoneModelPlaceholder: "npr. iPhone 18 Pro",
       addToCart: "Dodaj u korpu",
       added: "Dodato u korpu",

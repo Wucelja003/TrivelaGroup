@@ -212,6 +212,8 @@ const en = {
         grey: "Grey",
       },
       phoneModel: "Your phone model",
+      giftBox: "Gift box",
+      giftBoxDesc: "Hard box with foam insert — ready to hand over as a present.",
       phoneModelPlaceholder: "e.g. iPhone 18 Pro",
       addToCart: "Add to cart",
       added: "Added to cart",

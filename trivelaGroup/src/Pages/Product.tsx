@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { formatPrice, type CaseItem } from "../data/cases";
+import GiftBoxOption from "../Components/GiftBoxOption";
 import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import "./Product.css";
@@ -10,6 +11,10 @@ import { useSeo } from "../lib/seo";
 
 /* Đoković maskica (Legends) ima vise varijacija boje — swatch-evi menjaju sliku.
    Slike: /public/DjokovicCases (4:5). Vezano za slug proizvoda. */
+/* Poklon kutija — doplata uz maskicu. Cena stoji ovde, pa se menja
+   na jednom mestu (i u prikazu i u korpi). */
+export const GIFT_BOX_PRICE = 400;
+
 const DJOKOVIC_SLUG = "novak-djokovic";
 /* Naziv boje je kljuc u drop.product.colors (prevodi se); `file` je stabilan
    identifikator koji ide u ID stavke u korpi. */
@@ -118,6 +123,7 @@ export default function Product() {
   const [model, setModel] = useState("");
   const [added, setAdded] = useState(false);
   const [colorIdx, setColorIdx] = useState(0);
+  const [giftBox, setGiftBox] = useState(false);
   const { addItem } = useCart();
   const reduce = useReducedMotion();
 
@@ -228,7 +234,12 @@ export default function Product() {
             </h1>
 
             <p className="mt-6 text-3xl font-bold text-mastilo">
-              {formatPrice(item.price)}
+              {formatPrice(item.price + (giftBox ? GIFT_BOX_PRICE : 0))}
+              {giftBox && (
+                <span className="ml-2 align-middle text-sm font-semibold text-mastilo/55">
+                  {formatPrice(item.price)} + {formatPrice(GIFT_BOX_PRICE)}
+                </span>
+              )}
             </p>
 
             <p className="mt-6 max-w-md leading-relaxed text-mastilo/70">
@@ -287,6 +298,13 @@ export default function Product() {
                 className="w-full rounded-xl border border-mastilo/15 bg-white px-5 py-4 text-base text-mastilo outline-none transition-colors duration-200 placeholder:text-mastilo/35 hover:border-mastilo/35 focus:border-ledena"
               />
             </div>
+
+            {/* Poklon kutija — 3D prikaz i doplata */}
+            <GiftBoxOption
+              checked={giftBox}
+              onChange={setGiftBox}
+              price={formatPrice(GIFT_BOX_PRICE)}
+            />
 
             {/* Add to cart */}
             <div className="mt-8 max-w-md">
