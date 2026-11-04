@@ -25,6 +25,19 @@ export interface GalleryPhoto {
 }
 
 export const galleryPhotos: GalleryPhoto[] = [
+  // Novi matchdayevi idu NA VRH — galerija prikazuje redom iz ovog niza.
+  { src: "/TrivelaGallery/vojvodina-crvena-zvezda.webp", title: "Vojvodina — Crvena zvezda", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/vojvodina-matchday.webp", title: "Vojvodina matchday", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/paok-matchday.webp", title: "PAOK matchday", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/matija-popovic-cska.webp", title: "Matija Popović — CSKA Moscow", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/cska-rostov.webp", title: "CSKA Moscow — Rostov", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/cska-spartak-popovic.webp", title: "CSKA Moscow — Spartak Moscow (Popović)", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/zvezda-inter-escaldes-lucic.webp", title: "Crvena zvezda — Inter Escaldes (Lučić)", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/kostov-copenhagen.webp", title: "Kostov — Copenhagen", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/kostov-lugano.webp", title: "Kostov — Lugano", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/vasilije-kostov.webp", title: "Vasilije Kostov", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/rankovic-macva.webp", title: "Ranković — Mačva", description: "Trivela Group.", category: "Matchdays" },
+  { src: "/TrivelaGallery/ognjen-ugresic.webp", title: "Ognjen Ugrešić", description: "Trivela Group.", category: "Matchdays" },
   { src: "/TrivelaGallery/IMG_0783.JPG", title: "Trivela 01", description: "Trivela Group.", category: "Matchdays" },
   { src: "/TrivelaGallery/IMG_0858.JPG", title: "Trivela 02", description: "Trivela Group.", category: "Matchdays" },
   { src: "/TrivelaGallery/IMG_0961.JPG", title: "Trivela 03", description: "Trivela Group.", category: "Matchdays" },

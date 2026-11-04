@@ -18,6 +18,10 @@ import { galleryPhotos } from "../data/galleryPhotos";
    Upisi ime fajla iz public/TrivelaGallery, bez putanje. Redosled u listi
    je redosled u karuselu, pa prebacivanjem reda menjas i redosled.
    Ako lista ostane prazna, uzima se svaka treca fotka iz galerije.
+
+   VAZNO: karusel se otvara na SREDINI liste (initialIndex nize), pa fotka
+   koja treba prva da se vidi ide na sredinu — ne na pocetak. Kod 27 imena
+   to je 14. po redu.
    ==================================================================== */
 const PICKS: string[] = [
   "IMG_9537.JPG",
@@ -27,6 +31,19 @@ const PICKS: string[] = [
   "petko_lagalaxy.jpg",
   "kostov derbi2.jpg",
   "IMG_0783.JPG",
+  /* Novi matchdayevi — stoje u sredini da se vide cim se otvori pocetna */
+  "vojvodina-matchday.webp",
+  "paok-matchday.webp",
+  "cska-rostov.webp",
+  "kostov-copenhagen.webp",
+  "kostov-lugano.webp",
+  "matija-popovic-cska.webp",
+  "vojvodina-crvena-zvezda.webp", // <- sredina, prva se vidi
+  "zvezda-inter-escaldes-lucic.webp",
+  "cska-spartak-popovic.webp",
+  "rankovic-macva.webp",
+  "vasilije-kostov.webp",
+  "ognjen-ugresic.webp",
   "IMG_3620.JPG",
   "IMG_4181.JPG",
   "IMG_4878.jpg",
