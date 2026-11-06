@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { lineUnitPrice, useCart, type CartItem } from "../context/CartContext";
 import { formatPrice } from "../data/cases";
 import "./CartDrawer.css";
+import { CURRENCY, gaItems, track } from "../lib/analytics";
 
 /* ---------- Icons ---------- */
 function Close({ className = "h-5 w-5" }: { className?: string }) {
@@ -157,6 +159,17 @@ export default function CartDrawer() {
   const { t } = useTranslation();
   const { items, isOpen, close, subtotal, count, clear } = useCart();
   const navigate = useNavigate();
+
+  /* GA4 "view_cart" — koliko ljudi uopste otvori korpu. Salje se na svako
+     otvaranje, ne i dok se po njoj klikce. */
+  useEffect(() => {
+    if (!isOpen || items.length === 0) return;
+    track("view_cart", {
+      currency: CURRENCY,
+      value: subtotal,
+      items: gaItems(items),
+    });
+  }, [isOpen]);
 
   const goToCheckout = () => {
     close();

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -8,6 +8,7 @@ import { useCases } from "../data/useCases";
 import { useCart } from "../context/CartContext";
 import "./Product.css";
 import { useSeo } from "../lib/seo";
+import { CURRENCY, gaItems, track } from "../lib/analytics";
 
 /* Đoković maskica (Legends) ima vise varijacija boje — swatch-evi menjaju sliku.
    Slike: /public/DjokovicCases (4:5). Vezano za slug proizvoda. */
@@ -137,6 +138,17 @@ export default function Product() {
     path: `/drop/${id ?? ""}`,
     image: item?.image,
   });
+
+  /* GA4 "view_item" — koliko puta je maskica otvorena. Salje se jednom po
+     maskici, tek kad se podaci iz baze ucitaju. */
+  useEffect(() => {
+    if (!item) return;
+    track("view_item", {
+      currency: CURRENCY,
+      value: item.price,
+      items: gaItems([{ id: item.id, name: item.name, price: item.price }]),
+    });
+  }, [item?.id]);
 
   const suggestions = useMemo(() => {
     if (!item) return [];
@@ -320,6 +332,19 @@ export default function Product() {
                     color: isDjok ? djokColor.swatch : item.color,
                     image: isDjok ? djokImg ?? item.image : item.image,
                     giftBox,
+                  });
+                  track("add_to_cart", {
+                    currency: CURRENCY,
+                    value: item.price + (giftBox ? GIFT_BOX_PRICE : 0),
+                    items: gaItems([
+                      {
+                        id: item.id,
+                        name: item.name,
+                        model: model.trim(),
+                        price: item.price,
+                        giftBox,
+                      },
+                    ]),
                   });
                   setAdded(true);
                   setTimeout(() => setAdded(false), 1800);

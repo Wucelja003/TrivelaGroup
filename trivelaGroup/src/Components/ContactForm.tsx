@@ -3,6 +3,7 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./ContactForm.css";
+import { track } from "../lib/analytics";
 
 /* `value` ide backend-u i ostaje engleski (stabilan, nezavisan od jezika);
    `id` je kljuc prevedene labele u contact.services. */
@@ -124,6 +125,10 @@ export default function ContactForm() {
       // TODO (backend): POST /api/contact
       //   body: { name, email, company, package: pkg, services, message }
       await new Promise((res) => setTimeout(res, 1500)); // privremena simulacija
+      /* NAMERNO nije "generate_lead": forma gore jos nista ne salje (TODO),
+         pa bi lead u izvestaju bio laz. Ovo meri samo POKUSAJ — koliko nam
+         upita propada dok se slanje ne poveze. */
+      track("contact_attempt", { form: "contact", package: pkg });
       setStatus("sent");
     } catch {
       setStatus("error");

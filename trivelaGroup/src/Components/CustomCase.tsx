@@ -4,6 +4,7 @@ import {
   submitCustomRequest,
   uploadCustomImage,
 } from "../data/customRequests";
+import { track } from "../lib/analytics";
 
 /*
  * "Create your custom case" — forma na Trivela Drop strani. Kupac ubaci svoju
@@ -96,6 +97,9 @@ export default function CustomCase() {
         notes,
         imageUrl,
       });
+      /* GA4 "generate_lead" — zahtev za maskicu po meri je stvaran upit,
+         pa ide pod istim imenom kao i ostali upiti u izvestaju. */
+      track("generate_lead", { form: "custom_case", quantity });
       setStatus("sent");
     } catch (err) {
       setStatus("error");

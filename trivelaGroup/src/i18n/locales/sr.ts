@@ -23,6 +23,45 @@ const sr: Messages = {
   },
 
 
+  privacy: {
+    title: "Privatnost i kolačići",
+    updated: "Poslednja izmena: novembar 2026.",
+    intro:
+      "Trivela Group je mali tim iz Beograda. Merimo samo ono što nam pomaže da sajt bude bolji — koje strane ljudi čitaju i gde stanu. Bez reklama, bez profilisanja, bez prodaje podataka bilo kome.",
+    sections: [
+      {
+        h: "Šta merimo",
+        p: "Koje su strane posećene, dokle se skroluje, koji linkovi i dugmad se klikću i koraci u prodavnici (otvorena maskica, dodata u korpu, poslata porudžbina). Sve se broji zbirno — ne pravimo tvoj profil.",
+      },
+      {
+        h: "Kolačići",
+        p: "Kolačić postavlja jedino Google Analytics, i to tek kada klikneš Prihvatam. Služi da se isti pregledač prepozna u sledećoj poseti, pa se poseta ne broji dvaput. Ako odbiješ, kolačića nema i šalje se samo anoniman signal bez kolačića.",
+      },
+      {
+        h: "Kada poručiš",
+        p: "Ime, adresa, telefon i mejl čuvaju se samo da bi maskica bila izrađena i poslata i da bismo mogli da ti odgovorimo. Nikada se ne koriste za marketing. Porudžbina stoji u našoj bazi (Supabase), a potvrda se šalje preko Resend-a.",
+      },
+      {
+        h: "Ko obrađuje podatke",
+        p: "Google Analytics (statistika poseta), Vercel (hosting i brojanje poseta bez kolačića), Supabase (baza porudžbina) i Resend (mejlovi potvrde). Svi oni obrađuju podatke u naše ime, po svojim uslovima obrade podataka.",
+      },
+      {
+        h: "Tvoja prava",
+        p: "Odluku možeš da promeniš ili povučeš bilo kada dugmetom ispod, a brisanje podataka o porudžbini možeš da zatražiš mejlom. Statistika se čuva 14 meseci, posle čega je Google sam briše.",
+      },
+    ],
+    consent: {
+      title: "Tvoja odluka",
+      granted: "Merenje je trenutno UKLJUČENO za ovaj pregledač.",
+      denied: "Merenje je trenutno ISKLJUČENO za ovaj pregledač.",
+      unset: "Još nisi odlučio za ovaj pregledač.",
+      accept: "Uključi merenje",
+      revoke: "Isključi merenje",
+    },
+    contactTitle: "Pitanja?",
+    contactBody: "Piši nam na {{email}} i odgovaramo u roku od 24 sata.",
+  },
+
   consent: {
     title: "Kolačići",
     body: "Merimo posete da bismo videli koje strane ljudi zaista čitaju. Bez reklama i bez profilisanja.",
@@ -69,6 +108,11 @@ const sr: Messages = {
     checkout: {
       title: "Porudžbina",
       description: "Završi svoju Trivela Drop porudžbinu.",
+    },
+    privacy: {
+      title: "Privatnost i kolačići",
+      description:
+        "Šta Trivela Group meri na ovom sajtu, koje kolačiće koristimo i kako da promeniš odluku.",
     },
   },
   common: {

@@ -146,7 +146,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-3">
             <Link
-              to="/terms"
+              to="/privacy"
               className="transition-colors duration-300 hover:f-accent-h"
             >
               {t("footer.privacy")}

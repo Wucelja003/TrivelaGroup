@@ -12,6 +12,7 @@ import { formatPrice, GIFT_BOX_PRICE } from "../data/cases";
 import { supabase } from "../lib/supabase";
 import "./Checkout.css";
 import { useSeo } from "../lib/seo";
+import { CURRENCY, gaItems, track } from "../lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+\d][\d\s().-]{6,}$/;
@@ -197,6 +198,20 @@ export default function Checkout() {
     window.scrollTo(0, 0);
   }, []);
 
+  /* GA4 "begin_checkout" — koliko ljudi uopste dodje do kase. Jednom po
+     poseti kase; zato zavisi samo od toga da li korpa ima nesto. */
+  const started = items.length > 0;
+  useEffect(() => {
+    if (!started) return;
+    track("begin_checkout", {
+      currency: CURRENCY,
+      value: subtotal,
+      items: gaItems(items),
+    });
+    /* namerno bez items/subtotal u zavisnostima: dogadjaj je "usao je u
+       kasu", ne "promenio je korpu" */
+  }, [started]);
+
   /* Dinari: besplatna postarina preko 6.000 RSD, inace 590 RSD. Slobodno
      promeni pragove. */
   const shipping = useMemo(() => (subtotal >= 6000 ? 0 : 590), [subtotal]);
@@ -321,6 +336,18 @@ export default function Checkout() {
     } catch (err) {
       console.warn("[checkout] mejl nije poslat:", err);
     }
+
+    /* GA4 "purchase" — od ovoga zivi izvestaj Monetisation (prihod, broj
+       kupovina, prosecna korpa). Salje se tek kad je porudzbina stvarno
+       upisana, sa brojem koji je vratio server. */
+    track("purchase", {
+      transaction_id: number,
+      currency: CURRENCY,
+      value: charged,
+      shipping: billed.shipping,
+      items: gaItems(placed),
+      gift_boxes: boxCount,
+    });
 
     setOrder({ number, items: placed, total: charged, email: form.email });
     clear();

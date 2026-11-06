@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   analyticsEnabled,
-  cookieless,
   readConsent,
   setConsent,
   type Consent,
@@ -23,7 +22,7 @@ export default function CookieConsent() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!analyticsEnabled || cookieless) return;
+    if (!analyticsEnabled) return;
     if (readConsent() !== null) return;
     /* Mali predah: traka ne upada posetiocu u prvi kadar strane. */
     const id = window.setTimeout(() => setOpen(true), 1200);
@@ -42,7 +41,7 @@ export default function CookieConsent() {
       <p className="cc-title">{t("consent.title")}</p>
       <p className="cc-body">
         {t("consent.body")}{" "}
-        <Link to="/terms" className="cc-link">
+        <Link to="/privacy" className="cc-link">
           {t("consent.more")}
         </Link>
       </p>

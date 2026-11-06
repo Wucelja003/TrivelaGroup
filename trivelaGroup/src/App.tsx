@@ -20,7 +20,12 @@ import Intro from "./Components/Intro";
 import CartDrawer from "./Components/CartDrawer";
 import LanguageToggle from "./Components/LanguageToggle";
 import CookieConsent from "./Components/CookieConsent";
-import { initAnalytics, pageview } from "./lib/analytics";
+import {
+  initAnalytics,
+  initClickTracking,
+  pageview,
+  watchScrollDepth,
+} from "./lib/analytics";
 /* Vercel Analytics — meri posete BEZ kolacica, pa mu ne treba pristanak.
    Radi samo na Vercel-u (lokalno je mrtav), i mora da bude ukljucen u
    Vercel nalogu: Project -> Analytics -> Enable Web Analytics. */
@@ -37,6 +42,7 @@ const GetInTouch = lazy(() => import("./Pages/GetInTouch"));
 const Admin = lazy(() => import("./Pages/Admin"));
 const Business = lazy(() => import("./Pages/Business"));
 const History = lazy(() => import("./Pages/History"));
+const Privacy = lazy(() => import("./Pages/Privacy"));
 import Footer from "./Components/Footer";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -125,11 +131,15 @@ function SiteAnalytics() {
 
   useEffect(() => {
     initAnalytics();
+    /* Jedan osluskivac za sve linkove (Instagram, telefon, mejl, spoljni) */
+    initClickTracking();
   }, []);
 
   useEffect(() => {
     if (isBare(pathname)) return;
     pageview(pathname + search);
+    /* Dubina skrola se broji po strani — na novoj ruti krece ispocetka */
+    return watchScrollDepth(pathname);
   }, [pathname, search]);
 
   if (isBare(pathname)) return null;
@@ -159,6 +169,7 @@ export default function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/history" element={<History />} />
               <Route path="/getInTouch" element={<GetInTouch />} />
+              <Route path="/privacy" element={<Privacy />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>
             </Suspense>

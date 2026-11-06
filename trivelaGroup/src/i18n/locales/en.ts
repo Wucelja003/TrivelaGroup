@@ -33,6 +33,45 @@ const en = {
   },
 
 
+  privacy: {
+    title: "Privacy & Cookies",
+    updated: "Last updated: November 2026",
+    intro:
+      "Trivela Group is a small team in Belgrade. We only measure what helps us run the site better — which pages people read and where they stop. No ads, no profiling, no selling data to anyone.",
+    sections: [
+      {
+        h: "What we measure",
+        p: "Pages visited, how far down a page you scroll, which links and buttons get clicked, and shop steps (opened a case, added it to the cart, placed an order). All of it is counted together — we do not build a profile of you.",
+      },
+      {
+        h: "Cookies",
+        p: "Only Google Analytics sets a cookie, and only after you press Accept. It remembers that the same browser came back, so visits are not counted twice. If you decline, no cookie is set and only an anonymous, cookieless signal is sent.",
+      },
+      {
+        h: "When you order",
+        p: "Your name, address, phone and email are stored only so the case can be made and shipped, and so we can answer you. They are never used for marketing. The order is stored in our database (Supabase) and the confirmation is sent through Resend.",
+      },
+      {
+        h: "Who processes the data",
+        p: "Google Analytics (visit statistics), Vercel (hosting and cookieless visit counts), Supabase (orders database) and Resend (confirmation emails). Each of them processes data on our behalf, under their own data-processing terms.",
+      },
+      {
+        h: "Your rights",
+        p: "You can change or withdraw your decision at any time with the button below, and you can ask us to delete your order data by email. Statistics are kept for 14 months, after which Google deletes them automatically.",
+      },
+    ],
+    consent: {
+      title: "Your decision",
+      granted: "Measurement is currently ON for this browser.",
+      denied: "Measurement is currently OFF for this browser.",
+      unset: "You have not decided yet for this browser.",
+      accept: "Turn measurement on",
+      revoke: "Turn measurement off",
+    },
+    contactTitle: "Questions?",
+    contactBody: "Write to us at {{email}} and we answer within 24 hours.",
+  },
+
   consent: {
     title: "Cookies",
     body: "We measure visits to see which pages people actually read. No ads, no profiling.",
@@ -79,6 +118,11 @@ const en = {
     checkout: {
       title: "Checkout",
       description: "Complete your Trivela Drop order.",
+    },
+    privacy: {
+      title: "Privacy & Cookies",
+      description:
+        "What Trivela Group measures on this site, which cookies we use and how to change your decision.",
     },
   },
   common: {
